@@ -20,6 +20,10 @@ public class MainActivity extends AppCompatActivity {
                 intent = new Intent(getApplicationContext(), bookTimeActivity.class);
                 startActivity(intent);
                 break;
+            case R.id.connectButton:
+                intent = new Intent(getApplicationContext(), connectActivity.class);
+                startActivity(intent);
+                break;
             default:
                 break;
         }
