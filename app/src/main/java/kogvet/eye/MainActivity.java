@@ -334,6 +334,10 @@ public class MainActivity extends AppCompatActivity {
         };
     }
 
+    /**
+     * Function handling all onClick methods in mainActivity.
+     * @param view
+     */
     public void buttonClicked(View view)
     {
         Intent intent;
