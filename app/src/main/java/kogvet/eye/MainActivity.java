@@ -24,10 +24,11 @@ import com.microsoft.identity.client.PublicClientApplication;
 public class MainActivity extends AppCompatActivity {
 
     /* Azure AD v2 Configs */ //old id : 074d69f8-eed5-46ed-b577-13a834d0a716
-    final static String CLIENT_ID = "7c1e027b-60d3-44ef-a3af-686d432785f0"; //fac1a20e-54f5-49d2-ae55-724b980a2eb9
-    final static String SCOPES [] = {"https://graph.microsoft.com/User.Read"};
+    final static String CLIENT_ID = "7c1e027b-60d3-44ef-a3af-686d432785f0"; //Tool0035.student.umu.se ID: fac1a20e-54f5-49d2-ae55-724b980a2eb9
+    final static String SCOPES [] = {"User.Read", "Calendars.Read"};
     final static String MSGRAPH_URL = "https://graph.microsoft.com/v1.0/me";
-
+    final static String MSGRAPH_URL2 = "https://graph.microsoft.com/v1.0/me/calendar/calendarView?startDateTime=2018-01-01T19:00:00.0000000&endDateTime=2018-12-31T19:00:00.0000000";
+    // RADEN OVAN ÄR TILLFÄLLIGT BYTT till MSGRAPH_URL2 för att testa calendar view. Glöm ej att byta tillbaka på Rad 171 tillbaka till MSGRAPH_URL
     /* UI & Debugging Variables */
     private static final String TAG = MainActivity.class.getSimpleName();
 //    Button callGraphButton;
@@ -167,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception e) {
             Log.d(TAG, "Failed to put parameters: " + e.toString());
         }
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, MSGRAPH_URL,
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, MSGRAPH_URL2,
                 parameters,new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
