@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -32,6 +34,8 @@ import com.microsoft.identity.client.PublicClientApplication;
 
 public class MainActivity extends AppCompatActivity {
 
+    boolean menuVisible=true;
+
     /* Azure AD v2 Configs */ //old id : 074d69f8-eed5-46ed-b577-13a834d0a716
     final static String CLIENT_ID = "7c1e027b-60d3-44ef-a3af-686d432785f0"; //Tool0035.student.umu.se ID: fac1a20e-54f5-49d2-ae55-724b980a2eb9
     final static String SCOPES [] = {"User.Read", "Calendars.Read"};
@@ -58,7 +62,6 @@ public class MainActivity extends AppCompatActivity {
 //        callGraphButton = (Button) findViewById(R.id.connectButton);
 //        signOutButton = (Button) findViewById(R.id.clearCache);
 
-        //sampleApp.acquireToken(getActivity(), SCOPES, getAuthInteractiveCallback());
 
 //        callGraphButton.setOnClickListener(new View.OnClickListener() {
 //            public void onClick(View v) {
@@ -93,6 +96,9 @@ public class MainActivity extends AppCompatActivity {
                 sampleApp.acquireTokenSilentAsync(SCOPES, users.get(0), getAuthSilentCallback());
             } else {
                 /* We have no user */
+                Log.d("debug", "no users");
+                sampleApp.acquireToken(getActivity(), SCOPES, getAuthInteractiveCallback());
+
             }
         } catch (MsalClientException e) {
             Log.d(TAG, "MSAL Exception Generated while getting users: " + e.toString());
@@ -237,10 +243,10 @@ public class MainActivity extends AppCompatActivity {
         for(int i=0; i<array.length(); i++) {
 //            Log.d("Loldator", array.get(i).toString());
             event = array.getJSONObject(i);
-            Log.d("Loldator", event.getString("subject"));
-            Log.d("Loldator", event.getString("start"));
-            Log.d("Loldator", event.getString("end"));
-            Log.d("Loldator", event.getString("location"));
+//            Log.d("Loldator", event.getString("subject"));
+//            Log.d("Loldator", event.getString("start"));
+//            Log.d("Loldator", event.getString("end"));
+//            Log.d("Loldator", event.getString("location"));
         }
         if (event != null)
             return event.getString("subject")+"\n"+event.getString("start")+"\n"+event.getString("location");
@@ -252,8 +258,10 @@ public class MainActivity extends AppCompatActivity {
     private void updateSuccessUI() {
         findViewById(R.id.imageView).setVisibility(View.INVISIBLE);
         findViewById(R.id.connectButton).setVisibility(View.INVISIBLE);
+        menuVisible=true;
+        invalidateOptionsMenu();
 //        callGraphButton.setVisibility(View.INVISIBLE);
-        findViewById(R.id.clearCache).setVisibility(View.VISIBLE);
+//        findViewById(R.id.clearCache).setVisibility(View.VISIBLE);
 //        signOutButton.setVisibility(View.VISIBLE);
         findViewById(R.id.welcome).setVisibility(View.VISIBLE);
         ((TextView) findViewById(R.id.welcome)).setText("Welcome, " + authResult.getUser().getName());
@@ -265,8 +273,11 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.imageView).setVisibility(View.VISIBLE);
         findViewById(R.id.connectButton).setVisibility(View.VISIBLE);
 //        callGraphButton.setVisibility(View.VISIBLE);
-        findViewById(R.id.clearCache).setVisibility(View.INVISIBLE);
+        menuVisible=false;
+        invalidateOptionsMenu();
+//        findViewById(R.id.clearCache).setVisibility(View.INVISIBLE);
 //        signOutButton.setVisibility(View.INVISIBLE);
+//        findViewById(R.id.action_settings).setVisibility(View.INVISIBLE);
         findViewById(R.id.welcome).setVisibility(View.INVISIBLE);
         findViewById(R.id.graphData).setVisibility(View.INVISIBLE);
         ((TextView) findViewById(R.id.graphData)).setText("No Data");
@@ -396,5 +407,37 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        MenuItem item = menu.findItem(R.id.action_settings);
+        if(menuVisible)
+            item.setVisible(true);
+        else
+            item.setVisible(false);
+
+//        Log.d("debug", "on create options menu");
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        switch(item.getItemId()) {
+            case R.id.action_settings:
+//                Log.d("debug", "action settings");
+                onSignOutClicked();
+                break;
+            default:
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 
 }

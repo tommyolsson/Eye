@@ -11,6 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:adjustViewBounds="false"
+        android:contentDescription="@string/app_name"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -23,9 +24,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="59dp"
-        android:layout_marginStart="66dp"
+        android:layout_marginStart="64dp"
         android:onClick="buttonClicked"
-        android:text="VIEW"
+        android:text="@string/view"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -35,12 +36,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="59dp"
-        android:layout_marginStart="76dp"
+        android:layout_marginEnd="64dp"
         android:onClick="buttonClicked"
-        android:text="Book"
+        android:text="@string/book"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/viewButton" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <Button
         android:id="@+id/connectButton"
@@ -51,7 +52,7 @@
         android:layout_marginStart="126dp"
         android:layout_marginTop="37dp"
         android:onClick="buttonClicked"
-        android:text="Connect"
+        android:text="@string/connect"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/imageView"
         app:layout_constraintEnd_toEndOf="parent"
@@ -64,10 +65,10 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
-        android:text="Welcome, "
+        android:text="@string/welcome"
         android:textAlignment="center"
         android:textColor="#3f3f3f"
-        android:textSize="50px"
+        android:textSize="24sp"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -78,23 +79,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Getting Graph Data..."
+        android:text="@string/getting_graph_data"
         android:textColor="#3f3f3f"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/welcome" />
 
-    <Button
-        android:id="@+id/clearCache"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#00a1f1"
-        android:onClick="buttonClicked"
-        android:text="Sign Out"
-        android:textAllCaps="false"
-        android:textColor="#FFFFFF"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

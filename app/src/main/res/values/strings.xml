@@ -6,6 +6,7 @@
 <resources>
     <string name="app_name">Eye</string>
     <string name="title_activity_test">TestActivity</string>
+    <string name="action_settings">Log out</string>
 
     <!-- Activity connect -->
     <string name="connect_button_text">Connect to Microsoft Graph</string>
@@ -70,6 +71,11 @@ log an issue&lt;/a&gt; on our repository.&lt;/p&gt;&lt;p&gt;For general question
 &lt;/body&gt;
 &lt;/html&gt;</string>
     <string name="defaultImageFileName">test.jpg</string>
+    <string name="view">VIEW</string>
+    <string name="book">Book</string>
+    <string name="connect">Connect</string>
+    <string name="welcome">Welcome,</string>
+    <string name="getting_graph_data">Getting Graph Data...</string>
 
 
     <!-- STOP Texten ovan behöver övervägas vad som behövs eller inte. Är med just nu för att testa Microsoft Graph -->
