@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * Created by Loldator on 2018-02-27.
@@ -51,12 +52,20 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
         TextView tvSubject,tvStart,tvEnd;
 
-        public ViewHolder(View itemView) {
+        public ViewHolder(final View itemView) {
             super(itemView);
 
             tvSubject = (TextView) itemView.findViewById(R.id.tvSubject);
             tvStart = (TextView) itemView.findViewById(R.id.tvStart);
             tvEnd = (TextView) itemView.findViewById(R.id.tvEnd);
+            
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //EXAMPLE ON CLICK FUNCTION
+                    Toast.makeText(context, tvSubject.getText().toString(), Toast.LENGTH_SHORT).show();
+                }
+            });
         }
     }
 }
