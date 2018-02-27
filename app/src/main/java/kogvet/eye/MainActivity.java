@@ -12,10 +12,19 @@ import android.widget.Toast;
 import com.android.volley.*;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonParser;
 import com.microsoft.identity.client.*;
 
 import com.microsoft.identity.client.AuthenticationResult;
@@ -27,8 +36,10 @@ public class MainActivity extends AppCompatActivity {
     final static String CLIENT_ID = "7c1e027b-60d3-44ef-a3af-686d432785f0"; //Tool0035.student.umu.se ID: fac1a20e-54f5-49d2-ae55-724b980a2eb9
     final static String SCOPES [] = {"User.Read", "Calendars.Read"};
     final static String MSGRAPH_URL = "https://graph.microsoft.com/v1.0/me";
-    final static String MSGRAPH_URL2 = "https://graph.microsoft.com/v1.0/me/calendar/calendarView?startDateTime=2018-01-01T19:00:00.0000000&endDateTime=2018-12-31T19:00:00.0000000";
+    final static String MSGRAPH_URL2 = "https://graph.microsoft.com/v1.0/me/calendar/events?$select=subject,start,end,location";
+//    final static String MSGRAPH_URL2 = "https://graph.microsoft.com/v1.0/me/calendar";
     // RADEN OVAN ÄR TILLFÄLLIGT BYTT till MSGRAPH_URL2 för att testa calendar view. Glöm ej att byta tillbaka på Rad 171 tillbaka till MSGRAPH_URL
+
     /* UI & Debugging Variables */
     private static final String TAG = MainActivity.class.getSimpleName();
 //    Button callGraphButton;
@@ -174,7 +185,6 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(JSONObject response) {
                 /* Successfully called graph, process data and send to UI */
                 Log.d(TAG, "Response: " + response.toString());
-
                 updateGraphUI(response);
             }
         }, new Response.ErrorListener() {
@@ -211,7 +221,31 @@ public class MainActivity extends AppCompatActivity {
     /* Sets the graph response */
     private void updateGraphUI(JSONObject graphResponse) {
         TextView graphText = (TextView) findViewById(R.id.graphData);
-        graphText.setText(graphResponse.toString());
+        String test= "";
+        try {
+            test = getFirstEvent(graphResponse);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        graphText.setText(test);
+
+    }
+
+    private String getFirstEvent(JSONObject graphResponse) throws JSONException {
+        JSONArray array = graphResponse.getJSONArray("value");
+        JSONObject event = null;
+        for(int i=0; i<array.length(); i++) {
+//            Log.d("Loldator", array.get(i).toString());
+            event = array.getJSONObject(i);
+            Log.d("Loldator", event.getString("subject"));
+            Log.d("Loldator", event.getString("start"));
+            Log.d("Loldator", event.getString("end"));
+            Log.d("Loldator", event.getString("location"));
+        }
+        if (event != null)
+            return event.getString("subject")+"\n"+event.getString("start")+"\n"+event.getString("location");
+        else
+            return "";
     }
 
     /* Set the UI for successful token acquisition data */
