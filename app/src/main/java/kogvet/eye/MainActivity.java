@@ -19,6 +19,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -34,6 +35,7 @@ import com.microsoft.identity.client.PublicClientApplication;
 
 public class MainActivity extends AppCompatActivity {
 
+    private ArrayList<String> allEvents = new ArrayList<>();
     boolean menuVisible=true;
 
     /* Azure AD v2 Configs */ //old id : 074d69f8-eed5-46ed-b577-13a834d0a716
@@ -229,7 +231,7 @@ public class MainActivity extends AppCompatActivity {
         TextView graphText = (TextView) findViewById(R.id.graphData);
         String test= "";
         try {
-            test = getFirstEvent(graphResponse);
+            test = getAllEvents(graphResponse);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -250,6 +252,29 @@ public class MainActivity extends AppCompatActivity {
         }
         if (event != null)
             return event.getString("subject")+"\n"+event.getString("start")+"\n"+event.getString("location");
+        else
+            return "";
+    }
+
+    private String getAllEvents(JSONObject graphResponse) throws JSONException {
+        JSONArray array = graphResponse.getJSONArray("value");
+        JSONObject event = null;
+        ArrayList<String> listOfEvents = new ArrayList<>();
+
+        for(int i=0; i<array.length(); i++) {
+            event = array.getJSONObject(i);
+            Log.d("Loldator", event.getString("subject"));
+            Log.d("Loldator", event.getString("start"));
+            Log.d("Loldator", event.getString("end"));
+            Log.d("Loldator", event.getString("location"));
+
+            String eventInfo = (event.getString("subject") + " " + event.getString("start") + " " + event.getString("end") + " " + event.getString("location"));
+
+            listOfEvents.add(eventInfo);
+            allEvents.add(eventInfo);
+        }
+        if (event != null)
+            return listOfEvents.toString();
         else
             return "";
     }
@@ -390,6 +415,10 @@ public class MainActivity extends AppCompatActivity {
         {
             case R.id.viewButton:
                 intent = new Intent(getApplicationContext(), viewCalendarActivity.class);
+
+                //Sends ArrayList allEvents to viewCalendarActivity.java
+                intent.putStringArrayListExtra("allevents", allEvents);
+
                 startActivity(intent);
                 break;
             case R.id.bookTimeButton:
