@@ -2,6 +2,8 @@ package kogvet.eye;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,7 +21,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -35,7 +39,7 @@ import com.microsoft.identity.client.PublicClientApplication;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ArrayList<String> allEvents = new ArrayList<>();
+    private ArrayList<Event> allEvents = new ArrayList<>();
     boolean menuVisible=true;
 
     /* Azure AD v2 Configs */ //old id : 074d69f8-eed5-46ed-b577-13a834d0a716
@@ -231,11 +235,12 @@ public class MainActivity extends AppCompatActivity {
         TextView graphText = (TextView) findViewById(R.id.graphData);
         String test= "";
         try {
-            test = getAllEvents(graphResponse);
+            allEvents = getAllEvents(graphResponse);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        graphText.setText(test);
+//        graphText.setText(test);
+        graphText.setText("Data fetched.");
 
     }
 
@@ -256,7 +261,7 @@ public class MainActivity extends AppCompatActivity {
             return "";
     }
 
-    private String getAllEvents(JSONObject graphResponse) throws JSONException {
+    /*private String getAllEvents(JSONObject graphResponse) throws JSONException {
         JSONArray array = graphResponse.getJSONArray("value");
         JSONObject event = null;
         ArrayList<String> listOfEvents = new ArrayList<>();
@@ -277,6 +282,43 @@ public class MainActivity extends AppCompatActivity {
             return listOfEvents.toString();
         else
             return "";
+    }*/
+
+    private ArrayList<Event> getAllEvents(JSONObject graphResponse) throws JSONException {
+        JSONArray array = graphResponse.getJSONArray("value");
+        JSONObject object = null;
+        ArrayList<Event> listOfEvents = new ArrayList<>();
+
+        for(int i=0; i<array.length(); i++) {
+            object = array.getJSONObject(i);
+
+            String subject = object.getString("subject");
+            String start = object.getString("start");
+            String end = object.getString("end");
+
+            //Get startDate and startTime from JsonString
+            String segments[] = start.split("\"");
+            segments = segments[3].split("T");
+            String startDate = segments[0];
+            String startTime = segments[1].trim().substring(0,5);
+
+            //Get endDate and endTime from JsonString
+            segments = end.split("\"");
+            segments = segments[3].split("T");
+            String endDate = segments[0];
+            String endTime = segments[1].trim().substring(0,5);
+
+            Event event = new Event(subject, startDate,endDate,startTime,endTime);
+
+            Log.d("Loldator ", startDate+"  "+endDate+"  "+startTime+"  "+endTime);
+//            Log.d("Loldator", object.getString("subject"));
+//            Log.d("Loldator", event.getString("start"));
+//            Log.d("Loldator", event.getString("end"));
+//            Log.d("Loldator", event.getString("location"));
+
+            listOfEvents.add(0,event);
+        }
+        return listOfEvents;
     }
 
     /* Set the UI for successful token acquisition data */
@@ -416,9 +458,8 @@ public class MainActivity extends AppCompatActivity {
             case R.id.viewButton:
                 intent = new Intent(getApplicationContext(), viewCalendarActivity.class);
 
-                //Sends ArrayList allEvents to viewCalendarActivity.java
-                intent.putStringArrayListExtra("allevents", allEvents);
-
+                //Sends ArrayList<Event> allEvents to viewCalendarActivity.java
+                intent.putParcelableArrayListExtra("allevents", allEvents);
                 startActivity(intent);
                 break;
             case R.id.bookTimeButton:
