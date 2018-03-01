@@ -9,7 +9,7 @@ import java.util.Comparator;
  * Created by Loldator on 2018-02-28.
  */
 
-public class Event implements Parcelable {
+public class Event implements Parcelable, Comparable<Event> {
     String subject;
     String startDate;
     String startTime;
@@ -68,21 +68,37 @@ public class Event implements Parcelable {
         }
     };
 
-    public static Comparator<Event> EventComparator = new Comparator<Event>() {
 
-        public int compare(Event e1, Event e2) {
-            String eventStartDate1 = e1.getStartDate().toUpperCase();
-            String eventStartDate2 = e2.getStartDate().toUpperCase();
+//    public static Comparator<Event> EventComparator = new Comparator<Event>() {
+//
+//        public int compare(Event e1, Event e2) {
+//            String eventStartDate1 = e1.getStartDate().toUpperCase();
+//            String eventStartDate2 = e2.getStartDate().toUpperCase();
+//
+//            //Get starttime and compare??
+//
+//            /*For ascending order*/
+//            return eventStartDate1.compareTo(eventStartDate2);
+//
+//            /*For descending order*/
+//            //eventStartDate2-eventStartDate1;
+//        }
+//    };
 
-            //Get starttime and compare??
 
-            /*For ascending order*/
-            return eventStartDate1.compareTo(eventStartDate2);
+    @Override
+    public int compareTo(Event compareEvent) {
+        if(startDate.compareToIgnoreCase(compareEvent.startDate) ==0)
+            return startTime.compareToIgnoreCase(compareEvent.startTime);
+        else
+            return startDate.compareToIgnoreCase(compareEvent.startDate);
 
-            /*For descending order*/
-            //eventStartDate2-eventStartDate1;
-        }
-    };
+    }
+
+    @Override
+    public  String toString() {
+        return "[ startdate="+startDate+", enddate="+endDate+", startTime="+startTime+", endTime="+endTime+"]";
+    }
 
 
 }

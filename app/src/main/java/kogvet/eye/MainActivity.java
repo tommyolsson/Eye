@@ -252,7 +252,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         //Sort array
-        Collections.sort(listOfEvents,Event.EventComparator);
+        Collections.sort(listOfEvents);
         return listOfEvents;
     }
 
