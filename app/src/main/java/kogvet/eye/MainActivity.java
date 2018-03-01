@@ -25,6 +25,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -249,6 +250,9 @@ public class MainActivity extends AppCompatActivity {
 
             listOfEvents.add(0,event);
         }
+
+        //Sort array
+        Collections.sort(listOfEvents,Event.EventComparator);
         return listOfEvents;
     }
 

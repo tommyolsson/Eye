@@ -3,6 +3,8 @@ package kogvet.eye;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.Comparator;
+
 /**
  * Created by Loldator on 2018-02-28.
  */
@@ -45,6 +47,14 @@ public class Event implements Parcelable {
         dest.writeString(endTime);
     }
 
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public  String getStartTime() {
+        return startTime;
+    }
+
     @SuppressWarnings("unused")
     public static final Parcelable.Creator<Event> CREATOR = new Parcelable.Creator<Event>() {
         @Override
@@ -57,4 +67,22 @@ public class Event implements Parcelable {
             return new Event[size];
         }
     };
+
+    public static Comparator<Event> EventComparator = new Comparator<Event>() {
+
+        public int compare(Event e1, Event e2) {
+            String eventStartDate1 = e1.getStartDate().toUpperCase();
+            String eventStartDate2 = e2.getStartDate().toUpperCase();
+
+            //Get starttime and compare??
+
+            /*For ascending order*/
+            return eventStartDate1.compareTo(eventStartDate2);
+
+            /*For descending order*/
+            //eventStartDate2-eventStartDate1;
+        }
+    };
+
+
 }
