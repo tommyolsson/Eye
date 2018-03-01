@@ -42,18 +42,15 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<Event> allEvents = new ArrayList<>();
     boolean menuVisible=true;
 
-    /* Azure AD v2 Configs */ //old id : 074d69f8-eed5-46ed-b577-13a834d0a716
-    final static String CLIENT_ID = "7c1e027b-60d3-44ef-a3af-686d432785f0"; //Tool0035.student.umu.se ID: fac1a20e-54f5-49d2-ae55-724b980a2eb9
+    /* Azure AD v2 Configs */
+    final static String CLIENT_ID = "7c1e027b-60d3-44ef-a3af-686d432785f0";
     final static String SCOPES [] = {"User.Read", "Calendars.Read"};
-    final static String MSGRAPH_URL = "https://graph.microsoft.com/v1.0/me";
-    final static String MSGRAPH_URL2 = "https://graph.microsoft.com/v1.0/me/calendar/events?$select=subject,start,end,location";
-//    final static String MSGRAPH_URL2 = "https://graph.microsoft.com/v1.0/me/calendar";
-    // RADEN OVAN ÄR TILLFÄLLIGT BYTT till MSGRAPH_URL2 för att testa calendar view. Glöm ej att byta tillbaka på Rad 171 tillbaka till MSGRAPH_URL
+   // final static String MSGRAPH_URL = "https://graph.microsoft.com/v1.0/me";
+    final static String MSGRAPH_URL = "https://graph.microsoft.com/v1.0/me/calendar/events?$select=subject,start,end,location";
+
 
     /* UI & Debugging Variables */
     private static final String TAG = MainActivity.class.getSimpleName();
-//    Button callGraphButton;
-//    Button signOutButton;
 
     /* Azure AD Variables */
     private PublicClientApplication sampleApp;
@@ -64,23 +61,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-//        callGraphButton = (Button) findViewById(R.id.connectButton);
-//        signOutButton = (Button) findViewById(R.id.clearCache);
-
-
-//        callGraphButton.setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View v) {
-//                onCallGraphClicked();
-//            }
-//        });
-
-
-//        signOutButton.setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View v) {
-//                onSignOutClicked();
-//            }
-//        });
 
         /* Configure your sample app and save state for this activity */
         sampleApp = null;
@@ -191,7 +171,7 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception e) {
             Log.d(TAG, "Failed to put parameters: " + e.toString());
         }
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, MSGRAPH_URL2,
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, MSGRAPH_URL,
                 parameters,new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -233,56 +213,14 @@ public class MainActivity extends AppCompatActivity {
     /* Sets the graph response */
     private void updateGraphUI(JSONObject graphResponse) {
         TextView graphText = (TextView) findViewById(R.id.graphData);
-        String test= "";
         try {
             allEvents = getAllEvents(graphResponse);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-//        graphText.setText(test);
         graphText.setText("Data fetched.");
-
     }
 
-    private String getFirstEvent(JSONObject graphResponse) throws JSONException {
-        JSONArray array = graphResponse.getJSONArray("value");
-        JSONObject event = null;
-        for(int i=0; i<array.length(); i++) {
-//            Log.d("Loldator", array.get(i).toString());
-            event = array.getJSONObject(i);
-//            Log.d("Loldator", event.getString("subject"));
-//            Log.d("Loldator", event.getString("start"));
-//            Log.d("Loldator", event.getString("end"));
-//            Log.d("Loldator", event.getString("location"));
-        }
-        if (event != null)
-            return event.getString("subject")+"\n"+event.getString("start")+"\n"+event.getString("location");
-        else
-            return "";
-    }
-
-    /*private String getAllEvents(JSONObject graphResponse) throws JSONException {
-        JSONArray array = graphResponse.getJSONArray("value");
-        JSONObject event = null;
-        ArrayList<String> listOfEvents = new ArrayList<>();
-
-        for(int i=0; i<array.length(); i++) {
-            event = array.getJSONObject(i);
-            Log.d("Loldator", event.getString("subject"));
-            Log.d("Loldator", event.getString("start"));
-            Log.d("Loldator", event.getString("end"));
-            Log.d("Loldator", event.getString("location"));
-
-            String eventInfo = (event.getString("subject") + " " + event.getString("start") + " " + event.getString("end") + " " + event.getString("location"));
-
-            listOfEvents.add(eventInfo);
-            allEvents.add(eventInfo);
-        }
-        if (event != null)
-            return listOfEvents.toString();
-        else
-            return "";
-    }*/
 
     private ArrayList<Event> getAllEvents(JSONObject graphResponse) throws JSONException {
         JSONArray array = graphResponse.getJSONArray("value");
@@ -293,32 +231,34 @@ public class MainActivity extends AppCompatActivity {
             object = array.getJSONObject(i);
 
             String subject = object.getString("subject");
+
+            //Get string and format text from Object
             String start = object.getString("start");
-            String end = object.getString("end");
-
-            //Get startDate and startTime from JsonString
-            String segments[] = start.split("\"");
-            segments = segments[3].split("T");
+            String [] segments = getDateTimeFromString(start);
             String startDate = segments[0];
-            String startTime = segments[1].trim().substring(0,5);
+            String startTime = segments[1];
 
-            //Get endDate and endTime from JsonString
-            segments = end.split("\"");
-            segments = segments[3].split("T");
+            String end = object.getString("end");
+            segments = getDateTimeFromString(end);
             String endDate = segments[0];
-            String endTime = segments[1].trim().substring(0,5);
+            String endTime = segments[1];
 
             Event event = new Event(subject, startDate,endDate,startTime,endTime);
 
-            Log.d("Loldator ", startDate+"  "+endDate+"  "+startTime+"  "+endTime);
-//            Log.d("Loldator", object.getString("subject"));
-//            Log.d("Loldator", event.getString("start"));
-//            Log.d("Loldator", event.getString("end"));
-//            Log.d("Loldator", event.getString("location"));
+//            Log.d("Loldator ", startDate+"  "+endDate+"  "+startTime+"  "+endTime);
 
             listOfEvents.add(0,event);
         }
         return listOfEvents;
+    }
+
+    private String[] getDateTimeFromString(String string) {
+        //Get startDate and startTime from JsonString
+        String [] segments = string.split("\"");
+        segments = segments[3].split("T");
+        segments[1] = segments[1].trim().substring(0,5);
+
+        return  segments;
     }
 
     /* Set the UI for successful token acquisition data */
@@ -327,9 +267,6 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.connectButton).setVisibility(View.INVISIBLE);
         menuVisible=true;
         invalidateOptionsMenu();
-//        callGraphButton.setVisibility(View.INVISIBLE);
-//        findViewById(R.id.clearCache).setVisibility(View.VISIBLE);
-//        signOutButton.setVisibility(View.VISIBLE);
         findViewById(R.id.welcome).setVisibility(View.VISIBLE);
         ((TextView) findViewById(R.id.welcome)).setText("Welcome, " + authResult.getUser().getName());
         findViewById(R.id.graphData).setVisibility(View.VISIBLE);
@@ -339,12 +276,8 @@ public class MainActivity extends AppCompatActivity {
     private void updateSignedOutUI() {
         findViewById(R.id.imageView).setVisibility(View.VISIBLE);
         findViewById(R.id.connectButton).setVisibility(View.VISIBLE);
-//        callGraphButton.setVisibility(View.VISIBLE);
         menuVisible=false;
         invalidateOptionsMenu();
-//        findViewById(R.id.clearCache).setVisibility(View.INVISIBLE);
-//        signOutButton.setVisibility(View.INVISIBLE);
-//        findViewById(R.id.action_settings).setVisibility(View.INVISIBLE);
         findViewById(R.id.welcome).setVisibility(View.INVISIBLE);
         findViewById(R.id.graphData).setVisibility(View.INVISIBLE);
         ((TextView) findViewById(R.id.graphData)).setText("No Data");
@@ -469,7 +402,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.connectButton:
                 onCallGraphClicked();
                 break;
-            case R.id.clearCache:
+            case R.id.menu_button:
                 onSignOutClicked();
                 break;
             default:
@@ -482,13 +415,11 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        MenuItem item = menu.findItem(R.id.action_settings);
+        MenuItem item = menu.findItem(R.id.menu_button);
         if(menuVisible)
             item.setVisible(true);
         else
             item.setVisible(false);
-
-//        Log.d("debug", "on create options menu");
 
         return true;
     }
@@ -499,8 +430,7 @@ public class MainActivity extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         switch(item.getItemId()) {
-            case R.id.action_settings:
-//                Log.d("debug", "action settings");
+            case R.id.menu_button:
                 onSignOutClicked();
                 break;
             default:
