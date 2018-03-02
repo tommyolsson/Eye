@@ -3,6 +3,8 @@ package kogvet.eye;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import org.json.JSONObject;
+
 import java.util.Comparator;
 
 /**
@@ -10,19 +12,37 @@ import java.util.Comparator;
  */
 
 public class Event implements Parcelable, Comparable<Event> {
+
+    public static class Location {
+        String displayName;
+        String street;
+        String city;
+        String state;
+        String country;
+        String postalCode;
+
+        @Override
+        public  String toString() {
+            return "[ displayName="+displayName+", street="+street+", city="+city+", country="+country+", postalCode="+postalCode+"]";
+        }
+    }
+
     String subject;
     String startDate;
     String startTime;
     String endDate;
     String endTime;
+    Location location;
+//    String [] location;
 
     //Parcel implementation
-    public Event(String subject, String startDate, String endDate, String startTime, String endTime) {
+    public Event(String subject, String startDate, String endDate, String startTime, String endTime, Location location) {
         this.subject=subject;
         this.startDate=startDate;
         this.startTime=startTime;
         this.endDate=endDate;
         this.endTime=endTime;
+//        this.location=location;
     }
 
     protected Event(Parcel in) {
@@ -31,6 +51,7 @@ public class Event implements Parcelable, Comparable<Event> {
         startTime = in.readString();
         endDate = in.readString();
         endTime = in.readString();
+//        location = in.createStringArray();
     }
 
     @Override
@@ -45,6 +66,7 @@ public class Event implements Parcelable, Comparable<Event> {
         dest.writeString(startTime);
         dest.writeString(endDate);
         dest.writeString(endTime);
+//        dest.writeStringArray(location);
     }
 
     public String getStartDate() {
@@ -67,24 +89,6 @@ public class Event implements Parcelable, Comparable<Event> {
             return new Event[size];
         }
     };
-
-
-//    public static Comparator<Event> EventComparator = new Comparator<Event>() {
-//
-//        public int compare(Event e1, Event e2) {
-//            String eventStartDate1 = e1.getStartDate().toUpperCase();
-//            String eventStartDate2 = e2.getStartDate().toUpperCase();
-//
-//            //Get starttime and compare??
-//
-//            /*For ascending order*/
-//            return eventStartDate1.compareTo(eventStartDate2);
-//
-//            /*For descending order*/
-//            //eventStartDate2-eventStartDate1;
-//        }
-//    };
-
 
     @Override
     public int compareTo(Event compareEvent) {

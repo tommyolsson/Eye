@@ -44,7 +44,11 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.tvSubject.setText(allEvents.get(position).subject);
-        holder.tvStart.setText(allEvents.get(position).startTime+" - ");
+
+        //get time and put in startTime format (see strings)
+        String startTime = context.getResources().getString(R.string.startTime, allEvents.get(position).startTime);
+        holder.tvStart.setText(startTime);
+
         holder.tvEnd.setText(allEvents.get(position).endTime);
     }
 
