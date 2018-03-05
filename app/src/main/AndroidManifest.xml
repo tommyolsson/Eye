@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="kogvet.eye">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -20,39 +20,37 @@
             </intent-filter>
         </activity>
 
-        <!--Intent filter to capture System Browser calling back to our app after sign-in-->
-        <activity
-            android:name="com.microsoft.identity.client.BrowserTabActivity">
+        <!-- Intent filter to capture System Browser calling back to our app after sign-in -->
+        <activity android:name="com.microsoft.identity.client.BrowserTabActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="msal7c1e027b-60d3-44ef-a3af-686d432785f0" android:host="auth" />
-                <!--Add in your scheme/host from registered redirect URI-->
-                <!--By default, the scheme should be similar to 'msal[appId]' -->
-                <data android:scheme="msal7c1e027b-60d3-44ef-a3af-686d432785f0"
-                    android:host="auth" />
+
+                <data
+                    android:host="auth"
+                    android:scheme="msal7c1e027b-60d3-44ef-a3af-686d432785f0" />
+                <!-- Add in your scheme/host from registered redirect URI -->
+                <!-- By default, the scheme should be similar to 'msal[appId]' -->
+                <data
+                    android:host="auth"
+                    android:scheme="msal7c1e027b-60d3-44ef-a3af-686d432785f0" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".viewCalendarActivity"
             android:label="@string/title_activity_test"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".bookTimeActivity"
             android:label="@string/title_activity_test"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".connectActivity"
             android:label="@string/title_activity_test"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".NotificationService"></activity>
     </application>
 
 </manifest>

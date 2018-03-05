@@ -1,7 +1,4 @@
-<!-- Läser in clientID från Microsoft Konto -->
-<!DOCTYPE resources [
-    <!ENTITY clientId "79d8295a-aad9-441e-8c00-091fe82bb0b2">
-    ]>
+<!-- Läser in clientID från Microsoft Konto --><!DOCTYPE resources [<!ENTITY clientId "79d8295a-aad9-441e-8c00-091fe82bb0b2">]>
 
 <resources>
     <string name="app_name">Eye</string>
@@ -14,7 +11,7 @@
     <string name="description_text">\nYou\'re now connected to Microsoft Graph. Tap the button below to send a message from your account using the Microsoft Graph API.\n</string>
 
     <!-- Send Mail Activity -->
-    <string name="send_mail_button_text">Send e-mail</string>
+    <string name="send_mail_button_text">Send Notification</string>
     <string name="conclusion_text">\nCheck your inbox. You have a new message :)</string>
 
     <!-- START Texten nedan behöver övervägas vad som behövs eller inte. Är med just nu för att testa Microsoft Graph -->
@@ -79,5 +76,36 @@ log an issue&lt;/a&gt; on our repository.&lt;/p&gt;&lt;p&gt;For general question
 
 
     <!-- STOP Texten ovan behöver övervägas vad som behövs eller inte. Är med just nu för att testa Microsoft Graph -->
+
+    <!-- Notification test start -->
+
+    <string name="btn1_description">Start foreground service</string>
+    <string name="btn1_title" >Start</string>
+    <string name="simple_service_title">Simple Service</string>
+    <string name="simple_service_desc">Simple Service from the OTest app</string>
+
+    <string name="main_create_noti2_btn">Send</string>
+
+    <string name="btnA_title">Go to Settings</string>
+    <string name="noti_channel_default">Primary Channel</string>
+    <string name="noti1_title">Notification 1 Title</string>
+    <string name="primary1_body">The content</string>
+    <string name="noti2_title">Second notification</string>
+    <string name="secondary1_body">Notification body text.</string>
+    <string name="noti_channel_second">Secondary Channel</string>
+
+    <string name="main_primary_title">Primary Channel</string>
+    <string name="main_primary_send1">Send 1</string>
+    <string name="main_primary_send2">Send 2</string>
+    <string name="main_primary_config">Go to primary settings</string>
+
+    <string name="main_secondary_title">Secondary Channel</string>
+    <string name="main_secondary_send1">Send 1</string>
+    <string name="main_secondary_send2">Send 2</string>
+    <string name="main_secondary_config">Go to secondary settings</string>
+    <string name="primary2_body">Second Notification for Primary Channel</string>
+    <string name="secondary2_body">Second Notification for Secondary Channel</string>
+
+    <!-- Notification test stop -->
 
 </resources>
