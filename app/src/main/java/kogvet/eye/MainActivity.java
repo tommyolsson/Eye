@@ -2,6 +2,12 @@ package kogvet.eye;
 
 import android.app.Activity;
 import android.content.Intent;
+<<<<<<< HEAD
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.support.v4.app.NotificationCompat;
+=======
+>>>>>>> 6c762f0cd01c27254e5f228e8af86e5f9d9d6f43
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -427,7 +433,8 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
                 break;
             case R.id.bookTimeButton:
-                intent = new Intent(getApplicationContext(), bookTimeActivity.class);
+               // intent = new Intent(getApplicationContext(), bookTimeActivity.class);
+                intent = new Intent(getApplicationContext(), NotificationService.class);
                 startActivity(intent);
                 break;
             case R.id.connectButton:
@@ -470,5 +477,6 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
 
 }
