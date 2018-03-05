@@ -36,11 +36,13 @@
     <string name="view">VIEW</string>
     <string name="book">BOOK</string>
     <string name="connect">CONNECT</string>
-    <string name="welcome">Welcome,</string>
+    <string name="welcome">Welcome, %1$s</string>
     <string name="getting_graph_data">Getting Graph Data&#8230;</string> <!-- &#8230 unicode for "..." -->
 
     <!--viewCalendar Acitivty-->
     <string name="subject">Subject</string>
+    <string name="location">Location</string>
+
     <string name="startTime">%1$s - </string>
     <string name="endTime">%1$s</string>
 

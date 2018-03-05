@@ -21,11 +21,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     private final Context context;
     private final ArrayList<Event> allEvents;
 
-    //Debugging variables
-//    String [] subjects = {"Aktivitet 1","Aktivitet 2","Aktivitet 3","Aktivitet 4","Aktivitet 5","Aktivitet 6"};
-//    String [] startTimes = {"8:00","8:00","8:00","8:00","8:00","8:00"};
-//    String [] endTimes = {"9:00","9:00","9:00","9:00","9:00","9:00"};
-
     public MyAdapter(Context context,  ArrayList<Event> allEvents) {
         this.allEvents = allEvents;
         this.context = context;
@@ -48,8 +43,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         //get time and put in startTime format (see strings)
         String startTime = context.getResources().getString(R.string.startTime, allEvents.get(position).startTime);
         holder.tvStart.setText(startTime);
-
         holder.tvEnd.setText(allEvents.get(position).endTime);
+        holder.tvLocation.setText(allEvents.get(position).location.displayName);
     }
 
     @Override
@@ -59,7 +54,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
     public class ViewHolder extends  RecyclerView.ViewHolder {
 
-        TextView tvSubject,tvStart,tvEnd;
+        TextView tvSubject,tvStart,tvEnd, tvLocation;
 
         public ViewHolder(final View itemView) {
             super(itemView);
@@ -67,6 +62,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             tvSubject = (TextView) itemView.findViewById(R.id.tvSubject);
             tvStart = (TextView) itemView.findViewById(R.id.tvStart);
             tvEnd = (TextView) itemView.findViewById(R.id.tvEnd);
+            tvLocation = (TextView) itemView.findViewById(R.id.location);
             
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -216,13 +216,14 @@ public class MainActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        graphText.setText("Data fetched.");
+        Toast.makeText(this, "Data fetched!", Toast.LENGTH_SHORT).show();
+//        graphText.setText("Data fetched.");
     }
 
 
     private ArrayList<Event> getAllEvents(JSONObject graphResponse) throws JSONException {
         JSONArray array = graphResponse.getJSONArray("value");
-        JSONObject object = null;
+        JSONObject object;
         ArrayList<Event> listOfEvents = new ArrayList<>();
 
         for(int i=0; i<array.length(); i++) {
@@ -240,7 +241,12 @@ public class MainActivity extends AppCompatActivity {
             String endTime = segments[1];
 
             //Get location
-            Event.Location location = getLocationFromJson(object.getJSONObject("location"));
+            Event.Location location;
+            try {
+                location = getLocationFromJson(object.getJSONObject("location"));
+            } catch (JSONException e) {
+                location = new Event.Location();
+            }
 
             Event event = new Event(subject, startDate,endDate,startTime,endTime, location);
 
@@ -279,19 +285,28 @@ public class MainActivity extends AppCompatActivity {
     private void updateSuccessUI() {
         findViewById(R.id.imageView).setVisibility(View.INVISIBLE);
         findViewById(R.id.connectButton).setVisibility(View.INVISIBLE);
+
         menuVisible=true;
         invalidateOptionsMenu();
+        findViewById(R.id.viewButton).setVisibility(View.VISIBLE);
+        findViewById(R.id.bookTimeButton).setVisibility(View.VISIBLE);
+
         findViewById(R.id.welcome).setVisibility(View.VISIBLE);
-        ((TextView) findViewById(R.id.welcome)).setText("Welcome, " + authResult.getUser().getName());
-        findViewById(R.id.graphData).setVisibility(View.VISIBLE);
+        ((TextView) findViewById(R.id.welcome)).setText(getString(R.string.welcome, authResult.getUser().getName()));
+
+        findViewById(R.id.graphData).setVisibility(View.INVISIBLE);
     }
 
     /* Set the UI for signed out user */
     private void updateSignedOutUI() {
         findViewById(R.id.imageView).setVisibility(View.VISIBLE);
         findViewById(R.id.connectButton).setVisibility(View.VISIBLE);
+
         menuVisible=false;
         invalidateOptionsMenu();
+        findViewById(R.id.viewButton).setVisibility(View.INVISIBLE);
+        findViewById(R.id.bookTimeButton).setVisibility(View.INVISIBLE);
+
         findViewById(R.id.welcome).setVisibility(View.INVISIBLE);
         findViewById(R.id.graphData).setVisibility(View.INVISIBLE);
         ((TextView) findViewById(R.id.graphData)).setText("No Data");

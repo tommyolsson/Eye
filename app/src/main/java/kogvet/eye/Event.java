@@ -1,5 +1,6 @@
 package kogvet.eye;
 
+import android.location.Location;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -13,7 +14,14 @@ import java.util.Comparator;
 
 public class Event implements Parcelable, Comparable<Event> {
 
-    public static class Location {
+    String subject;
+    String startDate;
+    String startTime;
+    String endDate;
+    String endTime;
+    Location location;
+
+    public static class Location implements  Parcelable {
         String displayName;
         String street;
         String city;
@@ -21,37 +29,82 @@ public class Event implements Parcelable, Comparable<Event> {
         String country;
         String postalCode;
 
+        public Location() {
+            this.displayName = "";
+            this.street = "";
+            this.city = "";
+            this.street = "";
+            this.state = "";
+            this.country = "";
+            this.postalCode = "";
+        }
+
         @Override
         public  String toString() {
             return "[ displayName="+displayName+", street="+street+", city="+city+", country="+country+", postalCode="+postalCode+"]";
         }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int i) {
+            dest.writeString(displayName);
+            dest.writeString(street);
+            dest.writeString(city);
+            dest.writeString(state);
+            dest.writeString(country);
+            dest.writeString(postalCode);
+        }
+
+        public Location(Parcel in) {
+            displayName = in.readString();
+            street = in.readString();
+            city = in.readString();
+            state = in.readString();
+            country = in.readString();
+            postalCode = in.readString();
+        }
+
+        public static final Parcelable.Creator<Location> CREATOR = new Parcelable.Creator<Location>() {
+            public Location createFromParcel(Parcel in) {
+                return new Location(in);
+            }
+
+            public Location[] newArray(int size) {
+                return new Location[size];
+            }
+        };
     }
 
-    String subject;
-    String startDate;
-    String startTime;
-    String endDate;
-    String endTime;
-    Location location;
-//    String [] location;
-
     //Parcel implementation
+    public Event() {
+        this.subject="";
+        this.startDate="";
+        this.startTime="";
+        this.endDate="";
+        this.endTime="";
+        this.location=new Location();
+    }
+
     public Event(String subject, String startDate, String endDate, String startTime, String endTime, Location location) {
         this.subject=subject;
         this.startDate=startDate;
         this.startTime=startTime;
         this.endDate=endDate;
         this.endTime=endTime;
-//        this.location=location;
+        this.location=location;
     }
 
-    protected Event(Parcel in) {
+    private Event(Parcel in) {
         subject = in.readString();
         startDate = in.readString();
         startTime = in.readString();
         endDate = in.readString();
         endTime = in.readString();
-//        location = in.createStringArray();
+        this.location = in.readParcelable(Location.class.getClassLoader());
     }
 
     @Override
@@ -66,7 +119,7 @@ public class Event implements Parcelable, Comparable<Event> {
         dest.writeString(startTime);
         dest.writeString(endDate);
         dest.writeString(endTime);
-//        dest.writeStringArray(location);
+        dest.writeParcelable(location, flags);
     }
 
     public String getStartDate() {
