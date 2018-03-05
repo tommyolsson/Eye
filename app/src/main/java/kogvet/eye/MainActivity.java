@@ -2,16 +2,18 @@ package kogvet.eye;
 
 import android.app.Activity;
 import android.content.Intent;
+<<<<<<< HEAD
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.v4.app.NotificationCompat;
+=======
+>>>>>>> 6c762f0cd01c27254e5f228e8af86e5f9d9d6f43
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.android.volley.*;
@@ -22,18 +24,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonParser;
 import com.microsoft.identity.client.*;
 
 import com.microsoft.identity.client.AuthenticationResult;
@@ -48,7 +44,9 @@ public class MainActivity extends AppCompatActivity {
     final static String CLIENT_ID = "7c1e027b-60d3-44ef-a3af-686d432785f0";
     final static String SCOPES [] = {"User.Read", "Calendars.Read"};
    // final static String MSGRAPH_URL = "https://graph.microsoft.com/v1.0/me";
-    final static String MSGRAPH_URL = "https://graph.microsoft.com/v1.0/me/calendar/events?$select=subject,start,end,location";
+//    final static String MSGRAPH_URL = "https://graph.microsoft.com/beta/me/calendar/events?$select=subject,start,end,location";
+//    final static String MSGRAPH_URL = "https://graph.microsoft.com/beta/me/calendar/calendarView?$select=subject,start,end,location";
+    final static String MSGRAPH_URL = "https://graph.microsoft.com/v1.0/me/calendar/calendarView?startDateTime=2018-01-01T00:00:00.0000000&endDateTime=2025-01-01T00:00:00.0000000";
 
 
     /* UI & Debugging Variables */
@@ -214,19 +212,24 @@ public class MainActivity extends AppCompatActivity {
 
     /* Sets the graph response */
     private void updateGraphUI(JSONObject graphResponse) {
+
+
+//        Log.d("graphResponse", graphResponse.toString());
+
         TextView graphText = (TextView) findViewById(R.id.graphData);
         try {
             allEvents = getAllEvents(graphResponse);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        graphText.setText("Data fetched.");
+        Toast.makeText(this, "Data fetched!", Toast.LENGTH_SHORT).show();
+//        graphText.setText("Data fetched.");
     }
 
 
     private ArrayList<Event> getAllEvents(JSONObject graphResponse) throws JSONException {
         JSONArray array = graphResponse.getJSONArray("value");
-        JSONObject object = null;
+        JSONObject object;
         ArrayList<Event> listOfEvents = new ArrayList<>();
 
         for(int i=0; i<array.length(); i++) {
@@ -235,19 +238,23 @@ public class MainActivity extends AppCompatActivity {
             String subject = object.getString("subject");
 
             //Get string and format text from Object
-            String start = object.getString("start");
-            String [] segments = getDateTimeFromString(start);
+            String [] segments = getDateTimeFromString(object.getString("start"));
             String startDate = segments[0];
             String startTime = segments[1];
 
-            String end = object.getString("end");
-            segments = getDateTimeFromString(end);
+            segments = getDateTimeFromString(object.getString("end"));
             String endDate = segments[0];
             String endTime = segments[1];
 
-            Event event = new Event(subject, startDate,endDate,startTime,endTime);
+            //Get location
+            Event.Location location;
+            try {
+                location = getLocationFromJson(object.getJSONObject("location"));
+            } catch (JSONException e) {
+                location = new Event.Location();
+            }
 
-//            Log.d("Loldator ", startDate+"  "+endDate+"  "+startTime+"  "+endTime);
+            Event event = new Event(subject, startDate,endDate,startTime,endTime, location);
 
             listOfEvents.add(0,event);
         }
@@ -255,6 +262,20 @@ public class MainActivity extends AppCompatActivity {
         //Sort array
         Collections.sort(listOfEvents);
         return listOfEvents;
+    }
+
+    private Event.Location getLocationFromJson(JSONObject jsonObject) throws JSONException {
+        Event.Location location = new Event.Location();
+
+        location.displayName = jsonObject.getString("displayName");
+        JSONObject adress = jsonObject.getJSONObject("address");
+        location.street = adress.getString("street");
+        location.city = adress.getString("city");
+        location.state = adress.getString("state");
+        location.country = adress.getString("countryOrRegion");
+        location.postalCode = adress.getString("postalCode");
+
+        return  location;
     }
 
     private String[] getDateTimeFromString(String string) {
@@ -270,19 +291,28 @@ public class MainActivity extends AppCompatActivity {
     private void updateSuccessUI() {
         findViewById(R.id.imageView).setVisibility(View.INVISIBLE);
         findViewById(R.id.connectButton).setVisibility(View.INVISIBLE);
+
         menuVisible=true;
         invalidateOptionsMenu();
+        findViewById(R.id.viewButton).setVisibility(View.VISIBLE);
+        findViewById(R.id.bookTimeButton).setVisibility(View.VISIBLE);
+
         findViewById(R.id.welcome).setVisibility(View.VISIBLE);
-        ((TextView) findViewById(R.id.welcome)).setText("Welcome, " + authResult.getUser().getName());
-        findViewById(R.id.graphData).setVisibility(View.VISIBLE);
+        ((TextView) findViewById(R.id.welcome)).setText(getString(R.string.welcome, authResult.getUser().getName()));
+
+        findViewById(R.id.graphData).setVisibility(View.INVISIBLE);
     }
 
     /* Set the UI for signed out user */
     private void updateSignedOutUI() {
         findViewById(R.id.imageView).setVisibility(View.VISIBLE);
         findViewById(R.id.connectButton).setVisibility(View.VISIBLE);
+
         menuVisible=false;
         invalidateOptionsMenu();
+        findViewById(R.id.viewButton).setVisibility(View.INVISIBLE);
+        findViewById(R.id.bookTimeButton).setVisibility(View.INVISIBLE);
+
         findViewById(R.id.welcome).setVisibility(View.INVISIBLE);
         findViewById(R.id.graphData).setVisibility(View.INVISIBLE);
         ((TextView) findViewById(R.id.graphData)).setText("No Data");

@@ -1,7 +1,10 @@
 package kogvet.eye;
 
+import android.location.Location;
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import org.json.JSONObject;
 
 import java.util.Comparator;
 
@@ -10,27 +13,98 @@ import java.util.Comparator;
  */
 
 public class Event implements Parcelable, Comparable<Event> {
+
     String subject;
     String startDate;
     String startTime;
     String endDate;
     String endTime;
+    Location location;
+
+    public static class Location implements  Parcelable {
+        String displayName;
+        String street;
+        String city;
+        String state;
+        String country;
+        String postalCode;
+
+        public Location() {
+            this.displayName = "";
+            this.street = "";
+            this.city = "";
+            this.street = "";
+            this.state = "";
+            this.country = "";
+            this.postalCode = "";
+        }
+
+        @Override
+        public  String toString() {
+            return "[ displayName="+displayName+", street="+street+", city="+city+", country="+country+", postalCode="+postalCode+"]";
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int i) {
+            dest.writeString(displayName);
+            dest.writeString(street);
+            dest.writeString(city);
+            dest.writeString(state);
+            dest.writeString(country);
+            dest.writeString(postalCode);
+        }
+
+        public Location(Parcel in) {
+            displayName = in.readString();
+            street = in.readString();
+            city = in.readString();
+            state = in.readString();
+            country = in.readString();
+            postalCode = in.readString();
+        }
+
+        public static final Parcelable.Creator<Location> CREATOR = new Parcelable.Creator<Location>() {
+            public Location createFromParcel(Parcel in) {
+                return new Location(in);
+            }
+
+            public Location[] newArray(int size) {
+                return new Location[size];
+            }
+        };
+    }
 
     //Parcel implementation
-    public Event(String subject, String startDate, String endDate, String startTime, String endTime) {
+    public Event() {
+        this.subject="";
+        this.startDate="";
+        this.startTime="";
+        this.endDate="";
+        this.endTime="";
+        this.location=new Location();
+    }
+
+    public Event(String subject, String startDate, String endDate, String startTime, String endTime, Location location) {
         this.subject=subject;
         this.startDate=startDate;
         this.startTime=startTime;
         this.endDate=endDate;
         this.endTime=endTime;
+        this.location=location;
     }
 
-    protected Event(Parcel in) {
+    private Event(Parcel in) {
         subject = in.readString();
         startDate = in.readString();
         startTime = in.readString();
         endDate = in.readString();
         endTime = in.readString();
+        this.location = in.readParcelable(Location.class.getClassLoader());
     }
 
     @Override
@@ -45,6 +119,7 @@ public class Event implements Parcelable, Comparable<Event> {
         dest.writeString(startTime);
         dest.writeString(endDate);
         dest.writeString(endTime);
+        dest.writeParcelable(location, flags);
     }
 
     public String getStartDate() {
@@ -67,24 +142,6 @@ public class Event implements Parcelable, Comparable<Event> {
             return new Event[size];
         }
     };
-
-
-//    public static Comparator<Event> EventComparator = new Comparator<Event>() {
-//
-//        public int compare(Event e1, Event e2) {
-//            String eventStartDate1 = e1.getStartDate().toUpperCase();
-//            String eventStartDate2 = e2.getStartDate().toUpperCase();
-//
-//            //Get starttime and compare??
-//
-//            /*For ascending order*/
-//            return eventStartDate1.compareTo(eventStartDate2);
-//
-//            /*For descending order*/
-//            //eventStartDate2-eventStartDate1;
-//        }
-//    };
-
 
     @Override
     public int compareTo(Event compareEvent) {
