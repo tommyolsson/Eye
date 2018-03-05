@@ -42,7 +42,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         holder.tvLocation.setText(allEvents.get(position).location.displayName);
         //Set time and date
         if(allEvents.get(position).isAllDay) {
-            holder.tvTimes.setText("heldag");
+            holder.tvTimes.setText(context.getResources().getString(R.string.timeWholeDay, allEvents.get(position).startTime));
             holder.tvDate.setText(allEvents.get(position).startDate);
         }
         else{

@@ -41,8 +41,9 @@
     <string name="location">Location</string>
 
     <!--<string name="startTime">%1$s - </string>-->
+    <string name="timeWholeDay">Heldag (%1$s)</string>
     <string name="times">%1$s - %2$s</string>
-    <string name="date">Date</string>
+    <string name="date">YYYY-MM-DD</string>
 
     <!-- STOP Texten ovan behöver övervägas vad som behövs eller inte. Är med just nu för att testa Microsoft Graph -->
 
