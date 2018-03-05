@@ -38,9 +38,8 @@ public class MainActivity extends AppCompatActivity {
     final static String CLIENT_ID = "7c1e027b-60d3-44ef-a3af-686d432785f0";
     final static String SCOPES [] = {"User.Read", "Calendars.Read"};
    // final static String MSGRAPH_URL = "https://graph.microsoft.com/v1.0/me";
-//    final static String MSGRAPH_URL = "https://graph.microsoft.com/beta/me/calendar/events?$select=subject,start,end,location";
-//    final static String MSGRAPH_URL = "https://graph.microsoft.com/beta/me/calendar/calendarView?$select=subject,start,end,location";
-    final static String MSGRAPH_URL = "https://graph.microsoft.com/v1.0/me/calendar/calendarView?startDateTime=2018-01-01T00:00:00.0000000&endDateTime=2025-01-01T00:00:00.0000000";
+//    final static String MSGRAPH_URL = "https://graph.microsoft.com/v1.0/me/calendar/calendarView?startDateTime=2018-01-01T00:00:00.0000000&endDateTime=2025-01-01T00:00:00.0000000&$orderby=start/dateTime";
+    final static String MSGRAPH_URL = "https://graph.microsoft.com/v1.0/me/calendar/calendarView?startDateTime=2018-01-01T00:00:00.0000000&endDateTime=2025-01-01T00:00:00.0000000&$select=subject,isAllDay,start,end,location&$orderby=start/dateTime";
 
 
     /* UI & Debugging Variables */
@@ -210,7 +209,7 @@ public class MainActivity extends AppCompatActivity {
 
 //        Log.d("graphResponse", graphResponse.toString());
 
-        TextView graphText = (TextView) findViewById(R.id.graphData);
+//        TextView graphText = (TextView) findViewById(R.id.graphData);
         try {
             allEvents = getAllEvents(graphResponse);
         } catch (JSONException e) {
@@ -231,6 +230,8 @@ public class MainActivity extends AppCompatActivity {
 
             String subject = object.getString("subject");
 
+            Boolean isAllDay = Boolean.parseBoolean(object.getString("isAllDay"));
+
             //Get string and format text from Object
             String [] segments = getDateTimeFromString(object.getString("start"));
             String startDate = segments[0];
@@ -248,13 +249,14 @@ public class MainActivity extends AppCompatActivity {
                 location = new Event.Location();
             }
 
-            Event event = new Event(subject, startDate,endDate,startTime,endTime, location);
+            Event event = new Event(subject, startDate,endDate, isAllDay,startTime,endTime, location);
+            event.setTimesToLocal();
 
-            listOfEvents.add(0,event);
+            listOfEvents.add(event);
         }
 
-        //Sort array
-        Collections.sort(listOfEvents);
+        //Sort array (NO LONGER NEED TO SORT BECAUSE OF QUERY PARAMETERS
+//        Collections.sort(listOfEvents);
         return listOfEvents;
     }
 
