@@ -2,6 +2,8 @@ package kogvet.eye;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -44,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
     /* UI & Debugging Variables */
     private static final String TAG = MainActivity.class.getSimpleName();
 
+    private BottomNavigationView mBottomNav;
+
     /* Azure AD Variables */
     private PublicClientApplication sampleApp;
     private AuthenticationResult authResult;
@@ -84,6 +88,39 @@ public class MainActivity extends AppCompatActivity {
         } catch (IndexOutOfBoundsException e) {
             Log.d(TAG, "User at this position does not exist: " + e.toString());
         }
+
+        // Bottom navigation bar
+        mBottomNav = (BottomNavigationView) findViewById(R.id.navigation);
+        mBottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                // handle desired action here
+                // One possibility of action is to replace the contents above the nav bar
+                // return true if you want the item to be displayed as the selected item
+                Intent intent;
+                switch (item.getItemId()) {
+
+                    case R.id.menu_home:
+                        intent = new Intent(getApplicationContext(), MainActivity.class);
+                        startActivity(intent);
+                        return true;
+
+                    case R.id.menu_calendar:
+                        intent = new Intent(getApplicationContext(), viewCalendarActivity.class);
+                        //Sends ArrayList<Event> allEvents to viewCalendarActivity.java
+                        intent.putParcelableArrayListExtra("allevents", allEvents);
+
+                        startActivity(intent);
+                        break;
+
+                    case R.id.menu_booking:
+                        intent = new Intent(getApplicationContext(), bookTimeActivity.class);
+                        startActivity(intent);
+                        break;
+                }
+                return true;
+            }
+        });
 
     }
 
@@ -426,8 +463,8 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
                 break;
             case R.id.bookTimeButton:
-               // intent = new Intent(getApplicationContext(), bookTimeActivity.class);
-                intent = new Intent(getApplicationContext(), NotificationService.class);
+                intent = new Intent(getApplicationContext(), bookTimeActivity.class);
+               // intent = new Intent(getApplicationContext(), NotificationService.class);
                 startActivity(intent);
                 break;
             case R.id.connectButton:
@@ -453,6 +490,7 @@ public class MainActivity extends AppCompatActivity {
             item.setVisible(false);
 
         return true;
+
     }
 
     @Override

@@ -76,6 +76,12 @@
     <string name="primary2_body">Second Notification for Primary Channel</string>
     <string name="secondary2_body">Second Notification for Secondary Channel</string>
 
-    <!-- Notification test stop -->
+    <!-- Notification test End -->
+
+    <!-- Bottom Navigation Bar -->
+    <string name="menu_home">Hem</string>
+    <string name="menu_calendar">Kalender</string>
+    <string name="menu_booking">Boka</string>
+
 
 </resources>
