@@ -42,6 +42,7 @@
             android:name=".viewCalendarActivity"
             android:label="@string/title_activity_test"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+
         <activity
             android:name=".bookTimeActivity"
             android:label="@string/title_activity_test"

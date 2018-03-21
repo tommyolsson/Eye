@@ -2,8 +2,13 @@ package kogvet.eye;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.support.annotation.ColorRes;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -46,7 +51,11 @@ public class MainActivity extends AppCompatActivity {
     /* UI & Debugging Variables */
     private static final String TAG = MainActivity.class.getSimpleName();
 
+    /* Bottom Navigation Bar Variables */
+    private static final String SELECTED_ITEM = "arg_selected_item";
+
     private BottomNavigationView mBottomNav;
+    private int mSelectedItem;
 
     /* Azure AD Variables */
     private PublicClientApplication sampleApp;
@@ -57,6 +66,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Runs bottomNav
+        // bottomNavigationBar();
+        bottomNavigationBar(savedInstanceState);
 
         /* Configure your sample app and save state for this activity */
         sampleApp = null;
@@ -88,39 +101,6 @@ public class MainActivity extends AppCompatActivity {
         } catch (IndexOutOfBoundsException e) {
             Log.d(TAG, "User at this position does not exist: " + e.toString());
         }
-
-        // Bottom navigation bar
-        mBottomNav = (BottomNavigationView) findViewById(R.id.navigation);
-        mBottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                // handle desired action here
-                // One possibility of action is to replace the contents above the nav bar
-                // return true if you want the item to be displayed as the selected item
-                Intent intent;
-                switch (item.getItemId()) {
-
-                    case R.id.menu_home:
-                        intent = new Intent(getApplicationContext(), MainActivity.class);
-                        startActivity(intent);
-                        return true;
-
-                    case R.id.menu_calendar:
-                        intent = new Intent(getApplicationContext(), viewCalendarActivity.class);
-                        //Sends ArrayList<Event> allEvents to viewCalendarActivity.java
-                        intent.putParcelableArrayListExtra("allevents", allEvents);
-
-                        startActivity(intent);
-                        break;
-
-                    case R.id.menu_booking:
-                        intent = new Intent(getApplicationContext(), bookTimeActivity.class);
-                        startActivity(intent);
-                        break;
-                }
-                return true;
-            }
-        });
 
     }
 
@@ -478,7 +458,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -510,4 +489,95 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+
+    /* Fragment testing below this line */
+    public void bottomNavigationBar(Bundle savedInstanceState) {
+        mBottomNav = (BottomNavigationView) findViewById(R.id.navigation);
+        mBottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                selectFragment(item);
+                return true;
+            }
+        });
+
+        MenuItem selectedItem;
+        if (savedInstanceState != null) {
+            mSelectedItem = savedInstanceState.getInt(SELECTED_ITEM, 0);
+            selectedItem = mBottomNav.getMenu().findItem(mSelectedItem);
+        } else {
+            selectedItem = mBottomNav.getMenu().getItem(0);
+        }
+        selectFragment(selectedItem);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putInt(SELECTED_ITEM, mSelectedItem);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onBackPressed() {
+        MenuItem homeItem = mBottomNav.getMenu().getItem(0);
+        if (mSelectedItem != homeItem.getItemId()) {
+            // select home item
+            selectFragment(homeItem);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    private void selectFragment(MenuItem item) {
+        Fragment frag = null;
+        // init corresponding fragment
+        switch (item.getItemId()) {
+            case R.id.menu_home:
+                frag = MenuFragment.newInstance(getString(R.string.text_home),
+                        getColorFromRes(R.color.color_home));
+                break;
+            case R.id.menu_calendar:
+                frag = MenuFragment.newInstance(getString(R.string.text_calendar),
+                        getColorFromRes(R.color.color_calendar));
+                break;
+            case R.id.menu_booking:
+                frag = MenuFragment.newInstance(getString(R.string.text_booking),
+                        getColorFromRes(R.color.color_booking));
+                break;
+        }
+
+        // update selected item
+        mSelectedItem = item.getItemId();
+
+        // uncheck the other items.
+        for (int i = 0; i< mBottomNav.getMenu().size(); i++) {
+            MenuItem menuItem = mBottomNav.getMenu().getItem(i);
+            menuItem.setChecked(menuItem.getItemId() == item.getItemId());
+        }
+
+        updateToolbarText(item.getTitle());
+
+        if (frag != null) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.add(R.id.container, frag, frag.getTag());
+            ft.commit();
+        }
+    }
+
+    private void updateToolbarText(CharSequence text) {
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle(text);
+        }
+    }
+
+    private int getColorFromRes(@ColorRes int resId) {
+        return ContextCompat.getColor(this, resId);
+    }
+     /* Fragment testing above this line */
+
 }
+
+
+
+

@@ -83,5 +83,8 @@
     <string name="menu_calendar">Kalender</string>
     <string name="menu_booking">Boka</string>
 
+    <string name="text_home">Home Fragment</string>
+    <string name="text_calendar">Calendar Fragment</string>
+    <string name="text_booking">Booking Fragment</string>
 
 </resources>
