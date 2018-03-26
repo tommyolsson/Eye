@@ -1,14 +1,12 @@
 package kogvet.eye;
 
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
-import android.support.annotation.ColorRes;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -51,12 +49,6 @@ public class MainActivity extends AppCompatActivity {
     /* UI & Debugging Variables */
     private static final String TAG = MainActivity.class.getSimpleName();
 
-    /* Bottom Navigation Bar Variables */
-    private static final String SELECTED_ITEM = "arg_selected_item";
-
-    private BottomNavigationView mBottomNav;
-    private int mSelectedItem;
-
     /* Azure AD Variables */
     private PublicClientApplication sampleApp;
     private AuthenticationResult authResult;
@@ -67,9 +59,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Runs bottomNav
-        // bottomNavigationBar();
-        bottomNavigationBar(savedInstanceState);
+        // Runs Bottom Navigation Bar
+        setupNavigationView();
 
         /* Configure your sample app and save state for this activity */
         sampleApp = null;
@@ -491,90 +482,70 @@ public class MainActivity extends AppCompatActivity {
 
 
     /* Fragment testing below this line */
-    public void bottomNavigationBar(Bundle savedInstanceState) {
-        mBottomNav = (BottomNavigationView) findViewById(R.id.navigation);
-        mBottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                selectFragment(item);
-                return true;
-            }
-        });
 
-        MenuItem selectedItem;
-        if (savedInstanceState != null) {
-            mSelectedItem = savedInstanceState.getInt(SELECTED_ITEM, 0);
-            selectedItem = mBottomNav.getMenu().findItem(mSelectedItem);
-        } else {
-            selectedItem = mBottomNav.getMenu().getItem(0);
-        }
-        selectFragment(selectedItem);
-    }
+    private void setupNavigationView() {
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+        if (bottomNavigationView != null) {
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        outState.putInt(SELECTED_ITEM, mSelectedItem);
-        super.onSaveInstanceState(outState);
-    }
+            // Select first menu item by default and show Fragment accordingly.
+            Menu menu = bottomNavigationView.getMenu();
+            selectFragment(menu.getItem(0));
 
-    @Override
-    public void onBackPressed() {
-        MenuItem homeItem = mBottomNav.getMenu().getItem(0);
-        if (mSelectedItem != homeItem.getItemId()) {
-            // select home item
-            selectFragment(homeItem);
-        } else {
-            super.onBackPressed();
+            // Set action to perform when any menu-item is selected.
+            bottomNavigationView.setOnNavigationItemSelectedListener(
+                    new BottomNavigationView.OnNavigationItemSelectedListener() {
+                        @Override
+                        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                            selectFragment(item);
+                            return false;
+                        }
+                    });
         }
     }
 
-    private void selectFragment(MenuItem item) {
-        Fragment frag = null;
-        // init corresponding fragment
+    /**
+     * Perform action when any item is selected.
+     *
+     * @param item Item that is selected.
+     */
+    protected void selectFragment(MenuItem item) {
+
+        item.setChecked(true);
+
         switch (item.getItemId()) {
             case R.id.menu_home:
-                frag = MenuFragment.newInstance(getString(R.string.text_home),
-                        getColorFromRes(R.color.color_home));
+                // Action to perform when Home Menu item is selected.
+                pushFragment(new FragmentHome());
                 break;
             case R.id.menu_calendar:
-                frag = MenuFragment.newInstance(getString(R.string.text_calendar),
-                        getColorFromRes(R.color.color_calendar));
+                // Action to perform when Calendar Menu item is selected.
+                pushFragment(new FragmentCalendar());
                 break;
             case R.id.menu_booking:
-                frag = MenuFragment.newInstance(getString(R.string.text_booking),
-                        getColorFromRes(R.color.color_booking));
+                // Action to perform when Booking Menu item is selected.
+                pushFragment(new FragmentBooking());
                 break;
         }
-
-        // update selected item
-        mSelectedItem = item.getItemId();
-
-        // uncheck the other items.
-        for (int i = 0; i< mBottomNav.getMenu().size(); i++) {
-            MenuItem menuItem = mBottomNav.getMenu().getItem(i);
-            menuItem.setChecked(menuItem.getItemId() == item.getItemId());
-        }
-
-        updateToolbarText(item.getTitle());
-
-        if (frag != null) {
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.add(R.id.container, frag, frag.getTag());
-            ft.commit();
-        }
     }
 
-    private void updateToolbarText(CharSequence text) {
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setTitle(text);
+    /**
+     * Method to push any fragment into given id.
+     *
+     * @param fragment An instance of Fragment to show into the given id.
+     */
+    protected void pushFragment(Fragment fragment) {
+        if (fragment == null)
+            return;
+
+        FragmentManager fragmentManager = getFragmentManager();
+        if (fragmentManager != null) {
+            FragmentTransaction ft = fragmentManager.beginTransaction();
+            if (ft != null) {
+                ft.replace(R.id.rootLayout, fragment);
+                ft.commit();
+            }
         }
     }
-
-    private int getColorFromRes(@ColorRes int resId) {
-        return ContextCompat.getColor(this, resId);
-    }
-     /* Fragment testing above this line */
 
 }
 

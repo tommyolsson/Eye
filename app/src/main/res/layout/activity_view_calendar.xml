@@ -13,16 +13,4 @@
 
     </android.support.v7.widget.RecyclerView>
 
-    <android.support.design.widget.BottomNavigationView
-        android:id="@+id/navigation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:layout_gravity="start"
-        design:layout_constraintBottom_toBottomOf="parent"
-        design:layout_constraintEnd_toEndOf="parent"
-        design:layout_constraintStart_toStartOf="parent"
-        design:menu="@menu/bottom_nav_items" />
-
 </RelativeLayout>

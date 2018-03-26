@@ -92,22 +92,21 @@
         app:layout_constraintTop_toBottomOf="@+id/welcome" />
 
     <FrameLayout
-        android:id="@+id/container"
+        android:id="@+id/rootLayout"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="#f1f1f1">
-
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottom_navigation"
+        android:orientation="vertical">
     </FrameLayout>
 
     <android.support.design.widget.BottomNavigationView
-        android:id="@+id/navigation"
+        android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="start"
-        design:layout_constraintBottom_toBottomOf="parent"
-        design:layout_constraintEnd_toEndOf="parent"
-        design:layout_constraintStart_toStartOf="parent"
-        design:menu="@menu/bottom_nav_items" />
+        android:layout_alignParentBottom="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/bottom_navigation" />
 
 </android.support.constraint.ConstraintLayout>
