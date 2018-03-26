@@ -1,15 +1,17 @@
 package kogvet.eye;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 
 /**
@@ -20,10 +22,16 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
     private final Context context;
     private final ArrayList<Event> allEvents;
+    private final LocalDateTime currentTime;
 
     public MyAdapter(Context context,  ArrayList<Event> allEvents) {
         this.allEvents = allEvents;
         this.context = context;
+        this.currentTime = getCurrentTime();
+    }
+
+    private LocalDateTime getCurrentTime() {
+        return LocalDateTime.now().truncatedTo((ChronoUnit.MINUTES));
     }
 
     @Override
@@ -52,6 +60,13 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             holder.tvDate.setText(allEvents.get(position).endDate);
         }
 
+        String stringEventTime = allEvents.get(position).startDate + "T" + allEvents.get(position).startTime;
+        LocalDateTime eventTime = LocalDateTime.parse(stringEventTime);
+        if (currentTime.isAfter(eventTime)) {
+            ((CardView) holder.itemView).setCardBackgroundColor(ContextCompat.getColor(context, R.color.gray));
+            ((CardView) holder.itemView).setAlpha((float) 0.4);
+        }
+//            holder.itemView.setBackgroundColor(ContextCompat.getColor(context, R.color.gray));
     }
 
     @Override
@@ -75,7 +90,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
                 @Override
                 public void onClick(View view) {
                     //EXAMPLE ON CLICK FUNCTION
-
                     Toast.makeText(context, tvSubject.getText().toString(), Toast.LENGTH_SHORT).show();
                 }
             });
