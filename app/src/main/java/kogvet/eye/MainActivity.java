@@ -481,8 +481,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    /* Fragment testing below this line */
-
+    /* Bottom Navigation bar and fragments  */
     private void setupNavigationView() {
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
         if (bottomNavigationView != null) {
@@ -519,7 +518,14 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.menu_calendar:
                 // Action to perform when Calendar Menu item is selected.
-                pushFragment(new FragmentCalendar());
+                // Sends a Bundle of all events
+                Bundle bundle = new Bundle();
+                bundle.putParcelableArrayList("allevents", allEvents);
+
+                Fragment fragmentCalendar = new FragmentCalendar();
+                fragmentCalendar.setArguments(bundle);
+
+                pushFragment(fragmentCalendar);
                 break;
             case R.id.menu_booking:
                 // Action to perform when Booking Menu item is selected.
