@@ -297,8 +297,8 @@ public class MainActivity extends AppCompatActivity {
 
         menuVisible=true;
         invalidateOptionsMenu();
-        findViewById(R.id.viewButton).setVisibility(View.VISIBLE);
-        findViewById(R.id.bookTimeButton).setVisibility(View.VISIBLE);
+        //findViewById(R.id.viewButton).setVisibility(View.VISIBLE);
+        //findViewById(R.id.bookTimeButton).setVisibility(View.VISIBLE);
 
         findViewById(R.id.welcome).setVisibility(View.VISIBLE);
         ((TextView) findViewById(R.id.welcome)).setText(getString(R.string.welcome, authResult.getUser().getName()));

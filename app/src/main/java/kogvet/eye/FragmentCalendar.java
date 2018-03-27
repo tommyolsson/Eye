@@ -24,9 +24,10 @@ public class FragmentCalendar extends Fragment {
     private ArrayList<Event> allEvents;
 
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        context = getActivity();
 
         Bundle bundle = getArguments();
         if(bundle != null)
@@ -34,7 +35,25 @@ public class FragmentCalendar extends Fragment {
             allEvents = bundle.getParcelableArrayList("allevents");
 
         }
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        //View view = inflater.inflate(R.layout.fragment_calendar, container, false);
 
         return inflater.inflate(R.layout.fragment_calendar, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+
+        recyclerView = (RecyclerView) view.findViewById(R.id.fragment_recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+
+        MyAdapter myAdapter = new MyAdapter(context, allEvents);
+        recyclerView.setAdapter(myAdapter);
+
     }
 }
