@@ -1,7 +1,10 @@
 package kogvet.eye;
 
+import android.app.Fragment;
 import android.content.Context;
+import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -90,9 +93,20 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
                 @Override
                 public void onClick(View view) {
                     //EXAMPLE ON CLICK FUNCTION
-                    Toast.makeText(context, tvSubject.getText().toString(), Toast.LENGTH_SHORT).show();
+                  //  Toast.makeText(context, tvSubject.getText().toString(), Toast.LENGTH_SHORT).show();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("subject", tvSubject.getText().toString());
+                    bundle.putString("date", tvDate.getText().toString());
+                    bundle.putString("time", tvTimes.getText().toString());
+                    bundle.putString("location", tvLocation.getText().toString());
+
+                    AppCompatActivity activity = (AppCompatActivity) view.getContext();
+                    Fragment openFragment = new FragmentOpenEvent();
+                    openFragment.setArguments(bundle);
+                    activity.getFragmentManager().beginTransaction().replace(R.id.rootLayout, openFragment).addToBackStack(null).commit();
                 }
             });
         }
     }
+
 }
