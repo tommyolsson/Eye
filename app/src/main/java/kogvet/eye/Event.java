@@ -12,6 +12,7 @@ import android.util.Log;
 public class Event implements Parcelable {
 
     String subject;
+    String bodyPreview;
     String startDate;
     String startTime;
     Boolean isAllDay;
@@ -80,6 +81,7 @@ public class Event implements Parcelable {
     //Parcel implementation
     public Event() {
         this.subject="";
+        this.bodyPreview="";
         this.startDate="";
         this.startTime="";
         this.isAllDay = false;
@@ -88,8 +90,9 @@ public class Event implements Parcelable {
         this.location=new Location();
     }
 
-    public Event(String subject, String startDate, String endDate, Boolean isAllDay, String startTime, String endTime, Location location) {
+    public Event(String subject, String bodyPreview, String startDate, String endDate, Boolean isAllDay, String startTime, String endTime, Location location) {
         this.subject=subject;
+        this.bodyPreview=bodyPreview;
         this.startDate=startDate;
         this.startTime=startTime;
         this.isAllDay = isAllDay;
@@ -100,6 +103,7 @@ public class Event implements Parcelable {
 
     private Event(Parcel in) {
         subject = in.readString();
+        bodyPreview = in.readString();
         startDate = in.readString();
         startTime = in.readString();
         isAllDay = in.readInt() == 1;
@@ -116,6 +120,7 @@ public class Event implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(subject);
+        dest.writeString(bodyPreview);
         dest.writeString(startDate);
         dest.writeString(startTime);
         dest.writeInt(isAllDay ? 1 : 0);

@@ -15,6 +15,7 @@ import android.widget.TextView;
 public class FragmentOpenEvent extends Fragment {
 
     private String eventSubject;
+    private String eventBodyPreview;
     private String eventDate;
     private String eventTime;
     private String eventLocation;
@@ -27,6 +28,7 @@ public class FragmentOpenEvent extends Fragment {
         if(bundle != null)
         {
             eventSubject = bundle.getString("subject");
+            eventBodyPreview = bundle.getString("bodyPreview");
             eventDate = bundle.getString("date");
             eventTime = bundle.getString("time");
             eventLocation = bundle.getString("location");
@@ -41,6 +43,9 @@ public class FragmentOpenEvent extends Fragment {
         TextView textSubject = inf.findViewById(R.id.textSubject);
         textSubject.setText(eventSubject);
 
+        TextView textBodyPreview = inf.findViewById(R.id.textBodyPreview);
+        textBodyPreview.setText(eventBodyPreview);
+
         TextView textDate = inf.findViewById(R.id.textDate);
         textDate.setText(eventDate);
 
@@ -52,5 +57,6 @@ public class FragmentOpenEvent extends Fragment {
 
         return inf;
     }
+    
 
 }

@@ -7,6 +7,7 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -42,9 +43,8 @@ public class MainActivity extends AppCompatActivity {
     final static String CLIENT_ID = "7c1e027b-60d3-44ef-a3af-686d432785f0";
     final static String SCOPES [] = {"User.Read", "Calendars.Read"};
    // final static String MSGRAPH_URL = "https://graph.microsoft.com/v1.0/me";
-//    final static String MSGRAPH_URL = "https://graph.microsoft.com/v1.0/me/calendar/calendarView?startDateTime=2018-01-01T00:00:00.0000000&endDateTime=2025-01-01T00:00:00.0000000&$orderby=start/dateTime";
-    final static String MSGRAPH_URL = "https://graph.microsoft.com/v1.0/me/calendar/calendarView?startDateTime=2018-01-01T00:00:00.0000000&endDateTime=2025-01-01T00:00:00.0000000&$select=subject,isAllDay,start,end,location&$orderby=start/dateTime";
-
+    final static String MSGRAPH_URL = "https://graph.microsoft.com/v1.0/me/calendar/calendarView?startDateTime=2018-01-01T00:00:00.0000000&endDateTime=2025-01-01T00:00:00.0000000&$orderby=start/dateTime";
+    //final static String MSGRAPH_URL = "https://graph.microsoft.com/v1.0/me/calendar/calendarView?startDateTime=2018-01-01T00:00:00.0000000&endDateTime=2025-01-01T00:00:00.0000000&$select=subject,isAllDay,start,end,location&$orderby=start/dateTime";
 
     /* UI & Debugging Variables */
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -236,6 +236,7 @@ public class MainActivity extends AppCompatActivity {
             object = array.getJSONObject(i);
 
             String subject = object.getString("subject");
+            String bodyPreview = object.getString("bodyPreview");
 
             Boolean isAllDay = Boolean.parseBoolean(object.getString("isAllDay"));
 
@@ -256,7 +257,7 @@ public class MainActivity extends AppCompatActivity {
                 location = new Event.Location();
             }
 
-            Event event = new Event(subject, startDate,endDate, isAllDay,startTime,endTime, location);
+            Event event = new Event(subject, bodyPreview, startDate,endDate, isAllDay,startTime,endTime, location);
             event.setTimesToLocal();
 
             listOfEvents.add(event);
@@ -532,6 +533,9 @@ public class MainActivity extends AppCompatActivity {
                 pushFragment(new FragmentBooking());
                 break;
         }
+
+        updateToolbarText(item.getTitle());
+
     }
 
     /**
@@ -550,6 +554,14 @@ public class MainActivity extends AppCompatActivity {
                 ft.replace(R.id.rootLayout, fragment);
                 ft.commit();
             }
+        }
+    }
+
+    /* Updates Title text in top bar */
+    private void updateToolbarText(CharSequence text) {
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle(text);
         }
     }
 

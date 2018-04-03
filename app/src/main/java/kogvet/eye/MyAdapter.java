@@ -50,6 +50,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.tvSubject.setText(allEvents.get(position).subject);
+        holder.tvBodyPreview.setText(allEvents.get(position).bodyPreview);
         holder.tvLocation.setText(allEvents.get(position).location.displayName);
         //Set time and date
         if(allEvents.get(position).isAllDay) {
@@ -79,12 +80,13 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
     public class ViewHolder extends  RecyclerView.ViewHolder {
 
-        TextView tvSubject,tvTimes,tvLocation,tvDate;
+        TextView tvSubject,tvBodyPreview,tvTimes,tvLocation,tvDate;
 
         public ViewHolder(final View itemView) {
             super(itemView);
 
             tvSubject = (TextView) itemView.findViewById(R.id.tvSubject);
+            tvBodyPreview = (TextView) itemView.findViewById(R.id.tvBodyPreview);
             tvTimes = (TextView) itemView.findViewById(R.id.tvTimes);
             tvLocation = (TextView) itemView.findViewById(R.id.tvLocation);
             tvDate = (TextView) itemView.findViewById(R.id.tvDate);
@@ -96,6 +98,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
                   //  Toast.makeText(context, tvSubject.getText().toString(), Toast.LENGTH_SHORT).show();
                     Bundle bundle = new Bundle();
                     bundle.putString("subject", tvSubject.getText().toString());
+                    bundle.putString("bodyPreview", tvBodyPreview.getText().toString());
                     bundle.putString("date", tvDate.getText().toString());
                     bundle.putString("time", tvTimes.getText().toString());
                     bundle.putString("location", tvLocation.getText().toString());
