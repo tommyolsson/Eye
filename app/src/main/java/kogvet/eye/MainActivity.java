@@ -82,8 +82,9 @@ public class MainActivity extends AppCompatActivity {
                 sampleApp.acquireTokenSilentAsync(SCOPES, users.get(0), getAuthSilentCallback());
             } else {
                 /* We have no user */
-                Log.d("debug", "no users");
-                sampleApp.acquireToken(getActivity(), SCOPES, getAuthInteractiveCallback());
+                //Log.d("debug", "no users");
+                updateSignedOutUI();
+                //sampleApp.acquireToken(getActivity(), SCOPES, getAuthInteractiveCallback());
 
             }
         } catch (MsalClientException e) {
@@ -293,33 +294,42 @@ public class MainActivity extends AppCompatActivity {
 
     /* Set the UI for successful token acquisition data */
     private void updateSuccessUI() {
-        findViewById(R.id.imageView).setVisibility(View.INVISIBLE);
-        findViewById(R.id.connectButton).setVisibility(View.INVISIBLE);
+        //findViewById(R.id.imageView).setVisibility(View.INVISIBLE);
+        //findViewById(R.id.connectButton).setVisibility(View.INVISIBLE);
+
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.getMenu().getItem(0).setChecked(true);
+        Fragment openFragment = new FragmentHome();
+        getFragmentManager().beginTransaction().replace(R.id.rootLayout, openFragment).commit();
+
+        findViewById(R.id.bottom_navigation).setVisibility(View.VISIBLE);
 
         menuVisible=true;
         invalidateOptionsMenu();
-        //findViewById(R.id.viewButton).setVisibility(View.VISIBLE);
-        //findViewById(R.id.bookTimeButton).setVisibility(View.VISIBLE);
 
-        findViewById(R.id.welcome).setVisibility(View.VISIBLE);
-        ((TextView) findViewById(R.id.welcome)).setText(getString(R.string.welcome, authResult.getUser().getName()));
-
-        findViewById(R.id.graphData).setVisibility(View.INVISIBLE);
+        //findViewById(R.id.welcome).setVisibility(View.VISIBLE);
+        //((TextView) findViewById(R.id.welcome)).setText(getString(R.string.welcome, authResult.getUser().getName()));
+        //findViewById(R.id.graphData).setVisibility(View.INVISIBLE);
     }
 
     /* Set the UI for signed out user */
     private void updateSignedOutUI() {
-        findViewById(R.id.imageView).setVisibility(View.VISIBLE);
-        findViewById(R.id.connectButton).setVisibility(View.VISIBLE);
+        //findViewById(R.id.imageView).setVisibility(View.VISIBLE);
+
+        // FIX ACTION BAR TITLE
+
+        Fragment openFragment = new FragmentLogin();
+        getFragmentManager().beginTransaction().replace(R.id.rootLayout, openFragment).commit();
+
+        //findViewById(R.id.connectButton).setVisibility(View.VISIBLE);
+        findViewById(R.id.bottom_navigation).setVisibility(View.INVISIBLE);
 
         menuVisible=false;
         invalidateOptionsMenu();
-        findViewById(R.id.viewButton).setVisibility(View.INVISIBLE);
-        findViewById(R.id.bookTimeButton).setVisibility(View.INVISIBLE);
 
-        findViewById(R.id.welcome).setVisibility(View.INVISIBLE);
-        findViewById(R.id.graphData).setVisibility(View.INVISIBLE);
-        ((TextView) findViewById(R.id.graphData)).setText("No Data");
+        //findViewById(R.id.welcome).setVisibility(View.INVISIBLE);
+        //findViewById(R.id.graphData).setVisibility(View.INVISIBLE);
+        //((TextView) findViewById(R.id.graphData)).setText("No Data");
     }
 
     //
@@ -424,21 +434,9 @@ public class MainActivity extends AppCompatActivity {
      */
     public void buttonClicked(View view)
     {
-        Intent intent;
+        //Intent intent;
         switch(view.getId())
         {
-            case R.id.viewButton:
-                intent = new Intent(getApplicationContext(), viewCalendarActivity.class);
-
-                //Sends ArrayList<Event> allEvents to viewCalendarActivity.java
-                intent.putParcelableArrayListExtra("allevents", allEvents);
-                startActivity(intent);
-                break;
-            case R.id.bookTimeButton:
-                intent = new Intent(getApplicationContext(), bookTimeActivity.class);
-               // intent = new Intent(getApplicationContext(), NotificationService.class);
-                startActivity(intent);
-                break;
             case R.id.connectButton:
                 onCallGraphClicked();
                 break;
@@ -471,6 +469,7 @@ public class MainActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         switch(item.getItemId()) {
             case R.id.menu_button:
+                pushFragment(new FragmentLogin());
                 onSignOutClicked();
                 break;
             default:
