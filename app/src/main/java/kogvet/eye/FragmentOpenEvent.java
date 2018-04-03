@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -55,8 +56,38 @@ public class FragmentOpenEvent extends Fragment {
         TextView textLocation = inf.findViewById(R.id.textLocation);
         textLocation.setText(eventLocation);
 
+        // Changes title to the subject name
+        ((MainActivity) getActivity()).setActionBarTitle(eventSubject);
+        showBackButton();
+
         return inf;
     }
-    
+
+    public void showBackButton() {
+        Fragment currentFragment = getActivity().getFragmentManager().findFragmentById(R.id.rootLayout);
+
+        if (currentFragment instanceof FragmentOpenEvent)
+        {
+            ((MainActivity) getActivity()).getSupportActionBar().setHomeButtonEnabled(true);
+            ((MainActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+        else
+        {
+            ((MainActivity) getActivity()).getSupportActionBar().setHomeButtonEnabled(false);
+            ((MainActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Log.i("Info", "Testar om något sker");
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                getFragmentManager().popBackStack();
+
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
 }

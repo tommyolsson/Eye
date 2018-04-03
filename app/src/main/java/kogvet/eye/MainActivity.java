@@ -533,7 +533,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
 
-        updateToolbarText(item.getTitle());
+        setActionBarTitle(item.getTitle());
 
     }
 
@@ -557,12 +557,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /* Updates Title text in top bar */
-    private void updateToolbarText(CharSequence text) {
+    protected void setActionBarTitle(CharSequence text) {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setTitle(text);
         }
     }
+
 
 }
 
