@@ -58,36 +58,9 @@ public class FragmentOpenEvent extends Fragment {
 
         // Changes title to the subject name
         ((MainActivity) getActivity()).setActionBarTitle(eventSubject);
-        showBackButton();
+        ((MainActivity) getActivity()).showBackButton();
 
         return inf;
-    }
-
-    public void showBackButton() {
-        Fragment currentFragment = getActivity().getFragmentManager().findFragmentById(R.id.rootLayout);
-
-        if (currentFragment instanceof FragmentOpenEvent)
-        {
-            ((MainActivity) getActivity()).getSupportActionBar().setHomeButtonEnabled(true);
-            ((MainActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
-        else
-        {
-            ((MainActivity) getActivity()).getSupportActionBar().setHomeButtonEnabled(false);
-            ((MainActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        Log.i("Info", "Testar om något sker");
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                getFragmentManager().popBackStack();
-
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
 }
