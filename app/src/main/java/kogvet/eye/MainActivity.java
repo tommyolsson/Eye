@@ -79,17 +79,14 @@ public class MainActivity extends AppCompatActivity {
          * If this fails we do an interactive request
          */
         List<User> users = null;
-
         try {
             users = sampleApp.getUsers();
 
             if (users != null && users.size() == 1) {
                 /* We have 1 user */
-
                 sampleApp.acquireTokenSilentAsync(SCOPES, users.get(0), getAuthSilentCallback());
             } else {
                 /* We have no user */
-                //Log.d("debug", "no users");
                 updateSignedOutUI();
                 //sampleApp.acquireToken(getActivity(), SCOPES, getAuthInteractiveCallback());
 
@@ -187,6 +184,56 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, "Response: " + response.toString());
                 try {
                     allEvents = getAllEvents(response);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                //updateGraphUI(response);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d(TAG, "Error: " + error.toString());
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + authResult.getAccessToken());
+                return headers;
+            }
+        };
+
+        Log.d(TAG, "Adding HTTP GET to Queue, Request: " + request.toString());
+
+        request.setRetryPolicy(new DefaultRetryPolicy(
+                3000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        queue.add(request);
+    }
+
+    private void callGraphAPIMeeting() {
+        Log.d(TAG, "Starting volley request to graph");
+
+        /* Make sure we have a token to send to graph */
+        if (authResult.getAccessToken() == null) {return;}
+
+        RequestQueue queue = Volley.newRequestQueue(this);
+        JSONObject parameters = new JSONObject();
+
+        try {
+            parameters.put("key", "value");
+        } catch (Exception e) {
+            Log.d(TAG, "Failed to put parameters: " + e.toString());
+        }
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, MSGRAPH_URL_MEETINGS,
+                parameters,new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                /* Successfully called graph, process data and send to UI */
+                Log.d(TAG, "Response: " + response.toString());
+                try {
+                    allMeetings = getAllEvents(response);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -348,6 +395,7 @@ public class MainActivity extends AppCompatActivity {
 
                 /* call graph */
                 callGraphAPI();
+                callGraphAPIMeeting();
 
                 /* update the UI to post call graph state */
                 updateSuccessUI();
@@ -391,6 +439,7 @@ public class MainActivity extends AppCompatActivity {
 
                 /* call graph */
                 callGraphAPI();
+                callGraphAPIMeeting();
 
                 /* update the UI to post call graph state */
                 updateSuccessUI();
@@ -521,7 +570,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.menu_booking:
                 // Action to perform when Booking Menu item is selected.
                 bundle = new Bundle();
-                bundle.putParcelableArrayList("allevents", allEvents);
+                bundle.putParcelableArrayList("allmeetings", allMeetings);
 
                 Fragment fragmentBooking = new FragmentBooking();
                 fragmentBooking.setArguments(bundle);

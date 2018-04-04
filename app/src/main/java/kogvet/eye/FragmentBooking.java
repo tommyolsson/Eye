@@ -30,7 +30,7 @@ public class FragmentBooking extends Fragment {
         Bundle bundle = getArguments();
         if(bundle != null)
         {
-            allEvents = bundle.getParcelableArrayList("allevents");
+            allEvents = bundle.getParcelableArrayList("allmeetings");
 
         }
     }
@@ -49,7 +49,7 @@ public class FragmentBooking extends Fragment {
         recyclerView = (RecyclerView) view.findViewById(R.id.fragment_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
-        MyAdapter myAdapter = new MyAdapter(context, allEvents);
+        BookingAdapter myAdapter = new BookingAdapter(context, allEvents);
         recyclerView.setAdapter(myAdapter);
 
     }
