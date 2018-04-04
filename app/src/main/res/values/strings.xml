@@ -41,7 +41,7 @@
     <string name="location">Location</string>
 
     <!--<string name="startTime">%1$s - </string>-->
-    <string name="timeWholeDay">Heldag (%1$s)</string>
+    <string name="timeWholeDay">Heldag</string>
     <string name="times">%1$s - %2$s</string>
     <string name="date">YYYY-MM-DD</string>
 

@@ -9,12 +9,12 @@
     android:orientation="vertical">
 
     <android.support.v7.widget.RecyclerView
-        tools:context=".MainActivity"
         android:id="@+id/fragment_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/fragment_content"
-        >
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="false"
+        android:clipToPadding="false"
+        tools:context=".MainActivity">
 
     </android.support.v7.widget.RecyclerView>
 </RelativeLayout>

@@ -38,13 +38,19 @@ import com.microsoft.identity.client.PublicClientApplication;
 public class MainActivity extends AppCompatActivity {
 
     private ArrayList<Event> allEvents = new ArrayList<>();
+    private ArrayList<Event> allMeetings = new ArrayList<>();
     boolean menuVisible=true;
 
     /* Azure AD v2 Configs */
     final static String CLIENT_ID = "7c1e027b-60d3-44ef-a3af-686d432785f0";
     final static String SCOPES [] = {"User.Read", "Calendars.Read"};
-   // final static String MSGRAPH_URL = "https://graph.microsoft.com/v1.0/me";
-    final static String MSGRAPH_URL = "https://graph.microsoft.com/v1.0/me/calendar/calendarView?startDateTime=2018-01-01T00:00:00.0000000&endDateTime=2025-01-01T00:00:00.0000000&$orderby=start/dateTime";
+
+    final static String MEETING_CAL_ID = "AQMkADAwATMwMAItMGViYy01NjMxLTAwAi0wMAoARgAAA1yuiwIqgIVHk4BegsO-w6IHAAXJYXRGgLlBvVJ3-qZtCvUAAAIBBgAAAAXJYXRGgLlBvVJ3-qZtCvUAAAAX1Ul0AAAA";
+    final static String EVENT_CAL_ID = "AQMkADAwATMwMAItMGViYy01NjMxLTAwAi0wMAoARgAAA1yuiwIqgIVHk4BegsO-w6IHAAXJYXRGgLlBvVJ3-qZtCvUAAAIBBgAAAAXJYXRGgLlBvVJ3-qZtCvUAAAIR8wAAAA==";
+
+    final static String MSGRAPH_URL = "https://graph.microsoft.com/v1.0/me/calendars/"+EVENT_CAL_ID+"/calendarView?startDateTime=2018-01-01T00:00:00.0000000&endDateTime=2025-01-01T00:00:00.0000000&$orderby=start/dateTime";
+    final static String MSGRAPH_URL_MEETINGS = "https://graph.microsoft.com/v1.0/me/calendars/"+MEETING_CAL_ID+"/calendarView?startDateTime=2018-01-01T00:00:00.0000000&endDateTime=2025-01-01T00:00:00.0000000&$orderby=start/dateTime";
+
     //final static String MSGRAPH_URL = "https://graph.microsoft.com/v1.0/me/calendar/calendarView?startDateTime=2018-01-01T00:00:00.0000000&endDateTime=2025-01-01T00:00:00.0000000&$select=subject,isAllDay,start,end,location&$orderby=start/dateTime";
 
     /* UI & Debugging Variables */
@@ -179,6 +185,11 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(JSONObject response) {
                 /* Successfully called graph, process data and send to UI */
                 Log.d(TAG, "Response: " + response.toString());
+                try {
+                    allEvents = getAllEvents(response);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 updateGraphUI(response);
             }
         }, new Response.ErrorListener() {
@@ -214,18 +225,7 @@ public class MainActivity extends AppCompatActivity {
 
     /* Sets the graph response */
     private void updateGraphUI(JSONObject graphResponse) {
-
-
-//        Log.d("graphResponse", graphResponse.toString());
-
-//        TextView graphText = (TextView) findViewById(R.id.graphData);
-        try {
-            allEvents = getAllEvents(graphResponse);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
         Toast.makeText(this, "Data fetched!", Toast.LENGTH_SHORT).show();
-//        graphText.setText("Data fetched.");
     }
 
 
@@ -498,6 +498,7 @@ public class MainActivity extends AppCompatActivity {
     protected void selectFragment(MenuItem item) {
 
         item.setChecked(true);
+        Bundle bundle;
 
         switch (item.getItemId()) {
             case R.id.menu_home:
@@ -507,17 +508,21 @@ public class MainActivity extends AppCompatActivity {
             case R.id.menu_calendar:
                 // Action to perform when Calendar Menu item is selected.
                 // Sends a Bundle of all events
-                Bundle bundle = new Bundle();
+                bundle = new Bundle();
                 bundle.putParcelableArrayList("allevents", allEvents);
 
                 Fragment fragmentCalendar = new FragmentCalendar();
                 fragmentCalendar.setArguments(bundle);
-
                 pushFragment(fragmentCalendar);
                 break;
             case R.id.menu_booking:
                 // Action to perform when Booking Menu item is selected.
-                pushFragment(new FragmentBooking());
+                bundle = new Bundle();
+                bundle.putParcelableArrayList("allevents", allEvents);
+
+                Fragment fragmentBooking = new FragmentBooking();
+                fragmentBooking.setArguments(bundle);
+                pushFragment(fragmentBooking);
                 break;
         }
 

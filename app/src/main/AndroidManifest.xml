@@ -38,14 +38,6 @@
                     android:scheme="msal7c1e027b-60d3-44ef-a3af-686d432785f0" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".viewCalendarActivity"
-            android:label="@string/title_activity_test"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".bookTimeActivity"
-            android:label="@string/title_activity_test"
-            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".NotificationService" />
         <activity android:name=".FragmentOpenEvent"></activity>
     </application>

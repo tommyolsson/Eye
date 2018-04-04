@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -21,13 +20,13 @@ import java.util.ArrayList;
  * Created by Loldator on 2018-02-27.
  */
 
-public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
+public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.ViewHolder> {
 
     private final Context context;
     private final ArrayList<Event> allEvents;
     private final LocalDateTime currentTime;
 
-    public MyAdapter(Context context,  ArrayList<Event> allEvents) {
+    public BookingAdapter(Context context, ArrayList<Event> allEvents) {
         this.allEvents = allEvents;
         this.context = context;
         this.currentTime = getCurrentTime();
