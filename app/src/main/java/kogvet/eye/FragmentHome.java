@@ -35,8 +35,8 @@ public class FragmentHome extends Fragment {
         if(bundle != null)
         {
             allEvents = bundle.getParcelableArrayList("allevents");
-
         }
+
     }
 
 
@@ -65,20 +65,14 @@ public class FragmentHome extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
 
-        recyclerView = (RecyclerView) view.findViewById(R.id.fragment_recycler_view);
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.fragment_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        recyclerView.setAdapter(new SampleRecycler());
 
-        HomeAdapter homeAdapter = new HomeAdapter(context, allEvents);
-
-        try
-        {
-            //recyclerView.setAdapter(homeAdapter);
-        }
-        catch(IndexOutOfBoundsException e)
-        {
-            System.err.println("IndexOutOfBoundsException: " + e.getMessage());
-        }
-
+        //recyclerView = (RecyclerView) view.findViewById(R.id.fragment_recycler_view);
+        //recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        //HomeAdapter homeAdapter = new HomeAdapter(context, allEvents);
+        //recyclerView.setAdapter(homeAdapter);
 
     }
 

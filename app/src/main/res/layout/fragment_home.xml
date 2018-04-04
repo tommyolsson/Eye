@@ -13,7 +13,7 @@
         android:id="@+id/dateToday"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0.5"
+        android:layout_weight="0.3"
         android:gravity="center"
         android:text="@string/date"
         android:textSize="30sp" />
@@ -23,9 +23,9 @@
         android:id="@+id/fragment_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0.5"
+        android:layout_weight="0.7"
         >
     </android.support.v7.widget.RecyclerView>
-
+    
 </LinearLayout>
 
