@@ -460,6 +460,9 @@ public class MainActivity extends AppCompatActivity {
                 pushFragment(new FragmentLogin());
                 onSignOutClicked();
                 break;
+            case android.R.id.home:
+                super.onBackPressed();
+                return true;
             default:
                 return true;
         }
@@ -549,6 +552,21 @@ public class MainActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setTitle(text);
+        }
+    }
+
+    /* Adds back button in actionbar */
+    public void showBackButton() {
+        ActionBar actionBar = getSupportActionBar();
+        Fragment currentFragment = getActivity().getFragmentManager().findFragmentById(R.id.rootLayout);
+
+        if (currentFragment instanceof FragmentOpenEvent)
+        {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+        else
+        {
+            actionBar.setDisplayHomeAsUpEnabled(false);
         }
     }
 

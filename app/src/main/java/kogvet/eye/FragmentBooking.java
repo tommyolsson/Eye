@@ -15,6 +15,9 @@ public class FragmentBooking extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        ((MainActivity) getActivity()).showBackButton();
+
         return inflater.inflate(R.layout.fragment_booking, container, false);
     }
 }
