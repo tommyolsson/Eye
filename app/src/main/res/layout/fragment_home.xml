@@ -6,12 +6,26 @@
     android:layout_height="match_parent"
     android:background="@android:color/white"
     android:gravity="center"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:weightSum="1">
 
-    <TextView
-        android:id="@+id/textView"
+     <TextView
+        android:id="@+id/dateToday"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_weight="0.5"
         android:gravity="center"
-        android:text="@string/menu_home"/>
+        android:text="@string/date"
+        android:textSize="30sp" />
+
+    <android.support.v7.widget.RecyclerView
+        tools:context=".MainActivity"
+        android:id="@+id/fragment_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.5"
+        >
+    </android.support.v7.widget.RecyclerView>
+
 </LinearLayout>
+

@@ -38,13 +38,19 @@ import com.microsoft.identity.client.PublicClientApplication;
 public class MainActivity extends AppCompatActivity {
 
     private ArrayList<Event> allEvents = new ArrayList<>();
+    private ArrayList<Event> allMeetings = new ArrayList<>();
     boolean menuVisible=true;
 
     /* Azure AD v2 Configs */
     final static String CLIENT_ID = "7c1e027b-60d3-44ef-a3af-686d432785f0";
     final static String SCOPES [] = {"User.Read", "Calendars.Read"};
-   // final static String MSGRAPH_URL = "https://graph.microsoft.com/v1.0/me";
-    final static String MSGRAPH_URL = "https://graph.microsoft.com/v1.0/me/calendar/calendarView?startDateTime=2018-01-01T00:00:00.0000000&endDateTime=2025-01-01T00:00:00.0000000&$orderby=start/dateTime";
+
+    final static String MEETING_CAL_ID = "AQMkADAwATMwMAItMGViYy01NjMxLTAwAi0wMAoARgAAA1yuiwIqgIVHk4BegsO-w6IHAAXJYXRGgLlBvVJ3-qZtCvUAAAIBBgAAAAXJYXRGgLlBvVJ3-qZtCvUAAAAX1Ul0AAAA";
+    final static String EVENT_CAL_ID = "AQMkADAwATMwMAItMGViYy01NjMxLTAwAi0wMAoARgAAA1yuiwIqgIVHk4BegsO-w6IHAAXJYXRGgLlBvVJ3-qZtCvUAAAIBBgAAAAXJYXRGgLlBvVJ3-qZtCvUAAAIR8wAAAA==";
+
+    final static String MSGRAPH_URL = "https://graph.microsoft.com/v1.0/me/calendars/"+EVENT_CAL_ID+"/calendarView?startDateTime=2018-01-01T00:00:00.0000000&endDateTime=2025-01-01T00:00:00.0000000&$orderby=start/dateTime";
+    final static String MSGRAPH_URL_MEETINGS = "https://graph.microsoft.com/v1.0/me/calendars/"+MEETING_CAL_ID+"/calendarView?startDateTime=2018-01-01T00:00:00.0000000&endDateTime=2025-01-01T00:00:00.0000000&$orderby=start/dateTime";
+
     //final static String MSGRAPH_URL = "https://graph.microsoft.com/v1.0/me/calendar/calendarView?startDateTime=2018-01-01T00:00:00.0000000&endDateTime=2025-01-01T00:00:00.0000000&$select=subject,isAllDay,start,end,location&$orderby=start/dateTime";
 
     /* UI & Debugging Variables */
@@ -73,17 +79,14 @@ public class MainActivity extends AppCompatActivity {
          * If this fails we do an interactive request
          */
         List<User> users = null;
-
         try {
             users = sampleApp.getUsers();
 
             if (users != null && users.size() == 1) {
                 /* We have 1 user */
-
                 sampleApp.acquireTokenSilentAsync(SCOPES, users.get(0), getAuthSilentCallback());
             } else {
                 /* We have no user */
-                //Log.d("debug", "no users");
                 updateSignedOutUI();
                 //sampleApp.acquireToken(getActivity(), SCOPES, getAuthInteractiveCallback());
 
@@ -179,6 +182,61 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(JSONObject response) {
                 /* Successfully called graph, process data and send to UI */
                 Log.d(TAG, "Response: " + response.toString());
+                try {
+                    allEvents = getAllEvents(response);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                //updateGraphUI(response);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d(TAG, "Error: " + error.toString());
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + authResult.getAccessToken());
+                return headers;
+            }
+        };
+
+        Log.d(TAG, "Adding HTTP GET to Queue, Request: " + request.toString());
+
+        request.setRetryPolicy(new DefaultRetryPolicy(
+                3000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        queue.add(request);
+    }
+
+    private void callGraphAPIMeeting() {
+        Log.d(TAG, "Starting volley request to graph");
+
+        /* Make sure we have a token to send to graph */
+        if (authResult.getAccessToken() == null) {return;}
+
+        RequestQueue queue = Volley.newRequestQueue(this);
+        JSONObject parameters = new JSONObject();
+
+        try {
+            parameters.put("key", "value");
+        } catch (Exception e) {
+            Log.d(TAG, "Failed to put parameters: " + e.toString());
+        }
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, MSGRAPH_URL_MEETINGS,
+                parameters,new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                /* Successfully called graph, process data and send to UI */
+                Log.d(TAG, "Response: " + response.toString());
+                try {
+                    allMeetings = getAllEvents(response);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 updateGraphUI(response);
             }
         }, new Response.ErrorListener() {
@@ -214,18 +272,7 @@ public class MainActivity extends AppCompatActivity {
 
     /* Sets the graph response */
     private void updateGraphUI(JSONObject graphResponse) {
-
-
-//        Log.d("graphResponse", graphResponse.toString());
-
-//        TextView graphText = (TextView) findViewById(R.id.graphData);
-        try {
-            allEvents = getAllEvents(graphResponse);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
         Toast.makeText(this, "Data fetched!", Toast.LENGTH_SHORT).show();
-//        graphText.setText("Data fetched.");
     }
 
 
@@ -348,6 +395,7 @@ public class MainActivity extends AppCompatActivity {
 
                 /* call graph */
                 callGraphAPI();
+                callGraphAPIMeeting();
 
                 /* update the UI to post call graph state */
                 updateSuccessUI();
@@ -391,6 +439,7 @@ public class MainActivity extends AppCompatActivity {
 
                 /* call graph */
                 callGraphAPI();
+                callGraphAPIMeeting();
 
                 /* update the UI to post call graph state */
                 updateSuccessUI();
@@ -471,7 +520,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
     /* Bottom Navigation bar and fragments  */
     private void setupNavigationView() {
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
@@ -501,26 +549,36 @@ public class MainActivity extends AppCompatActivity {
     protected void selectFragment(MenuItem item) {
 
         item.setChecked(true);
+        Bundle bundle;
 
         switch (item.getItemId()) {
             case R.id.menu_home:
                 // Action to perform when Home Menu item is selected.
-                pushFragment(new FragmentHome());
+                bundle = new Bundle();
+                bundle.putParcelableArrayList("allevents", allEvents);
+
+                Fragment fragmentHome = new FragmentHome();
+                fragmentHome.setArguments(bundle);
+                pushFragment(fragmentHome);
                 break;
             case R.id.menu_calendar:
                 // Action to perform when Calendar Menu item is selected.
                 // Sends a Bundle of all events
-                Bundle bundle = new Bundle();
+                bundle = new Bundle();
                 bundle.putParcelableArrayList("allevents", allEvents);
 
                 Fragment fragmentCalendar = new FragmentCalendar();
                 fragmentCalendar.setArguments(bundle);
-
                 pushFragment(fragmentCalendar);
                 break;
             case R.id.menu_booking:
                 // Action to perform when Booking Menu item is selected.
-                pushFragment(new FragmentBooking());
+                bundle = new Bundle();
+                bundle.putParcelableArrayList("allmeetings", allMeetings);
+
+                Fragment fragmentBooking = new FragmentBooking();
+                fragmentBooking.setArguments(bundle);
+                pushFragment(fragmentBooking);
                 break;
         }
 
@@ -572,7 +630,4 @@ public class MainActivity extends AppCompatActivity {
 
 
 }
-
-
-
 
