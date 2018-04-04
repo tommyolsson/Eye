@@ -4,6 +4,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
+import java.time.LocalDateTime;
+
 /**
  * Created by Loldator on 2018-02-28.
  */
@@ -13,11 +15,13 @@ public class Event implements Parcelable {
 
     String subject;
     String bodyPreview;
-    String startDate;
-    String startTime;
     Boolean isAllDay;
+    //String startDate;
+    //String startTime;
+    LocalDateTime startTimeObj;
     String endDate;
     String endTime;
+    LocalDateTime endTimeObj;
     Location location;
 
     public static class Location implements  Parcelable {
@@ -78,7 +82,7 @@ public class Event implements Parcelable {
         };
     }
 
-    //Parcel implementation
+    /*
     public Event() {
         this.subject="";
         this.bodyPreview="";
@@ -89,26 +93,24 @@ public class Event implements Parcelable {
         this.endTime="";
         this.location=new Location();
     }
+    */
 
-    public Event(String subject, String bodyPreview, String startDate, String endDate, Boolean isAllDay, String startTime, String endTime, Location location) {
+    public Event(String subject, String bodyPreview, Boolean isAllDay, LocalDateTime startTimeObj, LocalDateTime endTimeObj, Location location) {
         this.subject=subject;
         this.bodyPreview=bodyPreview;
-        this.startDate=startDate;
-        this.startTime=startTime;
         this.isAllDay = isAllDay;
-        this.endDate=endDate;
-        this.endTime=endTime;
+        this.startTimeObj = startTimeObj;
+        this.endTimeObj = endTimeObj;
         this.location=location;
     }
 
+    //Parcel implementation
     private Event(Parcel in) {
         subject = in.readString();
         bodyPreview = in.readString();
-        startDate = in.readString();
-        startTime = in.readString();
         isAllDay = in.readInt() == 1;
-        endDate = in.readString();
-        endTime = in.readString();
+        startTimeObj = LocalDateTime.parse(in.readString());
+        endTimeObj = LocalDateTime.parse(in.readString());
         location = in.readParcelable(Location.class.getClassLoader());
     }
 
@@ -121,15 +123,13 @@ public class Event implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(subject);
         dest.writeString(bodyPreview);
-        dest.writeString(startDate);
-        dest.writeString(startTime);
         dest.writeInt(isAllDay ? 1 : 0);
-        dest.writeString(endDate);
-        dest.writeString(endTime);
+        dest.writeString(startTimeObj.toString());
+        dest.writeString(endTimeObj.toString());
         dest.writeParcelable(location, flags);
     }
 
-    @SuppressWarnings("unused")
+    //@SuppressWarnings("unused")
     public static final Parcelable.Creator<Event> CREATOR = new Parcelable.Creator<Event>() {
         @Override
         public Event createFromParcel(Parcel in) {
@@ -142,47 +142,34 @@ public class Event implements Parcelable {
         }
     };
 
-//    no need to sort anymore bcuz of query parameters
-//    @Override
-//    public int compareTo(Event compareEvent) {
-//        if(startDate.compareToIgnoreCase(compareEvent.startDate) ==0)
-//            return startTime.compareToIgnoreCase(compareEvent.startTime);
-//        else
-//            return startDate.compareToIgnoreCase(compareEvent.startDate);
-//
-//    }
 
     public String getStartDate() {
-        return startDate;
+        String string = this.startTimeObj.toString();
+        String[] segments = string.split("T");
+        return segments[0];
     }
 
     public  String getStartTime() {
-        return startTime;
+        String string = this.startTimeObj.toString();
+        String[] segments = string.split("T");
+        return segments[1];
     }
 
-    public void setTimesToLocal() {
-        Integer start = Integer.parseInt(this.startTime.substring(0, 2))+1;
-        Integer end = Integer.parseInt(this.endTime.substring(0, 2))+1;
+    public  String getEndDate() {
+        String string = this.endTimeObj.toString();
+        String[] segments = string.split("T");
+        return segments[0];
+    }
 
-        if(start>=24)
-            start=0;
-        if(end>=24)
-            end=0;
-
-        if(start<10)
-            this.startTime = "0" + String.valueOf(start) + this.startTime.substring(2);
-        else
-            this.startTime = String.valueOf(start) + this.startTime.substring(2);
-
-        if(end<10)
-            this.endTime = "0" + String.valueOf(end) + this.endTime.substring(2);
-        else
-            this.endTime = String.valueOf(end) + this.endTime.substring(2);
+    public  String getEndTime() {
+        String string = this.endTimeObj.toString();
+        String[] segments = string.split("T");
+        return segments[1];
     }
 
     @Override
     public  String toString() {
-        return "[ startdate="+startDate+", enddate="+endDate+", startTime="+startTime+", endTime="+endTime+"]";
+        return "[ startdate="+this.getStartDate()+", enddate="+getEndDate()+", startTime="+this.getStartTime()+", endTime="+getEndTime()+"]";
     }
 
 

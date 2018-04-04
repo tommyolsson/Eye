@@ -54,23 +54,20 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         holder.tvLocation.setText(allEvents.get(position).location.displayName);
         //Set time and date
         if(allEvents.get(position).isAllDay) {
-            holder.tvTimes.setText(context.getResources().getString(R.string.timeWholeDay, allEvents.get(position).startTime));
-            holder.tvDate.setText(allEvents.get(position).startDate);
+            holder.tvTimes.setText(context.getResources().getString(R.string.timeWholeDay, allEvents.get(position).getStartTime()));
+            holder.tvDate.setText(allEvents.get(position).getStartDate());
         }
         else{
             //get time and put in format (see strings)
-            String times = context.getResources().getString(R.string.times, allEvents.get(position).startTime, allEvents.get(position).endTime);
+            String times = context.getResources().getString(R.string.times, allEvents.get(position).getStartTime(), allEvents.get(position).getEndTime());
             holder.tvTimes.setText(times);
-            holder.tvDate.setText(allEvents.get(position).endDate);
+            holder.tvDate.setText(allEvents.get(position).getEndDate());
         }
 
-        String stringEventTime = allEvents.get(position).startDate + "T" + allEvents.get(position).startTime;
-        LocalDateTime eventTime = LocalDateTime.parse(stringEventTime);
-        if (currentTime.isAfter(eventTime)) {
+        if (currentTime.isAfter(allEvents.get(position).startTimeObj)) {
             ((CardView) holder.itemView).setCardBackgroundColor(ContextCompat.getColor(context, R.color.gray));
-            ((CardView) holder.itemView).setAlpha((float) 0.4);
+            (holder.itemView).setAlpha((float) 0.4);
         }
-//            holder.itemView.setBackgroundColor(ContextCompat.getColor(context, R.color.gray));
     }
 
     @Override
@@ -85,17 +82,16 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         public ViewHolder(final View itemView) {
             super(itemView);
 
-            tvSubject = (TextView) itemView.findViewById(R.id.tvSubject);
-            tvBodyPreview = (TextView) itemView.findViewById(R.id.tvBodyPreview);
-            tvTimes = (TextView) itemView.findViewById(R.id.tvTimes);
-            tvLocation = (TextView) itemView.findViewById(R.id.tvLocation);
-            tvDate = (TextView) itemView.findViewById(R.id.tvDate);
+            tvSubject = itemView.findViewById(R.id.tvSubject);
+            tvBodyPreview = itemView.findViewById(R.id.tvBodyPreview);
+            tvTimes = itemView.findViewById(R.id.tvTimes);
+            tvLocation = itemView.findViewById(R.id.tvLocation);
+            tvDate = itemView.findViewById(R.id.tvDate);
             
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     //EXAMPLE ON CLICK FUNCTION
-                  //  Toast.makeText(context, tvSubject.getText().toString(), Toast.LENGTH_SHORT).show();
                     Bundle bundle = new Bundle();
                     bundle.putString("subject", tvSubject.getText().toString());
                     bundle.putString("bodyPreview", tvBodyPreview.getText().toString());

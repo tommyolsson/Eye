@@ -24,6 +24,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -241,14 +242,14 @@ public class MainActivity extends AppCompatActivity {
 
             Boolean isAllDay = Boolean.parseBoolean(object.getString("isAllDay"));
 
-            //Get string and format text from Object
-            String [] segments = getDateTimeFromString(object.getString("start"));
-            String startDate = segments[0];
-            String startTime = segments[1];
+            //Get string and create local date time objects
+            String stringDateTime = getDateTimeFromString(object.getString("start"));
+            LocalDateTime startTimeObj = LocalDateTime.parse(stringDateTime);
+            startTimeObj =  startTimeObj.plusHours(1);
 
-            segments = getDateTimeFromString(object.getString("end"));
-            String endDate = segments[0];
-            String endTime = segments[1];
+            stringDateTime = getDateTimeFromString(object.getString("end"));
+            LocalDateTime endTimeObj = LocalDateTime.parse(stringDateTime);
+            endTimeObj = endTimeObj.plusHours(1);
 
             //Get location
             Event.Location location;
@@ -258,8 +259,7 @@ public class MainActivity extends AppCompatActivity {
                 location = new Event.Location();
             }
 
-            Event event = new Event(subject, bodyPreview, startDate,endDate, isAllDay,startTime,endTime, location);
-            event.setTimesToLocal();
+            Event event = new Event(subject, bodyPreview, isAllDay, startTimeObj, endTimeObj, location);
 
             listOfEvents.add(event);
         }
@@ -283,20 +283,14 @@ public class MainActivity extends AppCompatActivity {
         return  location;
     }
 
-    private String[] getDateTimeFromString(String string) {
+    private String getDateTimeFromString(String string) {
         //Get startDate and startTime from JsonString
         String [] segments = string.split("\"");
-        segments = segments[3].split("T");
-        segments[1] = segments[1].trim().substring(0,5);
-
-        return  segments;
+        return  segments[3].substring(0,16);
     }
 
     /* Set the UI for successful token acquisition data */
     private void updateSuccessUI() {
-        //findViewById(R.id.imageView).setVisibility(View.INVISIBLE);
-        //findViewById(R.id.connectButton).setVisibility(View.INVISIBLE);
-
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.getMenu().getItem(0).setChecked(true);
         Fragment openFragment = new FragmentHome();
@@ -314,22 +308,16 @@ public class MainActivity extends AppCompatActivity {
 
     /* Set the UI for signed out user */
     private void updateSignedOutUI() {
-        //findViewById(R.id.imageView).setVisibility(View.VISIBLE);
 
-        // FIX ACTION BAR TITLE
+        // FIX ACTION BAR TITLE (?)
 
         Fragment openFragment = new FragmentLogin();
         getFragmentManager().beginTransaction().replace(R.id.rootLayout, openFragment).commit();
 
-        //findViewById(R.id.connectButton).setVisibility(View.VISIBLE);
         findViewById(R.id.bottom_navigation).setVisibility(View.INVISIBLE);
 
         menuVisible=false;
         invalidateOptionsMenu();
-
-        //findViewById(R.id.welcome).setVisibility(View.INVISIBLE);
-        //findViewById(R.id.graphData).setVisibility(View.INVISIBLE);
-        //((TextView) findViewById(R.id.graphData)).setText("No Data");
     }
 
     //
