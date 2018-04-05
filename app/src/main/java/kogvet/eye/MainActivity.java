@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
     final static String EVENT_CAL_ID = "AQMkADAwATMwMAItMTA3NC1mMWY5LTAwAi0wMAoARgAAA5qOMtqUVcdGjwE9YSdMJv0HAI8BHxCuIO1Hp_cDF_CLsbMAAAIBBgAAAI8BHxCuIO1Hp_cDF_CLsbMAAAIU_AAAAA==";
 
     final static String MSGRAPH_URL_MEETINGS = "https://graph.microsoft.com/beta/me/calendars/"+MEETING_CAL_ID+"/calendarView?startDateTime=2018-01-01T00:00:00.0000000&endDateTime=2025-01-01T00:00:00.0000000&$orderby=start/dateTime";
-    final static String MSGRAPH_URL = "https://graph.microsoft.com/beta/me/calendars/"+EVENT_CAL_ID+"/calendarView?startDateTime=2018-01-01T00:00:00.0000000&endDateTime=2025-01-01T00:00:00.0000000&$orderby=start/dateTime";
+    final static String MSGRAPH_URL = "https://graph.microsoft.com/beta/me/calendar/calendarView?startDateTime=2018-01-01T00:00:00.0000000&endDateTime=2025-01-01T00:00:00.0000000&$orderby=start/dateTime";
     //final static String MSGRAPH_URL = "https://graph.microsoft.com/v1.0/me/calendar/calendarView?startDateTime=2018-01-01T00:00:00.0000000&endDateTime=2025-01-01T00:00:00.0000000&$select=subject,isAllDay,start,end,location&$orderby=start/dateTime";
 
     /* UI & Debugging Variables */

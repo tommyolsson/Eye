@@ -62,4 +62,9 @@ public class FragmentOpenMeeting extends Fragment {
         return inf;
     }
 
+    public void bookMeeting() {
+
+    }
+
+
 }
