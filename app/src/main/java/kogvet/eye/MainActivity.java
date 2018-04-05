@@ -42,14 +42,15 @@ public class MainActivity extends AppCompatActivity {
     boolean menuVisible=true;
 
     /* Azure AD v2 Configs */
+//    final static String CLIENT_ID = "22be023c-aeb7-4c9f-86b3-9230dc05d996";
     final static String CLIENT_ID = "7c1e027b-60d3-44ef-a3af-686d432785f0";
-    final static String SCOPES [] = {"User.Read", "Calendars.Read"};
+    final static String SCOPES [] = {"User.Read", "Calendars.Read", "Calendars.Read.Shared"};
 
-    final static String MEETING_CAL_ID = "AQMkADAwATMwMAItMGViYy01NjMxLTAwAi0wMAoARgAAA1yuiwIqgIVHk4BegsO-w6IHAAXJYXRGgLlBvVJ3-qZtCvUAAAIBBgAAAAXJYXRGgLlBvVJ3-qZtCvUAAAAX1Ul0AAAA";
-    final static String EVENT_CAL_ID = "AQMkADAwATMwMAItMGViYy01NjMxLTAwAi0wMAoARgAAA1yuiwIqgIVHk4BegsO-w6IHAAXJYXRGgLlBvVJ3-qZtCvUAAAIBBgAAAAXJYXRGgLlBvVJ3-qZtCvUAAAIR8wAAAA==";
+    final static String MEETING_CAL_ID = "AQMkADAwATMwMAItMTA3NC1mMWY5LTAwAi0wMAoARgAAA5qOMtqUVcdGjwE9YSdMJv0HAI8BHxCuIO1Hp_cDF_CLsbMAAAIBBgAAAI8BHxCuIO1Hp_cDF_CLsbMAAAIU9QAAAA==";
+    final static String EVENT_CAL_ID = "AQMkADAwATMwMAItMTA3NC1mMWY5LTAwAi0wMAoARgAAA5qOMtqUVcdGjwE9YSdMJv0HAI8BHxCuIO1Hp_cDF_CLsbMAAAIBBgAAAI8BHxCuIO1Hp_cDF_CLsbMAAAIU_AAAAA==";
 
-    final static String MSGRAPH_URL_MEETINGS = "https://graph.microsoft.com/v1.0/me/calendars/"+MEETING_CAL_ID+"/calendarView?startDateTime=2018-01-01T00:00:00.0000000&endDateTime=2025-01-01T00:00:00.0000000&$orderby=start/dateTime";
-    final static String MSGRAPH_URL = "https://graph.microsoft.com/v1.0/me/calendar/calendarView?startDateTime=2018-01-01T00:00:00.0000000&endDateTime=2025-01-01T00:00:00.0000000&$orderby=start/dateTime";
+    final static String MSGRAPH_URL_MEETINGS = "https://graph.microsoft.com/beta/me/calendars/"+MEETING_CAL_ID+"/calendarView?startDateTime=2018-01-01T00:00:00.0000000&endDateTime=2025-01-01T00:00:00.0000000&$orderby=start/dateTime";
+    final static String MSGRAPH_URL = "https://graph.microsoft.com/beta/me/calendars/"+EVENT_CAL_ID+"/calendarView?startDateTime=2018-01-01T00:00:00.0000000&endDateTime=2025-01-01T00:00:00.0000000&$orderby=start/dateTime";
     //final static String MSGRAPH_URL = "https://graph.microsoft.com/v1.0/me/calendar/calendarView?startDateTime=2018-01-01T00:00:00.0000000&endDateTime=2025-01-01T00:00:00.0000000&$select=subject,isAllDay,start,end,location&$orderby=start/dateTime";
 
     /* UI & Debugging Variables */
@@ -186,7 +187,7 @@ public class MainActivity extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                //updateGraphUI(response);
+                updateGraphUI(response);
             }
         }, new Response.ErrorListener() {
             @Override
