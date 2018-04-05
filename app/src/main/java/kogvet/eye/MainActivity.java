@@ -42,14 +42,9 @@ public class MainActivity extends AppCompatActivity {
     boolean menuVisible=true;
 
     /* Azure AD v2 Configs */
-//    final static String CLIENT_ID = "22be023c-aeb7-4c9f-86b3-9230dc05d996";
     final static String CLIENT_ID = "7c1e027b-60d3-44ef-a3af-686d432785f0";
     final static String SCOPES [] = {"User.Read", "Calendars.Read", "Calendars.Read.Shared"};
 
-    final static String MEETING_CAL_ID = "AQMkADAwATMwMAItMTA3NC1mMWY5LTAwAi0wMAoARgAAA5qOMtqUVcdGjwE9YSdMJv0HAI8BHxCuIO1Hp_cDF_CLsbMAAAIBBgAAAI8BHxCuIO1Hp_cDF_CLsbMAAAIU9QAAAA==";
-    final static String EVENT_CAL_ID = "AQMkADAwATMwMAItMTA3NC1mMWY5LTAwAi0wMAoARgAAA5qOMtqUVcdGjwE9YSdMJv0HAI8BHxCuIO1Hp_cDF_CLsbMAAAIBBgAAAI8BHxCuIO1Hp_cDF_CLsbMAAAIU_AAAAA==";
-
-    final static String MSGRAPH_URL_MEETINGS = "https://graph.microsoft.com/beta/me/calendars/"+MEETING_CAL_ID+"/calendarView?startDateTime=2018-01-01T00:00:00.0000000&endDateTime=2025-01-01T00:00:00.0000000&$orderby=start/dateTime";
     final static String MSGRAPH_URL = "https://graph.microsoft.com/beta/me/calendar/calendarView?startDateTime=2018-01-01T00:00:00.0000000&endDateTime=2025-01-01T00:00:00.0000000&$orderby=start/dateTime";
     //final static String MSGRAPH_URL = "https://graph.microsoft.com/v1.0/me/calendar/calendarView?startDateTime=2018-01-01T00:00:00.0000000&endDateTime=2025-01-01T00:00:00.0000000&$select=subject,isAllDay,start,end,location&$orderby=start/dateTime";
 
@@ -183,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
                 /* Successfully called graph, process data and send to UI */
                 Log.d(TAG, "Response: " + response.toString());
                 try {
-                    allEvents = getAllEvents(response);
+                    getAllEvents(response);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -212,55 +207,55 @@ public class MainActivity extends AppCompatActivity {
         queue.add(request);
     }
 
-    private void callGraphAPIMeeting() {
-        Log.d(TAG, "Starting volley request to graph");
-
-        /* Make sure we have a token to send to graph */
-        if (authResult.getAccessToken() == null) {return;}
-
-        RequestQueue queue = Volley.newRequestQueue(this);
-        JSONObject parameters = new JSONObject();
-
-        try {
-            parameters.put("key", "value");
-        } catch (Exception e) {
-            Log.d(TAG, "Failed to put parameters: " + e.toString());
-        }
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, MSGRAPH_URL_MEETINGS,
-                parameters,new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                /* Successfully called graph, process data and send to UI */
-                Log.d(TAG, "Response: " + response.toString());
-                try {
-                    allMeetings = getAllEvents(response);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                updateGraphUI(response);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d(TAG, "Error: " + error.toString());
-            }
-        }) {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> headers = new HashMap<>();
-                headers.put("Authorization", "Bearer " + authResult.getAccessToken());
-                return headers;
-            }
-        };
-
-        Log.d(TAG, "Adding HTTP GET to Queue, Request: " + request.toString());
-
-        request.setRetryPolicy(new DefaultRetryPolicy(
-                3000,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        queue.add(request);
-    }
+//    private void callGraphAPIMeeting() {
+//        Log.d(TAG, "Starting volley request to graph");
+//
+//        /* Make sure we have a token to send to graph */
+//        if (authResult.getAccessToken() == null) {return;}
+//
+//        RequestQueue queue = Volley.newRequestQueue(this);
+//        JSONObject parameters = new JSONObject();
+//
+//        try {
+//            parameters.put("key", "value");
+//        } catch (Exception e) {
+//            Log.d(TAG, "Failed to put parameters: " + e.toString());
+//        }
+//        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, MSGRAPH_URL_MEETINGS,
+//                parameters,new Response.Listener<JSONObject>() {
+//            @Override
+//            public void onResponse(JSONObject response) {
+//                /* Successfully called graph, process data and send to UI */
+//                Log.d(TAG, "Response: " + response.toString());
+//                try {
+//                    getAllEvents(response);
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//                updateGraphUI(response);
+//            }
+//        }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                Log.d(TAG, "Error: " + error.toString());
+//            }
+//        }) {
+//            @Override
+//            public Map<String, String> getHeaders() throws AuthFailureError {
+//                Map<String, String> headers = new HashMap<>();
+//                headers.put("Authorization", "Bearer " + authResult.getAccessToken());
+//                return headers;
+//            }
+//        };
+//
+//        Log.d(TAG, "Adding HTTP GET to Queue, Request: " + request.toString());
+//
+//        request.setRetryPolicy(new DefaultRetryPolicy(
+//                3000,
+//                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+//                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+//        queue.add(request);
+//    }
 
     //
     // Helper methods manage UI updates
@@ -276,21 +271,24 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private void getAllEvents(JSONObject graphResponse) throws JSONException {
 
-    private ArrayList<Event> getAllEvents(JSONObject graphResponse) throws JSONException {
+        allEvents.clear();
+        allMeetings.clear();
+
         JSONArray array = graphResponse.getJSONArray("value");
         JSONObject object;
-        ArrayList<Event> listOfEvents = new ArrayList<>();
-
         for(int i=0; i<array.length(); i++) {
             object = array.getJSONObject(i);
 
+//            get event information
             String subject = object.getString("subject");
             String bodyPreview = object.getString("bodyPreview");
 
+//            whole day activity
             Boolean isAllDay = Boolean.parseBoolean(object.getString("isAllDay"));
 
-            //Get string and create local date time objects
+            //Get string and create local date time objects (start and end date+time)
             String stringDateTime = getDateTimeFromString(object.getString("start"));
             LocalDateTime startTimeObj = LocalDateTime.parse(stringDateTime);
             startTimeObj =  startTimeObj.plusHours(1);
@@ -298,8 +296,7 @@ public class MainActivity extends AppCompatActivity {
             stringDateTime = getDateTimeFromString(object.getString("end"));
             LocalDateTime endTimeObj = LocalDateTime.parse(stringDateTime);
             endTimeObj = endTimeObj.plusHours(1);
-
-            //Get location
+            //Get event location
             Event.Location location;
             try {
                 location = getLocationFromJson(object.getJSONObject("location"));
@@ -309,12 +306,12 @@ public class MainActivity extends AppCompatActivity {
 
             Event event = new Event(subject, bodyPreview, isAllDay, startTimeObj, endTimeObj, location);
 
-            listOfEvents.add(event);
+//            Check if event has a category (one or more category is a meeting)
+            if(object.getJSONArray("categories").length() > 0)
+                allMeetings.add(event);
+            else
+                allEvents.add(event);
         }
-
-        //Sort array (NO LONGER NEED TO SORT BECAUSE OF QUERY PARAMETERS
-//        Collections.sort(listOfEvents);
-        return listOfEvents;
     }
 
     private Event.Location getLocationFromJson(JSONObject jsonObject) throws JSONException {
@@ -396,7 +393,7 @@ public class MainActivity extends AppCompatActivity {
 
                 /* call graph */
                 callGraphAPI();
-                callGraphAPIMeeting();
+//                callGraphAPIMeeting();
 
                 /* update the UI to post call graph state */
                 updateSuccessUI();
@@ -440,7 +437,7 @@ public class MainActivity extends AppCompatActivity {
 
                 /* call graph */
                 callGraphAPI();
-                callGraphAPIMeeting();
+//                callGraphAPIMeeting();
 
                 /* update the UI to post call graph state */
                 updateSuccessUI();
@@ -628,7 +625,6 @@ public class MainActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(false);
         }
     }
-
 
 }
 
