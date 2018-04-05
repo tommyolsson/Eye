@@ -1,31 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/fragment_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
     android:gravity="center"
-    android:orientation="vertical"
-    android:weightSum="1">
+    android:orientation="vertical">
 
-     <TextView
+    <TextView
         android:id="@+id/dateToday"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0.3"
-        android:gravity="center"
+        android:layout_marginTop="16dp"
         android:text="@string/date"
-        android:textSize="30sp" />
+        android:textAlignment="center"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <android.support.v7.widget.RecyclerView
-        tools:context=".MainActivity"
         android:id="@+id/fragment_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0.7"
-        >
-    </android.support.v7.widget.RecyclerView>
+        android:layout_alignTop="@+id/dateToday"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dateToday"
+        tools:context=".MainActivity"></android.support.v7.widget.RecyclerView>
     
-</LinearLayout>
+</android.support.constraint.ConstraintLayout>
 

@@ -56,7 +56,8 @@ public class FragmentHome extends Fragment {
 
     public String getCurrentDate()
     {
-        DateFormat df = new SimpleDateFormat("EEEE, d MMMM yyyy");
+        //DateFormat df = new SimpleDateFormat("EEEE, d MMMM yyyy");
+        DateFormat df = new SimpleDateFormat("yyyy MMMM dd, EEEE");
         String date = df.format(Calendar.getInstance().getTime());
         return date;
     }
@@ -65,14 +66,16 @@ public class FragmentHome extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
 
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.fragment_recycler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        recyclerView.setAdapter(new SampleRecycler());
+//        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.fragment_recycler_view);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+//        recyclerView.setAdapter(new SampleRecycler());
 
-        //recyclerView = (RecyclerView) view.findViewById(R.id.fragment_recycler_view);
-        //recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        //HomeAdapter homeAdapter = new HomeAdapter(context, allEvents);
-        //recyclerView.setAdapter(homeAdapter);
+        if (allEvents!=null) {
+            recyclerView = (RecyclerView) view.findViewById(R.id.fragment_recycler_view);
+            recyclerView.setLayoutManager(new LinearLayoutManager(context));
+            HomeAdapter homeAdapter = new HomeAdapter(context, allEvents);
+            recyclerView.setAdapter(homeAdapter);
+        }
 
     }
 

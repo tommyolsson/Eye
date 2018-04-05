@@ -48,9 +48,8 @@ public class MainActivity extends AppCompatActivity {
     final static String MEETING_CAL_ID = "AQMkADAwATMwMAItMGViYy01NjMxLTAwAi0wMAoARgAAA1yuiwIqgIVHk4BegsO-w6IHAAXJYXRGgLlBvVJ3-qZtCvUAAAIBBgAAAAXJYXRGgLlBvVJ3-qZtCvUAAAAX1Ul0AAAA";
     final static String EVENT_CAL_ID = "AQMkADAwATMwMAItMGViYy01NjMxLTAwAi0wMAoARgAAA1yuiwIqgIVHk4BegsO-w6IHAAXJYXRGgLlBvVJ3-qZtCvUAAAIBBgAAAAXJYXRGgLlBvVJ3-qZtCvUAAAIR8wAAAA==";
 
-    final static String MSGRAPH_URL = "https://graph.microsoft.com/v1.0/me/calendars/"+EVENT_CAL_ID+"/calendarView?startDateTime=2018-01-01T00:00:00.0000000&endDateTime=2025-01-01T00:00:00.0000000&$orderby=start/dateTime";
     final static String MSGRAPH_URL_MEETINGS = "https://graph.microsoft.com/v1.0/me/calendars/"+MEETING_CAL_ID+"/calendarView?startDateTime=2018-01-01T00:00:00.0000000&endDateTime=2025-01-01T00:00:00.0000000&$orderby=start/dateTime";
-
+    final static String MSGRAPH_URL = "https://graph.microsoft.com/v1.0/me/calendar/calendarView?startDateTime=2018-01-01T00:00:00.0000000&endDateTime=2025-01-01T00:00:00.0000000&$orderby=start/dateTime";
     //final static String MSGRAPH_URL = "https://graph.microsoft.com/v1.0/me/calendar/calendarView?startDateTime=2018-01-01T00:00:00.0000000&endDateTime=2025-01-01T00:00:00.0000000&$select=subject,isAllDay,start,end,location&$orderby=start/dateTime";
 
     /* UI & Debugging Variables */
@@ -273,6 +272,7 @@ public class MainActivity extends AppCompatActivity {
     /* Sets the graph response */
     private void updateGraphUI(JSONObject graphResponse) {
         Toast.makeText(this, "Data fetched!", Toast.LENGTH_SHORT).show();
+
     }
 
 
@@ -340,23 +340,23 @@ public class MainActivity extends AppCompatActivity {
     private void updateSuccessUI() {
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.getMenu().getItem(0).setChecked(true);
+
+        Bundle bundle = new Bundle();
+        bundle.putParcelableArrayList("allevents", allEvents);
         Fragment openFragment = new FragmentHome();
-        getFragmentManager().beginTransaction().replace(R.id.rootLayout, openFragment).commit();
+        openFragment.setArguments(bundle);
+        pushFragment(openFragment);
+//        getFragmentManager().beginTransaction().replace(R.id.rootLayout, openFragment).commit();
+//        openFragment.onViewCreated(openFragment.getView(), openFragment.getArguments());
 
         findViewById(R.id.bottom_navigation).setVisibility(View.VISIBLE);
 
         menuVisible=true;
         invalidateOptionsMenu();
-
-        //findViewById(R.id.welcome).setVisibility(View.VISIBLE);
-        //((TextView) findViewById(R.id.welcome)).setText(getString(R.string.welcome, authResult.getUser().getName()));
-        //findViewById(R.id.graphData).setVisibility(View.INVISIBLE);
     }
 
     /* Set the UI for signed out user */
     private void updateSignedOutUI() {
-
-        // FIX ACTION BAR TITLE (?)
 
         Fragment openFragment = new FragmentLogin();
         getFragmentManager().beginTransaction().replace(R.id.rootLayout, openFragment).commit();
