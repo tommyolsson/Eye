@@ -62,6 +62,8 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.ViewHold
         holder.tvSubject.setText(allMeetings.get(position).subject);
         holder.tvBodyPreview.setText(allMeetings.get(position).bodyPreview);
         holder.tvLocation.setText(allMeetings.get(position).location.displayName);
+        holder.tvResponseStatus.setText(allEvents.get(position).responseStatus.response);
+
         //Set time and date
         if(allMeetings.get(position).isAllDay) {
             holder.tvTimes.setText(context.getResources().getString(R.string.timeWholeDay));
@@ -87,7 +89,7 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.ViewHold
 
     public class ViewHolder extends  RecyclerView.ViewHolder {
 
-        TextView tvSubject,tvBodyPreview,tvTimes,tvLocation,tvDate;
+        TextView tvSubject,tvBodyPreview,tvTimes,tvLocation,tvDate,tvResponseStatus;
 
         public ViewHolder(final View itemView) {
             super(itemView);
@@ -97,6 +99,7 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.ViewHold
             tvTimes = itemView.findViewById(R.id.tvTimes);
             tvLocation = itemView.findViewById(R.id.tvLocation);
             tvDate = itemView.findViewById(R.id.tvDate);
+            tvResponseStatus = itemView.findViewById(R.id.tvResponseStatus);
             
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -108,6 +111,7 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.ViewHold
                     bundle.putString("date", tvDate.getText().toString());
                     bundle.putString("time", tvTimes.getText().toString());
                     bundle.putString("location", tvLocation.getText().toString());
+                    bundle.putString("responseStatus", tvResponseStatus.getText().toString());
 
                     AppCompatActivity activity = (AppCompatActivity) view.getContext();
                     Fragment openFragment = new FragmentOpenMeeting();

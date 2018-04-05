@@ -302,12 +302,20 @@ public class MainActivity extends AppCompatActivity {
                 location = new Event.Location();
             }
 
+            //Get event responsestatus
+            Event.ResponseStatus responseStatus;
+            try {
+                responseStatus = getResponseStatusFromJson(object.getJSONObject("responseStatus"));
+            } catch (JSONException e) {
+                responseStatus = new Event.ResponseStatus();
+            }
+
             // Check if event has a category (one or more category is a meeting)
             Boolean isMeeting=false;
             if(object.getJSONArray("categories").length() > 0)
                 isMeeting = true;
 
-            Event event = new Event(subject, bodyPreview, isAllDay, isMeeting, startTimeObj, endTimeObj, location);
+            Event event = new Event(subject, bodyPreview, isAllDay, isMeeting, startTimeObj, endTimeObj, location, responseStatus);
             allEvents.add(event);
         }
     }
@@ -324,6 +332,15 @@ public class MainActivity extends AppCompatActivity {
         location.postalCode = adress.getString("postalCode");
 
         return  location;
+    }
+
+    private Event.ResponseStatus getResponseStatusFromJson(JSONObject jsonObject) throws JSONException {
+        Event.ResponseStatus responseStatus = new Event.ResponseStatus();
+
+        responseStatus.response = jsonObject.getString("response");
+        responseStatus.time = jsonObject.getString("time");
+
+        return  responseStatus;
     }
 
     private String getDateTimeFromString(String string) {
@@ -622,6 +639,10 @@ public class MainActivity extends AppCompatActivity {
         {
             actionBar.setDisplayHomeAsUpEnabled(false);
         }
+    }
+
+    public void bookMeeting(View view) {
+        Toast.makeText(this, "Test", Toast.LENGTH_SHORT).show();
     }
 
 

@@ -19,6 +19,7 @@ public class Event implements Parcelable {
     LocalDateTime startTimeObj;
     LocalDateTime endTimeObj;
     Location location;
+    ResponseStatus responseStatus;
 
     public static class Location implements  Parcelable {
         String displayName;
@@ -78,7 +79,49 @@ public class Event implements Parcelable {
         };
     }
 
-    public Event(String subject, String bodyPreview, Boolean isAllDay, Boolean isMeeting, LocalDateTime startTimeObj, LocalDateTime endTimeObj, Location location) {
+    /* Response Status */
+    public static class ResponseStatus implements  Parcelable {
+        String response;
+        String time;
+
+        public ResponseStatus() {
+            this.response = "";
+            this.time = "";
+        }
+
+        @Override
+        public  String toString() {
+            return "[ response="+response+", time="+time+"]";
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int i) {
+            dest.writeString(response);
+            dest.writeString(time);
+        }
+
+        public ResponseStatus(Parcel in) {
+            response = in.readString();
+            time = in.readString();
+        }
+
+        public static final Parcelable.Creator<ResponseStatus> CREATOR = new Parcelable.Creator<ResponseStatus>() {
+            public ResponseStatus createFromParcel(Parcel in) {
+                return new ResponseStatus(in);
+            }
+
+            public ResponseStatus[] newArray(int size) {
+                return new ResponseStatus[size];
+            }
+        };
+    }
+
+    public Event(String subject, String bodyPreview, Boolean isAllDay, Boolean isMeeting, LocalDateTime startTimeObj, LocalDateTime endTimeObj, Location location, ResponseStatus responseStatus) {
         this.subject=subject;
         this.bodyPreview=bodyPreview;
         this.isAllDay = isAllDay;
@@ -86,6 +129,7 @@ public class Event implements Parcelable {
         this.startTimeObj = startTimeObj;
         this.endTimeObj = endTimeObj;
         this.location=location;
+        this.responseStatus=responseStatus;
     }
 
     //Parcel implementation
@@ -96,6 +140,7 @@ public class Event implements Parcelable {
         startTimeObj = LocalDateTime.parse(in.readString());
         endTimeObj = LocalDateTime.parse(in.readString());
         location = in.readParcelable(Location.class.getClassLoader());
+        responseStatus = in.readParcelable(ResponseStatus.class.getClassLoader());
     }
 
     @Override
@@ -111,6 +156,7 @@ public class Event implements Parcelable {
         dest.writeString(startTimeObj.toString());
         dest.writeString(endTimeObj.toString());
         dest.writeParcelable(location, flags);
+        dest.writeParcelable(responseStatus, flags);
     }
 
     public static final Parcelable.Creator<Event> CREATOR = new Parcelable.Creator<Event>() {
