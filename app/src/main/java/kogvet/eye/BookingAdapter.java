@@ -99,7 +99,7 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.ViewHold
                     bundle.putString("location", tvLocation.getText().toString());
 
                     AppCompatActivity activity = (AppCompatActivity) view.getContext();
-                    Fragment openFragment = new FragmentOpenEvent();
+                    Fragment openFragment = new FragmentOpenMeeting();
                     openFragment.setArguments(bundle);
                     activity.getFragmentManager().beginTransaction().replace(R.id.rootLayout, openFragment).addToBackStack(null).commit();
                 }

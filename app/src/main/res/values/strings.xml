@@ -41,7 +41,8 @@
     <string name="times">%1$s - %2$s</string>
     <string name="date">YYYY-MM-DD</string>
 
-    <!-- STOP Texten ovan behöver övervägas vad som behövs eller inte. Är med just nu för att testa Microsoft Graph -->
+    <!-- Booking item -->
+    <string name="button_book">Boka möte</string>
 
     <!-- Notification test start -->
     <string name="btn1_description">Start foreground service</string>
@@ -78,8 +79,6 @@
     <string name="menu_calendar">Kalender</string>
     <string name="menu_booking">Boka</string>
 
-    <string name="text_home">Home Fragment</string>
-    <string name="text_calendar">Calendar Fragment</string>
-    <string name="text_booking">Booking Fragment</string>
+    <string name="title_login">Logga in</string>
 
 </resources>

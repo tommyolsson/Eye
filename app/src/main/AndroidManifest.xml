@@ -39,7 +39,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".NotificationService" />
-        <activity android:name=".FragmentOpenEvent"></activity>
+        <activity android:name=".FragmentOpenEvent" />
+        <activity android:name=".FragmentOpenMeeting"></activity>
     </application>
 
 </manifest>

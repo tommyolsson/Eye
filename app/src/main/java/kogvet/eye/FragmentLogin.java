@@ -17,6 +17,7 @@ public class FragmentLogin extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         ((MainActivity) getActivity()).showBackButton();
+        ((MainActivity) getActivity()).setActionBarTitle(getResources().getString(R.string.title_login));
 
         return inflater.inflate(R.layout.fragment_login, container, false);
     }
