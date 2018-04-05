@@ -38,7 +38,7 @@ import com.microsoft.identity.client.PublicClientApplication;
 public class MainActivity extends AppCompatActivity {
 
     private ArrayList<Event> allEvents = new ArrayList<>();
-    private ArrayList<Event> allMeetings = new ArrayList<>();
+//    private ArrayList<Event> allMeetings = new ArrayList<>();
     boolean menuVisible=true;
 
     /* Azure AD v2 Configs */
@@ -274,18 +274,16 @@ public class MainActivity extends AppCompatActivity {
     private void getAllEvents(JSONObject graphResponse) throws JSONException {
 
         allEvents.clear();
-        allMeetings.clear();
-
         JSONArray array = graphResponse.getJSONArray("value");
         JSONObject object;
         for(int i=0; i<array.length(); i++) {
             object = array.getJSONObject(i);
 
-//            get event information
+            // get event information
             String subject = object.getString("subject");
             String bodyPreview = object.getString("bodyPreview");
 
-//            whole day activity
+            // whole day activity
             Boolean isAllDay = Boolean.parseBoolean(object.getString("isAllDay"));
 
             //Get string and create local date time objects (start and end date+time)
@@ -304,13 +302,13 @@ public class MainActivity extends AppCompatActivity {
                 location = new Event.Location();
             }
 
-            Event event = new Event(subject, bodyPreview, isAllDay, startTimeObj, endTimeObj, location);
-
-//            Check if event has a category (one or more category is a meeting)
+            // Check if event has a category (one or more category is a meeting)
+            Boolean isMeeting=false;
             if(object.getJSONArray("categories").length() > 0)
-                allMeetings.add(event);
-            else
-                allEvents.add(event);
+                isMeeting = true;
+
+            Event event = new Event(subject, bodyPreview, isAllDay, isMeeting, startTimeObj, endTimeObj, location);
+            allEvents.add(event);
         }
     }
 
@@ -572,7 +570,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.menu_booking:
                 // Action to perform when Booking Menu item is selected.
                 bundle = new Bundle();
-                bundle.putParcelableArrayList("allmeetings", allMeetings);
+                bundle.putParcelableArrayList("allevents", allEvents);
 
                 Fragment fragmentBooking = new FragmentBooking();
                 fragmentBooking.setArguments(bundle);
@@ -625,6 +623,7 @@ public class MainActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(false);
         }
     }
+
 
 }
 

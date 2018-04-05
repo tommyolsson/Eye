@@ -25,12 +25,23 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
     private final Context context;
     private final ArrayList<Event> allEvents;
+    private final ArrayList<Event> allActivities;
     private final LocalDateTime currentTime;
 
     public MyAdapter(Context context,  ArrayList<Event> allEvents) {
         this.allEvents = allEvents;
+        this.allActivities = getAllActivities(allEvents);
         this.context = context;
         this.currentTime = getCurrentTime();
+    }
+
+    private ArrayList<Event> getAllActivities(ArrayList<Event> allEvents) {
+        ArrayList<Event> allActivites = new ArrayList<>();
+        for (int i = 0; i < allEvents.size(); i++) {
+            if (!allEvents.get(i).isMeeting)
+                allActivites.add(allEvents.get(i));
+        }
+        return allActivites;
     }
 
     private LocalDateTime getCurrentTime() {
@@ -41,7 +52,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         LayoutInflater li = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
         View view = li.inflate(R.layout.menu_item, null);
         return new ViewHolder(view);
     }
@@ -49,22 +59,22 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     //Set text for each item
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.tvSubject.setText(allEvents.get(position).subject);
-        holder.tvBodyPreview.setText(allEvents.get(position).bodyPreview);
-        holder.tvLocation.setText(allEvents.get(position).location.displayName);
+        holder.tvSubject.setText(allActivities.get(position).subject);
+        holder.tvBodyPreview.setText(allActivities.get(position).bodyPreview);
+        holder.tvLocation.setText(allActivities.get(position).location.displayName);
         //Set time and date
-        if(allEvents.get(position).isAllDay) {
+        if(allActivities.get(position).isAllDay) {
             holder.tvTimes.setText(context.getResources().getString(R.string.timeWholeDay));
-            holder.tvDate.setText(allEvents.get(position).getStartDate());
+            holder.tvDate.setText(allActivities.get(position).getStartDate());
         }
         else{
             //get time and put in format (see strings)
-            String times = context.getResources().getString(R.string.times, allEvents.get(position).getStartTime(), allEvents.get(position).getEndTime());
+            String times = context.getResources().getString(R.string.times, allActivities.get(position).getStartTime(), allActivities.get(position).getEndTime());
             holder.tvTimes.setText(times);
-            holder.tvDate.setText(allEvents.get(position).getEndDate());
+            holder.tvDate.setText(allActivities.get(position).getEndDate());
         }
 
-        if (currentTime.isAfter(allEvents.get(position).startTimeObj)) {
+        if (currentTime.isAfter(allActivities.get(position).startTimeObj)) {
             ((CardView) holder.itemView).setCardBackgroundColor(ContextCompat.getColor(context, R.color.gray));
             (holder.itemView).setAlpha((float) 0.4);
         }
@@ -72,7 +82,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return allEvents.size();
+        return allActivities.size();
     }
 
     public class ViewHolder extends  RecyclerView.ViewHolder {

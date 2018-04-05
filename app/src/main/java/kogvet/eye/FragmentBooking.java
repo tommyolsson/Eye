@@ -30,7 +30,7 @@ public class FragmentBooking extends Fragment {
         Bundle bundle = getArguments();
         if(bundle != null)
         {
-            allEvents = bundle.getParcelableArrayList("allmeetings");
+            allEvents = bundle.getParcelableArrayList("allevents");
 
         }
     }

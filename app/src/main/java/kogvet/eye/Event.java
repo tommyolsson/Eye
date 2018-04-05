@@ -10,17 +10,13 @@ import java.time.LocalDateTime;
  * Created by Loldator on 2018-02-28.
  */
 
-//, Comparable<Event>
 public class Event implements Parcelable {
 
     String subject;
     String bodyPreview;
     Boolean isAllDay;
-    //String startDate;
-    //String startTime;
+    Boolean isMeeting;
     LocalDateTime startTimeObj;
-    String endDate;
-    String endTime;
     LocalDateTime endTimeObj;
     Location location;
 
@@ -82,23 +78,11 @@ public class Event implements Parcelable {
         };
     }
 
-    /*
-    public Event() {
-        this.subject="";
-        this.bodyPreview="";
-        this.startDate="";
-        this.startTime="";
-        this.isAllDay = false;
-        this.endDate="";
-        this.endTime="";
-        this.location=new Location();
-    }
-    */
-
-    public Event(String subject, String bodyPreview, Boolean isAllDay, LocalDateTime startTimeObj, LocalDateTime endTimeObj, Location location) {
+    public Event(String subject, String bodyPreview, Boolean isAllDay, Boolean isMeeting, LocalDateTime startTimeObj, LocalDateTime endTimeObj, Location location) {
         this.subject=subject;
         this.bodyPreview=bodyPreview;
         this.isAllDay = isAllDay;
+        this.isMeeting = isMeeting;
         this.startTimeObj = startTimeObj;
         this.endTimeObj = endTimeObj;
         this.location=location;
@@ -129,7 +113,6 @@ public class Event implements Parcelable {
         dest.writeParcelable(location, flags);
     }
 
-    //@SuppressWarnings("unused")
     public static final Parcelable.Creator<Event> CREATOR = new Parcelable.Creator<Event>() {
         @Override
         public Event createFromParcel(Parcel in) {

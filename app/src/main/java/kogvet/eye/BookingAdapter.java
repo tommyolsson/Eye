@@ -24,12 +24,23 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.ViewHold
 
     private final Context context;
     private final ArrayList<Event> allEvents;
+    private final ArrayList<Event> allMeetings;
     private final LocalDateTime currentTime;
 
     public BookingAdapter(Context context, ArrayList<Event> allEvents) {
         this.allEvents = allEvents;
+        this.allMeetings = getMeetings(allEvents);
         this.context = context;
         this.currentTime = getCurrentTime();
+    }
+
+    private ArrayList<Event> getMeetings(ArrayList<Event> allEvents) {
+        ArrayList<Event> allMeetings = new ArrayList<>();
+        for (int i = 0; i < allEvents.size(); i++) {
+            if (allEvents.get(i).isMeeting)
+                allMeetings.add(allEvents.get(i));
+        }
+        return allMeetings;
     }
 
     private LocalDateTime getCurrentTime() {
@@ -48,22 +59,22 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.ViewHold
     //Set text for each item
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.tvSubject.setText(allEvents.get(position).subject);
-        holder.tvBodyPreview.setText(allEvents.get(position).bodyPreview);
-        holder.tvLocation.setText(allEvents.get(position).location.displayName);
+        holder.tvSubject.setText(allMeetings.get(position).subject);
+        holder.tvBodyPreview.setText(allMeetings.get(position).bodyPreview);
+        holder.tvLocation.setText(allMeetings.get(position).location.displayName);
         //Set time and date
-        if(allEvents.get(position).isAllDay) {
+        if(allMeetings.get(position).isAllDay) {
             holder.tvTimes.setText(context.getResources().getString(R.string.timeWholeDay));
-            holder.tvDate.setText(allEvents.get(position).getStartDate());
+            holder.tvDate.setText(allMeetings.get(position).getStartDate());
         }
         else{
             //get time and put in format (see strings)
-            String times = context.getResources().getString(R.string.times, allEvents.get(position).getStartTime(), allEvents.get(position).getEndTime());
+            String times = context.getResources().getString(R.string.times, allMeetings.get(position).getStartTime(), allMeetings.get(position).getEndTime());
             holder.tvTimes.setText(times);
-            holder.tvDate.setText(allEvents.get(position).getEndDate());
+            holder.tvDate.setText(allMeetings.get(position).getEndDate());
         }
-
-        if (currentTime.isAfter(allEvents.get(position).startTimeObj)) {
+        // Set gray if date has passed.
+        if (currentTime.isAfter(allMeetings.get(position).startTimeObj)) {
             ((CardView) holder.itemView).setCardBackgroundColor(ContextCompat.getColor(context, R.color.gray));
             (holder.itemView).setAlpha((float) 0.4);
         }
@@ -71,7 +82,7 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.ViewHold
 
     @Override
     public int getItemCount() {
-        return allEvents.size();
+        return allMeetings.size();
     }
 
     public class ViewHolder extends  RecyclerView.ViewHolder {
