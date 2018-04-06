@@ -42,8 +42,8 @@ public class MainActivity extends AppCompatActivity {
     boolean menuVisible=true;
 
     /* Azure AD v2 Configs */
-    final static String CLIENT_ID = "7c1e027b-60d3-44ef-a3af-686d432785f0";
-    final static String SCOPES [] = {"User.Read", "Calendars.Read", "Calendars.Read.Shared"};
+    final static String CLIENT_ID = "fac1a20e-54f5-49d2-ae55-724b980a2eb9";
+    final static String SCOPES [] = {"User.Read", "Calendars.Read", "Calendars.Read.Shared", "Calendars.ReadWrite"};
 
     final static String MSGRAPH_URL = "https://graph.microsoft.com/beta/me/calendar/calendarView?startDateTime=2018-01-01T00:00:00.0000000&endDateTime=2025-01-01T00:00:00.0000000&$orderby=start/dateTime";
     //final static String MSGRAPH_URL = "https://graph.microsoft.com/v1.0/me/calendar/calendarView?startDateTime=2018-01-01T00:00:00.0000000&endDateTime=2025-01-01T00:00:00.0000000&$select=subject,isAllDay,start,end,location&$orderby=start/dateTime";
@@ -207,64 +207,6 @@ public class MainActivity extends AppCompatActivity {
         queue.add(request);
     }
 
-//    private void callGraphAPIMeeting() {
-//        Log.d(TAG, "Starting volley request to graph");
-//
-//        /* Make sure we have a token to send to graph */
-//        if (authResult.getAccessToken() == null) {return;}
-//
-//        RequestQueue queue = Volley.newRequestQueue(this);
-//        JSONObject parameters = new JSONObject();
-//
-//        try {
-//            parameters.put("key", "value");
-//        } catch (Exception e) {
-//            Log.d(TAG, "Failed to put parameters: " + e.toString());
-//        }
-//        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, MSGRAPH_URL_MEETINGS,
-//                parameters,new Response.Listener<JSONObject>() {
-//            @Override
-//            public void onResponse(JSONObject response) {
-//                /* Successfully called graph, process data and send to UI */
-//                Log.d(TAG, "Response: " + response.toString());
-//                try {
-//                    getAllEvents(response);
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//                updateGraphUI(response);
-//            }
-//        }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                Log.d(TAG, "Error: " + error.toString());
-//            }
-//        }) {
-//            @Override
-//            public Map<String, String> getHeaders() throws AuthFailureError {
-//                Map<String, String> headers = new HashMap<>();
-//                headers.put("Authorization", "Bearer " + authResult.getAccessToken());
-//                return headers;
-//            }
-//        };
-//
-//        Log.d(TAG, "Adding HTTP GET to Queue, Request: " + request.toString());
-//
-//        request.setRetryPolicy(new DefaultRetryPolicy(
-//                3000,
-//                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-//                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-//        queue.add(request);
-//    }
-
-    //
-    // Helper methods manage UI updates
-    // ================================
-    // updateGraphUI() - Sets graph response in UI
-    // updateSuccessUI() - Updates UI when token acquisition succeeds
-    // updateSignedOutUI() - Updates UI when app sign out succeeds
-    //
-
     /* Sets the graph response */
     private void updateGraphUI(JSONObject graphResponse) {
         Toast.makeText(this, "Data fetched!", Toast.LENGTH_SHORT).show();
@@ -280,6 +222,7 @@ public class MainActivity extends AppCompatActivity {
             object = array.getJSONObject(i);
 
             // get event information
+            String id = object.getString("id");
             String subject = object.getString("subject");
             String bodyPreview = object.getString("bodyPreview");
 
@@ -315,7 +258,7 @@ public class MainActivity extends AppCompatActivity {
             if(object.getJSONArray("categories").length() > 0)
                 isMeeting = true;
 
-            Event event = new Event(subject, bodyPreview, isAllDay, isMeeting, startTimeObj, endTimeObj, location, responseStatus);
+            Event event = new Event(id, subject, bodyPreview, isAllDay, isMeeting, startTimeObj, endTimeObj, location, responseStatus);
             allEvents.add(event);
         }
     }
@@ -643,8 +586,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void bookMeeting(View view) {
         Toast.makeText(this, "Test", Toast.LENGTH_SHORT).show();
-    }
 
+
+    }
 
 }
 
