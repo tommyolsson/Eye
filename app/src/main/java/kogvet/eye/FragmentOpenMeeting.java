@@ -64,4 +64,5 @@ public class FragmentOpenMeeting extends Fragment {
         return inf;
     }
 
+
 }

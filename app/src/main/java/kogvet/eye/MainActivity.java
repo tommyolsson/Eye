@@ -40,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
     boolean menuVisible=true;
 
     /* Azure AD v2 Configs */
-
     final static String CLIENT_ID = "fac1a20e-54f5-49d2-ae55-724b980a2eb9";
     final static String SCOPES [] = {"User.Read", "Calendars.Read", "Calendars.Read.Shared", "Calendars.ReadWrite"};
 
@@ -182,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                toastSuccessGraph(response);
+                toastSuccessGraph();
             }
         }, new Response.ErrorListener() {
             @Override
@@ -207,8 +206,55 @@ public class MainActivity extends AppCompatActivity {
         queue.add(request);
     }
 
+    private void postGraphAPI(String url) {
+        Log.d(TAG, "Starting volley request to graph");
+
+        /* Make sure we have a token to send to graph */
+        if (authResult.getAccessToken() == null) {return;}
+
+        RequestQueue queue = Volley.newRequestQueue(this);
+        JSONObject parameters = new JSONObject();
+
+        try {
+            parameters.put("key", "value");
+            parameters.put("comment", "test");
+            parameters.put("sendResponse", true);
+        } catch (Exception e) {
+            Log.d(TAG, "Failed to put parameters: " + e.toString());
+        }
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url,
+                parameters,new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                /* Successfully called graph, process data and send to UI */
+                Log.d(TAG, "Response: " + response.toString());
+                toastSuccessGraph();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d(TAG, "Error: " + error.toString());
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + authResult.getAccessToken());
+                return headers;
+            }
+        };
+
+        Log.d(TAG, "Adding HTTP POST to Queue, Request: " + request.toString());
+
+        request.setRetryPolicy(new DefaultRetryPolicy(
+                3000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        queue.add(request);
+    }
+
     /* Sets the graph response */
-    private void toastSuccessGraph(JSONObject graphResponse) {
+    private void toastSuccessGraph() {
         Toast.makeText(this, R.string.graphUpdate, Toast.LENGTH_SHORT).show();
     }
 
@@ -583,9 +629,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void bookMeeting(View view) {
+
+        // FUnkar inte riktigt
+//        String id = "AQMkADAwATMwMAItMTA3NC1mMWY5LTAwAi0wMAoARgAAA5qOMtqUVcdGjwE9YSdMJv0HAI8BHxCuIO1Hp_cDF_CLsbMAAAIBDQAAAI8BHxCuIO1Hp_cDF_CLsbMAAAIgrQAAAA==";
+//        String url="https://graph.microsoft.com/beta/me/events/"+id+"/accept";
+//        postGraphAPI(url);
         Toast.makeText(this, "Test", Toast.LENGTH_SHORT).show();
-
-
     }
 
 }
