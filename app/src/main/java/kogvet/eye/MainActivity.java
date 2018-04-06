@@ -38,10 +38,11 @@ import com.microsoft.identity.client.PublicClientApplication;
 public class MainActivity extends AppCompatActivity {
 
     private ArrayList<Event> allEvents = new ArrayList<>();
-//    private ArrayList<Event> allMeetings = new ArrayList<>();
     boolean menuVisible=true;
 
     /* Azure AD v2 Configs */
+//    final static String CLIENT_ID = "21a50112-438f-4914-8923-308c251cccf7";
+//    final static String CLIENT_ID = "25232e8d-f6bd-45e4-a42c-f2835aea78e5";
     final static String CLIENT_ID = "7c1e027b-60d3-44ef-a3af-686d432785f0";
     final static String SCOPES [] = {"User.Read", "Calendars.Read", "Calendars.Read.Shared"};
 
@@ -73,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
         /* Attempt to get a user and acquireTokenSilent
          * If this fails we do an interactive request
          */
-        List<User> users = null;
+        List<User> users=null;
         try {
             users = sampleApp.getUsers();
 
@@ -83,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 /* We have no user */
                 updateSignedOutUI();
-                //sampleApp.acquireToken(getActivity(), SCOPES, getAuthInteractiveCallback());
+//                sampleApp.acquireToken(getActivity(), SCOPES, getAuthInteractiveCallback());
 
             }
         } catch (MsalClientException e) {
@@ -354,13 +355,14 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.getMenu().getItem(0).setChecked(true);
 
-        Bundle bundle = new Bundle();
-        bundle.putParcelableArrayList("allevents", allEvents);
+//        Bundle bundle = new Bundle();
+//        bundle.putParcelableArrayList("allevents", allEvents);
         Fragment openFragment = new FragmentHome();
-        openFragment.setArguments(bundle);
-        pushFragment(openFragment);
-//        getFragmentManager().beginTransaction().replace(R.id.rootLayout, openFragment).commit();
-//        openFragment.onViewCreated(openFragment.getView(), openFragment.getArguments());
+//        openFragment.setArguments(bundle);
+//        pushFragment(openFragment);
+
+        getFragmentManager().beginTransaction().replace(R.id.rootLayout, openFragment).commit();
+        openFragment.onViewCreated(openFragment.getView(), openFragment.getArguments());
 
         findViewById(R.id.bottom_navigation).setVisibility(View.VISIBLE);
 
