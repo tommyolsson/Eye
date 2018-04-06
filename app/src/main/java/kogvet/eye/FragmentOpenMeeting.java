@@ -15,6 +15,7 @@ import android.widget.TextView;
  */
 public class FragmentOpenMeeting extends Fragment {
 
+    private String eventId;
     private String eventSubject;
     private String eventBodyPreview;
     private String eventDate;
@@ -28,6 +29,7 @@ public class FragmentOpenMeeting extends Fragment {
         Bundle bundle = getArguments();
         if(bundle != null)
         {
+            eventId = bundle.getString("id");
             eventSubject = bundle.getString("subject");
             eventBodyPreview = bundle.getString("bodyPreview");
             eventDate = bundle.getString("date");

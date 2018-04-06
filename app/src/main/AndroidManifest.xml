@@ -30,12 +30,12 @@
 
                 <data
                     android:host="auth"
-                    android:scheme="msal7c1e027b-60d3-44ef-a3af-686d432785f0" />
+                    android:scheme="msalfac1a20e-54f5-49d2-ae55-724b980a2eb9" />
                 <!-- Add in your scheme/host from registered redirect URI -->
                 <!-- By default, the scheme should be similar to 'msal[appId]' -->
                 <data
                     android:host="auth"
-                    android:scheme="msal7c1e027b-60d3-44ef-a3af-686d432785f0" />
+                    android:scheme="msalfac1a20e-54f5-49d2-ae55-724b980a2eb9" />
             </intent-filter>
         </activity>
         <activity android:name=".NotificationService" />

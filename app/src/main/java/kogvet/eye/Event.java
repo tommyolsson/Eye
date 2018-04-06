@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 
 public class Event implements Parcelable {
 
+    String id;
     String subject;
     String bodyPreview;
     Boolean isAllDay;
@@ -121,7 +122,8 @@ public class Event implements Parcelable {
         };
     }
 
-    public Event(String subject, String bodyPreview, Boolean isAllDay, Boolean isMeeting, LocalDateTime startTimeObj, LocalDateTime endTimeObj, Location location, ResponseStatus responseStatus) {
+    public Event(String id, String subject, String bodyPreview, Boolean isAllDay, Boolean isMeeting, LocalDateTime startTimeObj, LocalDateTime endTimeObj, Location location, ResponseStatus responseStatus) {
+        this.id=id;
         this.subject=subject;
         this.bodyPreview=bodyPreview;
         this.isAllDay = isAllDay;
@@ -134,6 +136,7 @@ public class Event implements Parcelable {
 
     //Parcel implementation
     private Event(Parcel in) {
+        id = in.readString();
         subject = in.readString();
         bodyPreview = in.readString();
         isAllDay = in.readInt() == 1;
@@ -150,6 +153,7 @@ public class Event implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
         dest.writeString(subject);
         dest.writeString(bodyPreview);
         dest.writeInt(isAllDay ? 1 : 0);
