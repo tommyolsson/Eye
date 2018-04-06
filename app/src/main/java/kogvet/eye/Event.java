@@ -175,6 +175,9 @@ public class Event implements Parcelable {
         }
     };
 
+    public String getId() {
+        return this.id;
+    }
 
     public String getStartDate() {
         String string = this.startTimeObj.toString();
@@ -198,6 +201,10 @@ public class Event implements Parcelable {
         String string = this.endTimeObj.toString();
         String[] segments = string.split("T");
         return segments[1];
+    }
+
+    public String getResonse() {
+        return this.responseStatus.response;
     }
 
     @Override

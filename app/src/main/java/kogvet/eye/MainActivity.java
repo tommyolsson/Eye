@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
 //    final static String CLIENT_ID = "21a50112-438f-4914-8923-308c251cccf7";
 //    final static String CLIENT_ID = "25232e8d-f6bd-45e4-a42c-f2835aea78e5";
-    
+
     final static String CLIENT_ID = "fac1a20e-54f5-49d2-ae55-724b980a2eb9";
     final static String SCOPES [] = {"User.Read", "Calendars.Read", "Calendars.Read.Shared", "Calendars.ReadWrite"};
 
@@ -223,47 +223,46 @@ public class MainActivity extends AppCompatActivity {
         JSONObject object;
         for(int i=0; i<array.length(); i++) {
             object = array.getJSONObject(i);
-
-            // get event information
-            String id = object.getString("id");
-            String subject = object.getString("subject");
-            String bodyPreview = object.getString("bodyPreview");
-
-            // whole day activity
-            Boolean isAllDay = Boolean.parseBoolean(object.getString("isAllDay"));
-
-            //Get string and create local date time objects (start and end date+time)
-            String stringDateTime = getDateTimeFromString(object.getString("start"));
-            LocalDateTime startTimeObj = LocalDateTime.parse(stringDateTime);
-            startTimeObj =  startTimeObj.plusHours(1);
-
-            stringDateTime = getDateTimeFromString(object.getString("end"));
-            LocalDateTime endTimeObj = LocalDateTime.parse(stringDateTime);
-            endTimeObj = endTimeObj.plusHours(1);
-            //Get event location
-            Event.Location location;
-            try {
-                location = getLocationFromJson(object.getJSONObject("location"));
-            } catch (JSONException e) {
-                location = new Event.Location();
-            }
-
-            //Get event responsestatus
-            Event.ResponseStatus responseStatus;
-            try {
-                responseStatus = getResponseStatusFromJson(object.getJSONObject("responseStatus"));
-            } catch (JSONException e) {
-                responseStatus = new Event.ResponseStatus();
-            }
-
-            // Check if event has a category (one or more category is a meeting)
-            Boolean isMeeting=false;
-            if(object.getJSONArray("categories").length() > 0)
-                isMeeting = true;
-
-            Event event = new Event(id, subject, bodyPreview, isAllDay, isMeeting, startTimeObj, endTimeObj, location, responseStatus);
+            Event event = buildEvent(object);
             allEvents.add(event);
         }
+    }
+
+    private Event buildEvent(JSONObject object) throws JSONException {
+        // get event information
+        String id = object.getString("id");
+        String subject = object.getString("subject");
+        String bodyPreview = object.getString("bodyPreview");
+
+        // whole day activity
+        Boolean isAllDay = Boolean.parseBoolean(object.getString("isAllDay"));
+
+        // Check if event has a category (one or more category is a meeting)
+        Boolean isMeeting=false;
+        if(object.getJSONArray("categories").length() > 0)
+            isMeeting = true;
+
+        //Get string and create local date time objects (start and end date+time)
+        LocalDateTime startTimeObj = getDateTimeFromString(object.getString("start"));
+        LocalDateTime endTimeObj = getDateTimeFromString(object.getString("end"));
+
+        //Get event location
+        Event.Location location;
+        try {
+            location = getLocationFromJson(object.getJSONObject("location"));
+        } catch (JSONException e) {
+            location = new Event.Location();
+        }
+
+        //Get event ResponseStatus
+        Event.ResponseStatus responseStatus;
+        try {
+            responseStatus = getResponseStatusFromJson(object.getJSONObject("responseStatus"));
+        } catch (JSONException e) {
+            responseStatus = new Event.ResponseStatus();
+        }
+
+        return new Event(id, subject, bodyPreview, isAllDay, isMeeting, startTimeObj, endTimeObj, location, responseStatus);
     }
 
     private Event.Location getLocationFromJson(JSONObject jsonObject) throws JSONException {
@@ -289,10 +288,13 @@ public class MainActivity extends AppCompatActivity {
         return  responseStatus;
     }
 
-    private String getDateTimeFromString(String string) {
+    private LocalDateTime getDateTimeFromString(String string) {
         //Get startDate and startTime from JsonString
         String [] segments = string.split("\"");
-        return  segments[3].substring(0,16);
+        LocalDateTime ldt = LocalDateTime.parse(segments[3].substring(0, 16));
+        // Add one extra hour to correct for timezone
+        ldt.plusHours(1);
+        return ldt;
     }
 
     /* Set the UI for successful token acquisition data */
@@ -300,14 +302,14 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.getMenu().getItem(0).setChecked(true);
 
-//        Bundle bundle = new Bundle();
-//        bundle.putParcelableArrayList("allevents", allEvents);
+        Bundle bundle = new Bundle();
+        bundle.putParcelableArrayList("allevents", allEvents);
         Fragment openFragment = new FragmentHome();
-//        openFragment.setArguments(bundle);
-//        pushFragment(openFragment);
+        openFragment.setArguments(bundle);
+        pushFragment(openFragment);
 
-        getFragmentManager().beginTransaction().replace(R.id.rootLayout, openFragment).commit();
-        openFragment.onViewCreated(openFragment.getView(), openFragment.getArguments());
+//        getFragmentManager().beginTransaction().replace(R.id.rootLayout, openFragment).commit();
+//        openFragment.onViewCreated(openFragment.getView(), openFragment.getArguments());
 
         findViewById(R.id.bottom_navigation).setVisibility(View.VISIBLE);
 
@@ -355,7 +357,6 @@ public class MainActivity extends AppCompatActivity {
 
                 /* call graph */
                 callGraphAPI();
-//                callGraphAPIMeeting();
 
                 /* update the UI to post call graph state */
                 updateSuccessUI();
@@ -399,7 +400,6 @@ public class MainActivity extends AppCompatActivity {
 
                 /* call graph */
                 callGraphAPI();
-//                callGraphAPIMeeting();
 
                 /* update the UI to post call graph state */
                 updateSuccessUI();
