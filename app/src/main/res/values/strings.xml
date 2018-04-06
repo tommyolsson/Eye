@@ -31,6 +31,8 @@
 
     <!--Main activity-->
     <string name="connect">Logga in</string>
+    <string name="graphUpdate">Data fetched!</string>
+
 
     <!--viewCalendar Acitivty-->
     <string name="subject">Subject</string>

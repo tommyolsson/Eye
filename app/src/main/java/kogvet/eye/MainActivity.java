@@ -14,7 +14,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 import com.android.volley.*;
 import com.android.volley.toolbox.JsonObjectRequest;
@@ -42,14 +41,11 @@ public class MainActivity extends AppCompatActivity {
 
     /* Azure AD v2 Configs */
 
-//    final static String CLIENT_ID = "21a50112-438f-4914-8923-308c251cccf7";
-//    final static String CLIENT_ID = "25232e8d-f6bd-45e4-a42c-f2835aea78e5";
-
     final static String CLIENT_ID = "fac1a20e-54f5-49d2-ae55-724b980a2eb9";
     final static String SCOPES [] = {"User.Read", "Calendars.Read", "Calendars.Read.Shared", "Calendars.ReadWrite"};
 
     final static String MSGRAPH_URL = "https://graph.microsoft.com/beta/me/calendar/calendarView?startDateTime=2018-01-01T00:00:00.0000000&endDateTime=2025-01-01T00:00:00.0000000&$orderby=start/dateTime";
-    //final static String MSGRAPH_URL = "https://graph.microsoft.com/v1.0/me/calendar/calendarView?startDateTime=2018-01-01T00:00:00.0000000&endDateTime=2025-01-01T00:00:00.0000000&$select=subject,isAllDay,start,end,location&$orderby=start/dateTime";
+    //final static String MSGRAPH_URL = "https://graph.microsoft.com/beta/me/calendar/calendarView?startDateTime=2018-01-01T00:00:00.0000000&endDateTime=2025-01-01T00:00:00.0000000&$select=subject,isAllDay,start,end,location&$orderby=start/dateTime";
 
     /* UI & Debugging Variables */
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -182,10 +178,11 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, "Response: " + response.toString());
                 try {
                     getAllEvents(response);
+                    updateSuccessUI();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                updateGraphUI(response);
+                toastSuccessGraph(response);
             }
         }, new Response.ErrorListener() {
             @Override
@@ -211,9 +208,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /* Sets the graph response */
-    private void updateGraphUI(JSONObject graphResponse) {
-        Toast.makeText(this, "Data fetched!", Toast.LENGTH_SHORT).show();
-
+    private void toastSuccessGraph(JSONObject graphResponse) {
+        Toast.makeText(this, R.string.graphUpdate, Toast.LENGTH_SHORT).show();
     }
 
     private void getAllEvents(JSONObject graphResponse) throws JSONException {
@@ -324,7 +320,6 @@ public class MainActivity extends AppCompatActivity {
         getFragmentManager().beginTransaction().replace(R.id.rootLayout, openFragment).commit();
 
         findViewById(R.id.bottom_navigation).setVisibility(View.INVISIBLE);
-
         menuVisible=false;
         invalidateOptionsMenu();
     }
@@ -359,7 +354,7 @@ public class MainActivity extends AppCompatActivity {
                 callGraphAPI();
 
                 /* update the UI to post call graph state */
-                updateSuccessUI();
+//                updateSuccessUI();
             }
 
             @Override
@@ -402,7 +397,7 @@ public class MainActivity extends AppCompatActivity {
                 callGraphAPI();
 
                 /* update the UI to post call graph state */
-                updateSuccessUI();
+//                updateSuccessUI();
             }
 
             @Override
@@ -478,7 +473,6 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
 
     /* Bottom Navigation bar and fragments  */
     private void setupNavigationView() {
