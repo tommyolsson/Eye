@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
  * Created by Loldator on 2018-02-28.
  */
 
-public class Event implements Parcelable {
+public class EventClass implements Parcelable {
 
     String id;
     String subject;
@@ -122,7 +122,7 @@ public class Event implements Parcelable {
         };
     }
 
-    public Event(String id, String subject, String bodyPreview, Boolean isAllDay, Boolean isMeeting, LocalDateTime startTimeObj, LocalDateTime endTimeObj, Location location, ResponseStatus responseStatus) {
+    public EventClass(String id, String subject, String bodyPreview, Boolean isAllDay, Boolean isMeeting, LocalDateTime startTimeObj, LocalDateTime endTimeObj, Location location, ResponseStatus responseStatus) {
         this.id=id;
         this.subject=subject;
         this.bodyPreview=bodyPreview;
@@ -135,7 +135,7 @@ public class Event implements Parcelable {
     }
 
     //Parcel implementation
-    private Event(Parcel in) {
+    private EventClass(Parcel in) {
         id = in.readString();
         subject = in.readString();
         bodyPreview = in.readString();
@@ -163,15 +163,15 @@ public class Event implements Parcelable {
         dest.writeParcelable(responseStatus, flags);
     }
 
-    public static final Parcelable.Creator<Event> CREATOR = new Parcelable.Creator<Event>() {
+    public static final Parcelable.Creator<EventClass> CREATOR = new Parcelable.Creator<EventClass>() {
         @Override
-        public Event createFromParcel(Parcel in) {
-            return new Event(in);
+        public EventClass createFromParcel(Parcel in) {
+            return new EventClass(in);
         }
 
         @Override
-        public Event[] newArray(int size) {
-            return new Event[size];
+        public EventClass[] newArray(int size) {
+            return new EventClass[size];
         }
     };
 

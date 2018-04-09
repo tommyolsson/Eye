@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.Toast;
 import com.android.volley.*;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
@@ -34,9 +35,11 @@ import com.microsoft.identity.client.*;
 import com.microsoft.identity.client.AuthenticationResult;
 import com.microsoft.identity.client.PublicClientApplication;
 
+
+
 public class MainActivity extends AppCompatActivity {
 
-    private ArrayList<Event> allEvents = new ArrayList<>();
+    private ArrayList<EventClass> allEvents = new ArrayList<>();
     boolean menuVisible=true;
 
     /* Azure AD v2 Configs */
@@ -212,23 +215,20 @@ public class MainActivity extends AppCompatActivity {
         /* Make sure we have a token to send to graph */
         if (authResult.getAccessToken() == null) {return;}
 
-        RequestQueue queue = Volley.newRequestQueue(this);
-        JSONObject parameters = new JSONObject();
+        Map<String, String> jsonParams = new HashMap<>();
+        jsonParams.put("comment", "test");
 
-        try {
-            parameters.put("key", "value");
-            parameters.put("comment", "test");
-            parameters.put("sendResponse", true);
-        } catch (Exception e) {
-            Log.d(TAG, "Failed to put parameters: " + e.toString());
-        }
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url,
-                parameters,new Response.Listener<JSONObject>() {
+        RequestQueue queue = Volley.newRequestQueue(this);
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,
+                url,
+                new JSONObject(jsonParams),
+                new Response.Listener<JSONObject>() {
+
             @Override
             public void onResponse(JSONObject response) {
                 /* Successfully called graph, process data and send to UI */
                 Log.d(TAG, "Response: " + response.toString());
-                toastSuccessGraph();
             }
         }, new Response.ErrorListener() {
             @Override
@@ -236,10 +236,19 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, "Error: " + error.toString());
             }
         }) {
+
+            @Override
+            protected Map<String,String> getParams() {
+                HashMap<String, String> params = new HashMap<>();
+                params.put("key", "value");
+                return params;
+            }
+
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headers = new HashMap<>();
                 headers.put("Authorization", "Bearer " + authResult.getAccessToken());
+                headers.put("Content-Type", "application/json; charset=utf-8");
                 return headers;
             }
         };
@@ -265,12 +274,12 @@ public class MainActivity extends AppCompatActivity {
         JSONObject object;
         for(int i=0; i<array.length(); i++) {
             object = array.getJSONObject(i);
-            Event event = buildEvent(object);
+            EventClass event = buildEvent(object);
             allEvents.add(event);
         }
     }
 
-    private Event buildEvent(JSONObject object) throws JSONException {
+    private EventClass buildEvent(JSONObject object) throws JSONException {
         // get event information
         String id = object.getString("id");
         String subject = object.getString("subject");
@@ -289,26 +298,26 @@ public class MainActivity extends AppCompatActivity {
         LocalDateTime endTimeObj = getDateTimeFromString(object.getString("end"));
 
         //Get event location
-        Event.Location location;
+        EventClass.Location location;
         try {
             location = getLocationFromJson(object.getJSONObject("location"));
         } catch (JSONException e) {
-            location = new Event.Location();
+            location = new EventClass.Location();
         }
 
         //Get event ResponseStatus
-        Event.ResponseStatus responseStatus;
+        EventClass.ResponseStatus responseStatus;
         try {
             responseStatus = getResponseStatusFromJson(object.getJSONObject("responseStatus"));
         } catch (JSONException e) {
-            responseStatus = new Event.ResponseStatus();
+            responseStatus = new EventClass.ResponseStatus();
         }
 
-        return new Event(id, subject, bodyPreview, isAllDay, isMeeting, startTimeObj, endTimeObj, location, responseStatus);
+        return new EventClass(id, subject, bodyPreview, isAllDay, isMeeting, startTimeObj, endTimeObj, location, responseStatus);
     }
 
-    private Event.Location getLocationFromJson(JSONObject jsonObject) throws JSONException {
-        Event.Location location = new Event.Location();
+    private EventClass.Location getLocationFromJson(JSONObject jsonObject) throws JSONException {
+        EventClass.Location location = new EventClass.Location();
 
         location.displayName = jsonObject.getString("displayName");
         JSONObject adress = jsonObject.getJSONObject("address");
@@ -321,8 +330,8 @@ public class MainActivity extends AppCompatActivity {
         return  location;
     }
 
-    private Event.ResponseStatus getResponseStatusFromJson(JSONObject jsonObject) throws JSONException {
-        Event.ResponseStatus responseStatus = new Event.ResponseStatus();
+    private EventClass.ResponseStatus getResponseStatusFromJson(JSONObject jsonObject) throws JSONException {
+        EventClass.ResponseStatus responseStatus = new EventClass.ResponseStatus();
 
         responseStatus.response = jsonObject.getString("response");
         responseStatus.time = jsonObject.getString("time");
@@ -630,11 +639,12 @@ public class MainActivity extends AppCompatActivity {
 
     public void bookMeeting(View view) {
 
-        // FUnkar inte riktigt
-//        String id = "AQMkADAwATMwMAItMTA3NC1mMWY5LTAwAi0wMAoARgAAA5qOMtqUVcdGjwE9YSdMJv0HAI8BHxCuIO1Hp_cDF_CLsbMAAAIBDQAAAI8BHxCuIO1Hp_cDF_CLsbMAAAIgrQAAAA==";
-//        String url="https://graph.microsoft.com/beta/me/events/"+id+"/accept";
-//        postGraphAPI(url);
-        Toast.makeText(this, "Test", Toast.LENGTH_SHORT).show();
+       String id = "AQMkADAwATMwMAItMTA3NC1mMWY5LTAwAi0wMAoARgAAA5qOMtqUVcdGjwE9YSdMJv0HAI8BHxCuIO1Hp_cDF_CLsbMAAAIBDQAAAI8BHxCuIO1Hp_cDF_CLsbMAAAABrWg9AAAA";
+       String url="https://graph.microsoft.com/beta/me/events/"+id+"/accept";
+
+       postGraphAPI(url);
+
+       //Toast.makeText(this, "Test", Toast.LENGTH_SHORT).show();
     }
 
 }

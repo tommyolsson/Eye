@@ -24,7 +24,7 @@ public class FragmentHome extends Fragment {
 
     private RecyclerView recyclerView;
     private Context context;
-    private ArrayList<Event> allEvents;
+    private ArrayList<EventClass> allEvents;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

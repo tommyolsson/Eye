@@ -23,19 +23,19 @@ import java.util.ArrayList;
 public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.ViewHolder> {
 
     private final Context context;
-    private final ArrayList<Event> allEvents;
-    private final ArrayList<Event> allMeetings;
+    private final ArrayList<EventClass> allEvents;
+    private final ArrayList<EventClass> allMeetings;
     private final LocalDateTime currentTime;
 
-    public BookingAdapter(Context context, ArrayList<Event> allEvents) {
+    public BookingAdapter(Context context, ArrayList<EventClass> allEvents) {
         this.allEvents = allEvents;
         this.allMeetings = getMeetings(allEvents);
         this.context = context;
         this.currentTime = getCurrentTime();
     }
 
-    private ArrayList<Event> getMeetings(ArrayList<Event> allEvents) {
-        ArrayList<Event> allMeetings = new ArrayList<>();
+    private ArrayList<EventClass> getMeetings(ArrayList<EventClass> allEvents) {
+        ArrayList<EventClass> allMeetings = new ArrayList<>();
         for (int i = 0; i < allEvents.size(); i++) {
             if (allEvents.get(i).isMeeting)
                 allMeetings.add(allEvents.get(i));

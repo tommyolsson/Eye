@@ -21,10 +21,10 @@ import java.util.ArrayList;
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
     private final Context context;
-    private final ArrayList<Event> allEvents;
+    private final ArrayList<EventClass> allEvents;
     private final LocalDateTime currentTime;
 
-    public HomeAdapter(Context context,  ArrayList<Event> allEvents) {
+    public HomeAdapter(Context context,  ArrayList<EventClass> allEvents) {
         this.allEvents = allEvents;
         this.context = context;
         this.currentTime = getCurrentTime();

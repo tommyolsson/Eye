@@ -21,6 +21,7 @@ public class FragmentOpenMeeting extends Fragment {
     private String eventDate;
     private String eventTime;
     private String eventLocation;
+    private String eventResponseStatus;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -35,6 +36,7 @@ public class FragmentOpenMeeting extends Fragment {
             eventDate = bundle.getString("date");
             eventTime = bundle.getString("time");
             eventLocation = bundle.getString("location");
+            eventResponseStatus = bundle.getString("responseStatus");
         }
     }
 
@@ -57,6 +59,9 @@ public class FragmentOpenMeeting extends Fragment {
 
         TextView textLocation = inf.findViewById(R.id.textLocation);
         textLocation.setText(eventLocation);
+
+        TextView textResponseStatus = inf.findViewById(R.id.textResponseStatus);
+        textResponseStatus.setText(eventResponseStatus);
 
         // Changes title to the subject name
         ((MainActivity) getActivity()).setActionBarTitle(eventSubject);
