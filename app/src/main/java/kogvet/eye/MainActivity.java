@@ -209,7 +209,7 @@ public class MainActivity extends AppCompatActivity {
         queue.add(request);
     }
 
-    private void postGraphAPI(String url) {
+    public void postGraphAPI(String url) {
         Log.d(TAG, "Starting volley request to graph");
 
         /* Make sure we have a token to send to graph */
@@ -646,7 +646,6 @@ public class MainActivity extends AppCompatActivity {
 
        postGraphAPI(url);
 
-       //Toast.makeText(this, "Test", Toast.LENGTH_SHORT).show();
     }
 
 }
