@@ -1,4 +1,4 @@
-package kogvet.eye;
+package kogvet.eye.Notifications;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -6,6 +6,8 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.graphics.Color;
+
+import kogvet.eye.R;
 
 /**
  * Helper class to manage notification channels, and create notifications.

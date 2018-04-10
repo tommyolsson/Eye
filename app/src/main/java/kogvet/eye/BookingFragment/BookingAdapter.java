@@ -1,4 +1,4 @@
-package kogvet.eye;
+package kogvet.eye.BookingFragment;
 
 import android.app.Fragment;
 import android.content.Context;
@@ -11,37 +11,39 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 
+import kogvet.eye.EventClass;
+import kogvet.eye.R;
+
 /**
  * Created by Loldator on 2018-02-27.
  */
 
-public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
+public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.ViewHolder> {
 
     private final Context context;
     private final ArrayList<EventClass> allEvents;
-    private final ArrayList<EventClass> allActivities;
+    private final ArrayList<EventClass> allMeetings;
     private final LocalDateTime currentTime;
 
-    public MyAdapter(Context context,  ArrayList<EventClass> allEvents) {
+    public BookingAdapter(Context context, ArrayList<EventClass> allEvents) {
         this.allEvents = allEvents;
-        this.allActivities = getAllActivities(allEvents);
+        this.allMeetings = getMeetings(allEvents);
         this.context = context;
         this.currentTime = getCurrentTime();
     }
 
-    private ArrayList<EventClass> getAllActivities(ArrayList<EventClass> allEvents) {
-        ArrayList<EventClass> allActivites = new ArrayList<>();
+    private ArrayList<EventClass> getMeetings(ArrayList<EventClass> allEvents) {
+        ArrayList<EventClass> allMeetings = new ArrayList<>();
         for (int i = 0; i < allEvents.size(); i++) {
-            if (!allEvents.get(i).isMeeting)
-                allActivites.add(allEvents.get(i));
+            if (allEvents.get(i).getIsMeeting())
+                allMeetings.add(allEvents.get(i));
         }
-        return allActivites;
+        return allMeetings;
     }
 
     private LocalDateTime getCurrentTime() {
@@ -52,6 +54,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         LayoutInflater li = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
         View view = li.inflate(R.layout.menu_item, null);
         return new ViewHolder(view);
     }
@@ -59,22 +62,25 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     //Set text for each item
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.tvSubject.setText(allActivities.get(position).subject);
-        holder.tvBodyPreview.setText(allActivities.get(position).bodyPreview);
-        holder.tvLocation.setText(allActivities.get(position).location.displayName);
+        holder.tvId.setText(allMeetings.get(position).getId());
+        holder.tvSubject.setText(allMeetings.get(position).getSubject());
+        holder.tvBodyPreview.setText(allMeetings.get(position).getBodyPreview());
+        holder.tvLocation.setText(allMeetings.get(position).getLocation().getDisplayName());
+        holder.tvResponseStatus.setText(allEvents.get(position).getResponseStatus().getResponse());
+
         //Set time and date
-        if(allActivities.get(position).isAllDay) {
+        if(allMeetings.get(position).getIsAllDay()) {
             holder.tvTimes.setText(context.getResources().getString(R.string.timeWholeDay));
-            holder.tvDate.setText(allActivities.get(position).getStartDate());
+            holder.tvDate.setText(allMeetings.get(position).getStartDate());
         }
         else{
             //get time and put in format (see strings)
-            String times = context.getResources().getString(R.string.times, allActivities.get(position).getStartTime(), allActivities.get(position).getEndTime());
+            String times = context.getResources().getString(R.string.times, allMeetings.get(position).getStartTime(), allMeetings.get(position).getEndTime());
             holder.tvTimes.setText(times);
-            holder.tvDate.setText(allActivities.get(position).getEndDate());
+            holder.tvDate.setText(allMeetings.get(position).getEndDate());
         }
-
-        if (currentTime.isAfter(allActivities.get(position).startTimeObj)) {
+        // Set gray if date has passed.
+        if (currentTime.isAfter(allMeetings.get(position).getStartTimeObj())) {
             ((CardView) holder.itemView).setCardBackgroundColor(ContextCompat.getColor(context, R.color.gray));
             (holder.itemView).setAlpha((float) 0.4);
         }
@@ -82,35 +88,39 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return allActivities.size();
+        return allMeetings.size();
     }
 
     public class ViewHolder extends  RecyclerView.ViewHolder {
 
-        TextView tvSubject,tvBodyPreview,tvTimes,tvLocation,tvDate;
+        TextView tvId,tvSubject,tvBodyPreview,tvTimes,tvLocation,tvDate,tvResponseStatus;
 
         public ViewHolder(final View itemView) {
             super(itemView);
 
+            tvId = itemView.findViewById(R.id.tvId);
             tvSubject = itemView.findViewById(R.id.tvSubject);
             tvBodyPreview = itemView.findViewById(R.id.tvBodyPreview);
             tvTimes = itemView.findViewById(R.id.tvTimes);
             tvLocation = itemView.findViewById(R.id.tvLocation);
             tvDate = itemView.findViewById(R.id.tvDate);
+            tvResponseStatus = itemView.findViewById(R.id.tvResponseStatus);
             
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     //EXAMPLE ON CLICK FUNCTION
                     Bundle bundle = new Bundle();
+                    bundle.putString("id", tvId.getText().toString());
                     bundle.putString("subject", tvSubject.getText().toString());
                     bundle.putString("bodyPreview", tvBodyPreview.getText().toString());
                     bundle.putString("date", tvDate.getText().toString());
                     bundle.putString("time", tvTimes.getText().toString());
                     bundle.putString("location", tvLocation.getText().toString());
+                    bundle.putString("responseStatus", tvResponseStatus.getText().toString());
 
                     AppCompatActivity activity = (AppCompatActivity) view.getContext();
-                    Fragment openFragment = new FragmentOpenEvent();
+                    Fragment openFragment = new FragmentOpenMeeting();
                     openFragment.setArguments(bundle);
                     activity.getFragmentManager().beginTransaction().replace(R.id.rootLayout, openFragment).addToBackStack(null).commit();
                 }

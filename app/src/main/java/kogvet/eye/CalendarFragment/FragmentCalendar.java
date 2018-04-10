@@ -1,4 +1,5 @@
-package kogvet.eye;
+package kogvet.eye.CalendarFragment;
+
 import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
@@ -11,11 +12,15 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
+import kogvet.eye.EventClass;
+import kogvet.eye.MainActivity;
+import kogvet.eye.R;
+
 
 /**
- * Fragment class for Booking Fragment
+ * Fragment class for Calendar Fragment
  */
-public class FragmentBooking extends Fragment {
+public class FragmentCalendar extends Fragment {
 
     private RecyclerView recyclerView;
     private Context context;
@@ -39,8 +44,10 @@ public class FragmentBooking extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
+        ((MainActivity) getActivity()).setActionBarTitle(getResources().getString(R.string.menu_calendar));
         ((MainActivity) getActivity()).showBackButton();
-        return inflater.inflate(R.layout.fragment_booking, container, false);
+
+        return inflater.inflate(R.layout.fragment_calendar, container, false);
     }
 
     @Override
@@ -49,8 +56,8 @@ public class FragmentBooking extends Fragment {
         recyclerView = (RecyclerView) view.findViewById(R.id.fragment_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
-        BookingAdapter myAdapter = new BookingAdapter(context, allEvents);
-        recyclerView.setAdapter(myAdapter);
+        CalendarAdapter calendarAdapter = new CalendarAdapter(context, allEvents);
+        recyclerView.setAdapter(calendarAdapter);
 
     }
 }

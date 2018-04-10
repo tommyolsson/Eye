@@ -38,9 +38,9 @@
                     android:scheme="msalfac1a20e-54f5-49d2-ae55-724b980a2eb9" />
             </intent-filter>
         </activity>
-        <activity android:name=".NotificationService" />
-        <activity android:name=".FragmentOpenEvent" />
-        <activity android:name=".FragmentOpenMeeting"></activity>
+        <activity android:name=".Notifications.NotificationService" />
+        <activity android:name=".CalendarFragment.FragmentOpenEvent" />
+        <activity android:name=".BookingFragment.FragmentOpenMeeting"></activity>
     </application>
 
 </manifest>

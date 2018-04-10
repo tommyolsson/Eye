@@ -1,4 +1,4 @@
-package kogvet.eye;
+package kogvet.eye.CalendarFragment;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,6 +8,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import kogvet.eye.MainActivity;
+import kogvet.eye.R;
 
 
 /**

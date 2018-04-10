@@ -40,6 +40,26 @@ public class EventClass implements Parcelable {
             this.postalCode = "";
         }
 
+        public String getDisplayName() {
+            return this.displayName;
+        }
+        public String getStreet() {
+            return this.street;
+        }
+        public String getCity() {
+            return this.city;
+        }
+        public String getState() {
+            return this.state;
+        }
+        public String getCountry() {
+            return this.country;
+        }
+
+        public String getPostalCode() {
+            return this.postalCode;
+        }
+
         @Override
         public  String toString() {
             return "[ displayName="+displayName+", street="+street+", city="+city+", country="+country+", postalCode="+postalCode+"]";
@@ -88,6 +108,14 @@ public class EventClass implements Parcelable {
         public ResponseStatus() {
             this.response = "";
             this.time = "";
+        }
+
+        public String getResponse() {
+            return this.response;
+        }
+
+        public String getTime() {
+            return this.time;
         }
 
         @Override
@@ -179,32 +207,60 @@ public class EventClass implements Parcelable {
         return this.id;
     }
 
+    public String getSubject() {
+        return this.subject;
+    }
+
+    public String getBodyPreview() {
+        return this.bodyPreview;
+    }
+
+    public Boolean getIsAllDay() {
+        return this.isAllDay;
+    }
+
+    public Boolean getIsMeeting() {
+        return this.isMeeting;
+    }
+
+    public LocalDateTime getStartTimeObj() {
+        return this.startTimeObj;
+    }
+
+    public LocalDateTime getEndTimeObj() {
+        return this.endTimeObj;
+    }
+
     public String getStartDate() {
         String string = this.startTimeObj.toString();
         String[] segments = string.split("T");
         return segments[0];
     }
 
-    public  String getStartTime() {
+    public String getStartTime() {
         String string = this.startTimeObj.toString();
         String[] segments = string.split("T");
         return segments[1];
     }
 
-    public  String getEndDate() {
+    public String getEndDate() {
         String string = this.endTimeObj.toString();
         String[] segments = string.split("T");
         return segments[0];
     }
 
-    public  String getEndTime() {
+    public String getEndTime() {
         String string = this.endTimeObj.toString();
         String[] segments = string.split("T");
         return segments[1];
     }
 
-    public String getResonse() {
-        return this.responseStatus.response;
+    public Location getLocation() {
+        return this.location;
+    }
+
+    public ResponseStatus getResponseStatus() {
+        return this.responseStatus;
     }
 
     @Override

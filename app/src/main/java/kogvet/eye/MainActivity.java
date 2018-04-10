@@ -17,7 +17,6 @@ import android.view.View;
 import android.widget.Toast;
 import com.android.volley.*;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
@@ -35,6 +34,11 @@ import com.microsoft.identity.client.*;
 import com.microsoft.identity.client.AuthenticationResult;
 import com.microsoft.identity.client.PublicClientApplication;
 
+import kogvet.eye.BookingFragment.FragmentBooking;
+import kogvet.eye.CalendarFragment.FragmentCalendar;
+import kogvet.eye.CalendarFragment.FragmentOpenEvent;
+import kogvet.eye.HomeFragment.FragmentHome;
+import kogvet.eye.LoginFragment.FragmentLogin;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -615,7 +619,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /* Updates Title text in top bar */
-    protected void setActionBarTitle(CharSequence text) {
+    public void setActionBarTitle(CharSequence text) {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setTitle(text);

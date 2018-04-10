@@ -1,37 +1,47 @@
-package kogvet.eye;
+package kogvet.eye.HomeFragment;
 
 import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 
+import kogvet.eye.CalendarFragment.FragmentOpenEvent;
+import kogvet.eye.EventClass;
+import kogvet.eye.R;
+
 
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
     private final Context context;
-    private final ArrayList<EventClass> allEvents;
+    private final ArrayList<EventClass> currentEvents;
     private final LocalDateTime currentTime;
 
     public HomeAdapter(Context context,  ArrayList<EventClass> allEvents) {
-        this.allEvents = allEvents;
         this.context = context;
         this.currentTime = getCurrentTime();
+        this.currentEvents = getCurrentEvents(allEvents);
     }
 
     private LocalDateTime getCurrentTime() {
-        return LocalDateTime.now().truncatedTo((ChronoUnit.MINUTES));
+        return LocalDateTime.now().truncatedTo((ChronoUnit.DAYS));
+    }
+
+    private ArrayList<EventClass> getCurrentEvents(ArrayList<EventClass> allEvents) {
+        ArrayList<EventClass> currentEvents = new ArrayList<>();
+        for (int i = 0; i < allEvents.size(); i++) {
+            if ((allEvents.get(i).getStartTimeObj()).isAfter(currentTime))
+                currentEvents.add(allEvents.get(i));
+        }
+        return currentEvents;
     }
 
     @Override
@@ -46,30 +56,33 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     //Set text for each item
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.tvSubject.setText(allEvents.get(position).subject);
-        holder.tvBodyPreview.setText(allEvents.get(position).bodyPreview);
-        holder.tvLocation.setText(allEvents.get(position).location.displayName);
+        holder.tvSubject.setText(currentEvents.get(position).getSubject());
+        holder.tvBodyPreview.setText(currentEvents.get(position).getBodyPreview());
+        holder.tvLocation.setText(currentEvents.get(position).getLocation().getDisplayName());
         //Set time and date
-        if(allEvents.get(position).isAllDay) {
+        if(currentEvents.get(position).getIsAllDay()) {
             holder.tvTimes.setText(context.getResources().getString(R.string.timeWholeDay));
-            holder.tvDate.setText(allEvents.get(position).getStartDate());
+            holder.tvDate.setText(currentEvents.get(position).getStartDate());
         }
         else{
             //get time and put in format (see strings)
-            String times = context.getResources().getString(R.string.times, allEvents.get(position).getStartTime(), allEvents.get(position).getEndTime());
+            String times = context.getResources().getString(R.string.times, currentEvents.get(position).getStartTime(), currentEvents.get(position).getEndTime());
             holder.tvTimes.setText(times);
-            holder.tvDate.setText(allEvents.get(position).getEndDate());
+            holder.tvDate.setText(currentEvents.get(position).getEndDate());
         }
 
-        if (currentTime.isAfter(allEvents.get(position).startTimeObj)) {
-            ((CardView) holder.itemView).setCardBackgroundColor(ContextCompat.getColor(context, R.color.gray));
-            (holder.itemView).setAlpha((float) 0.4);
-        }
+//        if (currentTime.isAfter(currentEvents.get(position).startTimeObj)) {
+//            ((CardView) holder.itemView).setCardBackgroundColor(ContextCompat.getColor(context, R.color.gray));
+//            (holder.itemView).setAlpha((float) 0.4);
+//        }
     }
 
     @Override
     public int getItemCount() {
-        return allEvents.size();
+        if(currentEvents.size()<3)
+            return currentEvents.size();
+        else
+            return 3;
     }
 
     public class ViewHolder extends  RecyclerView.ViewHolder {

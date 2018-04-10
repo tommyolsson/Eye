@@ -1,4 +1,4 @@
-package kogvet.eye;
+package kogvet.eye.BookingFragment;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,6 +10,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import kogvet.eye.MainActivity;
+import kogvet.eye.R;
 
 
 /**

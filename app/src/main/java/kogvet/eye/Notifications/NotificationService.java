@@ -1,4 +1,4 @@
-package kogvet.eye;
+package kogvet.eye.Notifications;
 
 import android.app.Notification;
 import android.content.Intent;
@@ -10,6 +10,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
+import kogvet.eye.MainActivity;
+import kogvet.eye.R;
 
 
 /**

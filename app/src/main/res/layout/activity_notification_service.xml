@@ -5,7 +5,7 @@
     android:id="@+id/activity_notification_service"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="kogvet.eye.NotificationService">
+    tools:context="kogvet.eye.Notifications.NotificationService">
 
 
     <GridLayout
