@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.ActionBar;
@@ -23,6 +24,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,6 +37,7 @@ import com.microsoft.identity.client.AuthenticationResult;
 import com.microsoft.identity.client.PublicClientApplication;
 
 import kogvet.eye.BookingFragment.FragmentBooking;
+import kogvet.eye.BookingFragment.FragmentOpenMeeting;
 import kogvet.eye.CalendarFragment.FragmentCalendar;
 import kogvet.eye.CalendarFragment.FragmentOpenEvent;
 import kogvet.eye.HomeFragment.FragmentHome;
@@ -50,8 +53,10 @@ public class MainActivity extends AppCompatActivity {
     final static String CLIENT_ID = "fac1a20e-54f5-49d2-ae55-724b980a2eb9";
     final static String SCOPES [] = {"User.Read", "Calendars.Read", "Calendars.Read.Shared", "Calendars.ReadWrite"};
 
-    final static String MSGRAPH_URL = "https://graph.microsoft.com/beta/me/calendar/calendarView?startDateTime=2018-01-01T00:00:00.0000000&endDateTime=2025-01-01T00:00:00.0000000&$orderby=start/dateTime";
-    //final static String MSGRAPH_URL = "https://graph.microsoft.com/beta/me/calendar/calendarView?startDateTime=2018-01-01T00:00:00.0000000&endDateTime=2025-01-01T00:00:00.0000000&$select=subject,isAllDay,start,end,location&$orderby=start/dateTime";
+    public static String startDate = "2018-01-01";
+    public static String endDate = "2025-01-01";
+    static String msGraph_URL = "https://graph.microsoft.com/beta/me/calendar/calendarView?startDateTime="+startDate+"T00:00:00.0000000&endDateTime="+endDate+"T00:00:00.0000000&$orderby=start/dateTime";
+    //final static String msGraph_URL = "https://graph.microsoft.com/beta/me/calendar/calendarView?startDateTime=2018-01-01T00:00:00.0000000&endDateTime=2025-01-01T00:00:00.0000000&$select=subject,isAllDay,start,end,location&$orderby=start/dateTime";
 
     /* UI & Debugging Variables */
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -74,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
         if (sampleApp == null) {
             sampleApp = new PublicClientApplication(this.getApplicationContext(), CLIENT_ID);
         }
+
 
         /* Attempt to get a user and acquireTokenSilent
          * If this fails we do an interactive request
@@ -163,6 +169,12 @@ public class MainActivity extends AppCompatActivity {
 
     /* Use Volley to make an HTTP request to the /me endpoint from MS Graph using an access token */
     private void callGraphAPI() {
+        /*Update Url to request events from today to one month ahead*/
+        startDate = LocalDate.now().toString();
+        endDate = LocalDate.now().plusMonths(1).toString();
+        msGraph_URL = "https://graph.microsoft.com/beta/me/calendar/calendarView?startDateTime="+startDate+"T00:00:00.0000000&endDateTime="+endDate+"T00:00:00.0000000&$orderby=start/dateTime";
+//        msGraph_URL = buildUrl();
+
         Log.d(TAG, "Starting volley request to graph");
 
         /* Make sure we have a token to send to graph */
@@ -176,7 +188,7 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception e) {
             Log.d(TAG, "Failed to put parameters: " + e.toString());
         }
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, MSGRAPH_URL,
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, msGraph_URL,
                 parameters,new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -200,6 +212,7 @@ public class MainActivity extends AppCompatActivity {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headers = new HashMap<>();
                 headers.put("Authorization", "Bearer " + authResult.getAccessToken());
+                headers.put("Prefer", "outlook.timezone=\"Central European Standard Time\"");
                 return headers;
             }
         };
@@ -211,6 +224,12 @@ public class MainActivity extends AppCompatActivity {
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(request);
+    }
+    private String buildUrl() {
+//        https://graph.microsoft.com/beta/me/calendar/calendarView?startDateTime=  2018-04-10  T00:00:00.0000000&endDateTime=  2018-05-10  T00:00:00.0000000&$orderby=start/dateTime
+        return "";
+//        Uri.Builder builtUri = Uri.parse("https://graph.microsoft.com/beta/me/calendar/calendarView?startDateTime=")
+//                .buildUpon()
     }
 
     public void postGraphAPI(String url) {
@@ -294,7 +313,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Check if event has a category (one or more category is a meeting)
         Boolean isMeeting=false;
-        if(object.getJSONArray("categories").length() > 0)
+        if(object.getString("sensitivity").equals("private"))
             isMeeting = true;
 
         //Get string and create local date time objects (start and end date+time)
@@ -347,7 +366,7 @@ public class MainActivity extends AppCompatActivity {
         //Get startDate and startTime from JsonString
         String [] segments = string.split("\"");
         LocalDateTime ldt = LocalDateTime.parse(segments[3].substring(0, 16));
-        // Add one extra hour to correct for timezone
+        // Add one extra hour to correct for daylight savings
         ldt.plusHours(1);
         return ldt;
     }
@@ -631,7 +650,7 @@ public class MainActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         Fragment currentFragment = getActivity().getFragmentManager().findFragmentById(R.id.rootLayout);
 
-        if (currentFragment instanceof FragmentOpenEvent)
+        if (currentFragment instanceof FragmentOpenEvent || currentFragment instanceof FragmentOpenMeeting)
         {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
