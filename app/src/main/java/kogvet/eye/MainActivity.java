@@ -642,6 +642,8 @@ public class MainActivity extends AppCompatActivity {
        String id = "AQMkADAwATMwMAItMTA3NC1mMWY5LTAwAi0wMAoARgAAA5qOMtqUVcdGjwE9YSdMJv0HAI8BHxCuIO1Hp_cDF_CLsbMAAAIBDQAAAI8BHxCuIO1Hp_cDF_CLsbMAAAABrWg9AAAA";
        String url="https://graph.microsoft.com/beta/me/events/"+id+"/accept";
 
+       //String url="https://graph.microsoft.com/beta/me/events/"+id+"/cancel";
+
        postGraphAPI(url);
 
        //Toast.makeText(this, "Test", Toast.LENGTH_SHORT).show();

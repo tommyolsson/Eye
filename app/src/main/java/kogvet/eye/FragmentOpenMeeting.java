@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 
@@ -63,11 +64,44 @@ public class FragmentOpenMeeting extends Fragment {
         TextView textResponseStatus = inf.findViewById(R.id.textResponseStatus);
         textResponseStatus.setText(eventResponseStatus);
 
+        //Buttons
+        Button bookButton = inf.findViewById(R.id.bookButton);
+        Button cancelButton = inf.findViewById(R.id.cancelButton);
+
+        if (eventResponseStatus.equals("accepted"))
+        {
+            // Makes cancel button visible
+            cancelButton.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            // Makes book button visible
+            bookButton.setVisibility(View.VISIBLE);
+        }
         // Changes title to the subject name
         ((MainActivity) getActivity()).setActionBarTitle(eventSubject);
         ((MainActivity) getActivity()).showBackButton();
+
         return inf;
     }
 
+
+//    public void showButton()
+//    {
+//        if (eventResponseStatus.equals("accepted"))
+//        {
+//            // Makes cancel button visible
+//            Button cancelButton = findViewById(R.id.cancelButton);
+//            cancelButton.setVisibility(View.VISIBLE);
+//
+//        }
+//        else
+//        {
+//            // Makes book button visible
+//
+//            Button bookButton = findViewById(R.id.bookButton);
+//            bookButton.setVisibility(View.VISIBLE);
+//        }
+//    }
 
 }

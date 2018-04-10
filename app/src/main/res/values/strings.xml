@@ -45,6 +45,7 @@
 
     <!-- Booking item -->
     <string name="button_book">Boka möte</string>
+    <string name="button_cancel">Avboka möte</string>
 
     <!-- Notification test start -->
     <string name="btn1_description">Start foreground service</string>
