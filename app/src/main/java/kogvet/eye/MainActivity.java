@@ -168,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /* Use Volley to make an HTTP request to the /me endpoint from MS Graph using an access token */
-    private void callGraphAPI() {
+    public void callGraphAPI() {
         /*Update Url to request events from today to one month ahead*/
         startDate = LocalDate.now().minusDays(1).toString(); //MINUS EN DAG FÖR IRIS VISNING.
         endDate = LocalDate.now().plusMonths(1).toString();
@@ -225,6 +225,7 @@ public class MainActivity extends AppCompatActivity {
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(request);
     }
+
     private String buildUrl() {
 //        https://graph.microsoft.com/beta/me/calendar/calendarView?startDateTime=  2018-04-10  T00:00:00.0000000&endDateTime=  2018-05-10  T00:00:00.0000000&$orderby=start/dateTime
         return "";
