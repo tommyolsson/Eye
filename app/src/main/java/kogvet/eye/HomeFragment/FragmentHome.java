@@ -3,6 +3,7 @@ import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -28,6 +29,7 @@ public class FragmentHome extends Fragment {
     private RecyclerView recyclerView;
     private Context context;
     private ArrayList<EventClass> allEvents;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,14 +49,27 @@ public class FragmentHome extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View inf = inflater.inflate(R.layout.fragment_home, container, false);
-
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        ((MainActivity) getActivity()).setActionBarTitle(getResources().getString(R.string.menu_home));
         ((MainActivity) getActivity()).showBackButton();
 
-        TextView currentDate = inf.findViewById(R.id.dateToday);
+        TextView currentDate = view.findViewById(R.id.dateToday);
         currentDate.setText(getCurrentDate());
 
-        return inf;
+        mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swiperefresh);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                myUpdateOperation();
+            }
+        });
+        return view;
+    }
+
+    private void myUpdateOperation() {
+        //        Log.d("swipe", "function");
+        ((MainActivity)getActivity()).callGraphAPI();
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 
     public String getCurrentDate()

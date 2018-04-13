@@ -38,7 +38,6 @@ public class FragmentCalendar extends Fragment {
         if(bundle != null)
         {
             allEvents = bundle.getParcelableArrayList("allevents");
-
         }
     }
 
@@ -57,20 +56,18 @@ public class FragmentCalendar extends Fragment {
                 myUpdateOperation();
             }
         });
-
-        return inflater.inflate(R.layout.fragment_calendar, container, false);
+        return view;
     }
 
     private void myUpdateOperation() {
 //        Log.d("swipe", "function");
         ((MainActivity)getActivity()).callGraphAPI();
         mSwipeRefreshLayout.setRefreshing(false);
-
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-
+        super.onViewCreated(view, savedInstanceState);
         recyclerView = (RecyclerView) view.findViewById(R.id.fragment_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
 

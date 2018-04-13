@@ -39,7 +39,6 @@ public class FragmentBooking extends Fragment {
         if(bundle != null)
         {
             allEvents = bundle.getParcelableArrayList("allevents");
-
         }
     }
 
@@ -58,7 +57,6 @@ public class FragmentBooking extends Fragment {
                 myUpdateOperation();
             }
         });
-
         return view;
     }
 
@@ -66,7 +64,6 @@ public class FragmentBooking extends Fragment {
 //        Log.d("swipe", "function");
         ((MainActivity)getActivity()).callGraphAPI();
         mSwipeRefreshLayout.setRefreshing(false);
-
     }
 
     @Override
