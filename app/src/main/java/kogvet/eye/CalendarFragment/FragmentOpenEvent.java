@@ -44,6 +44,17 @@ public class FragmentOpenEvent extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         
         View inf = inflater.inflate(R.layout.fragment_open_event, container, false);
+
+        setText(inf);
+
+        // Changes title to the subject name
+        ((MainActivity) getActivity()).setActionBarTitle(eventSubject);
+        ((MainActivity) getActivity()).showBackButton();
+
+        return inf;
+    }
+
+    private void setText(View inf) {
         TextView textSubject = inf.findViewById(R.id.textSubject);
         textSubject.setText(eventSubject);
 
@@ -58,12 +69,6 @@ public class FragmentOpenEvent extends Fragment {
 
         TextView textLocation = inf.findViewById(R.id.textLocation);
         textLocation.setText(eventLocation);
-
-        // Changes title to the subject name
-        ((MainActivity) getActivity()).setActionBarTitle(eventSubject);
-        ((MainActivity) getActivity()).showBackButton();
-
-        return inf;
     }
 
 }

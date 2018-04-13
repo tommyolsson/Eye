@@ -582,6 +582,7 @@ public class MainActivity extends AppCompatActivity {
     protected void selectFragment(MenuItem item) {
 
         item.setChecked(true);
+        FragmentManager fragmentManager = getFragmentManager();
         Bundle bundle;
 
         switch (item.getItemId()) {
@@ -616,6 +617,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
         setActionBarTitle(item.getTitle());
+        // CLEAR back stack of fragments
+        fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
 
     }
 

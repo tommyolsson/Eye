@@ -23,7 +23,9 @@
     <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/swiperefresh"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:clipToPadding="true"
         app:layout_constraintTop_toBottomOf="@+id/dateToday">
 
         <android.support.v7.widget.RecyclerView
@@ -31,10 +33,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignTop="@+id/dateToday"
-            android:layout_marginTop="16dp"
+            android:clipChildren="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/dateToday"
-            tools:context=".MainActivity"></android.support.v7.widget.RecyclerView>
+            tools:context=".MainActivity">
+        </android.support.v7.widget.RecyclerView>
 
     </android.support.v4.widget.SwipeRefreshLayout>
 

@@ -52,6 +52,39 @@ public class FragmentOpenMeeting extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View inf = inflater.inflate(R.layout.fragment_open_meeting, container, false);
+        setText(inf);
+
+        //Buttons
+        bookButton = inf.findViewById(R.id.bookButton);
+        cancelButton = inf.findViewById(R.id.cancelButton);
+        showButton();
+
+        bookButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String id = eventId;
+                String url="https://graph.microsoft.com/beta/me/events/"+id+"/accept";
+                ((MainActivity) getActivity()).postGraphAPI(url);
+            }
+        });
+
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String id = eventId;
+                String url="https://graph.microsoft.com/beta/me/events/"+id+"/tentativelyAccept";
+                ((MainActivity) getActivity()).postGraphAPI(url);
+            }
+        });
+
+        // Changes title to the subject name
+        ((MainActivity) getActivity()).setActionBarTitle(eventSubject);
+        ((MainActivity) getActivity()).showBackButton();
+
+        return inf;
+    }
+
+    private void setText(View inf) {
         TextView textSubject = inf.findViewById(R.id.textSubject);
         textSubject.setText(eventSubject);
 
@@ -69,39 +102,6 @@ public class FragmentOpenMeeting extends Fragment {
 
         TextView textResponseStatus = inf.findViewById(R.id.textResponseStatus);
         textResponseStatus.setText(eventResponseStatus);
-
-        //Buttons
-        bookButton = inf.findViewById(R.id.bookButton);
-        cancelButton = inf.findViewById(R.id.cancelButton);
-        showButton();
-
-        bookButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                String id = eventId;
-                String url="https://graph.microsoft.com/beta/me/events/"+id+"/accept";
-
-                ((MainActivity) getActivity()).postGraphAPI(url);
-            }
-        });
-
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                String id = eventId;
-                String url="https://graph.microsoft.com/beta/me/events/"+id+"/tentativelyAccept";
-
-                ((MainActivity) getActivity()).postGraphAPI(url);
-            }
-        });
-
-        // Changes title to the subject name
-        ((MainActivity) getActivity()).setActionBarTitle(eventSubject);
-        ((MainActivity) getActivity()).showBackButton();
-
-        return inf;
     }
 
     public void showButton()
