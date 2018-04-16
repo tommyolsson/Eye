@@ -75,7 +75,8 @@ public class FragmentHome extends Fragment {
     public String getCurrentDate()
     {
         //DateFormat df = new SimpleDateFormat("EEEE, d MMMM yyyy");
-        DateFormat df = new SimpleDateFormat("yyyy MMMM dd, EEEE");
+        DateFormat df = new SimpleDateFormat("EEEE\nMMMM dd");
+//        DateFormat df = new SimpleDateFormat("EEEE \n yyyy MMMM dd");
         String date = df.format(Calendar.getInstance().getTime());
         return date;
     }

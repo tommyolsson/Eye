@@ -41,6 +41,10 @@
         <activity android:name=".Notifications.NotificationService" />
         <activity android:name=".CalendarFragment.FragmentOpenEvent" />
         <activity android:name=".BookingFragment.FragmentOpenMeeting"></activity>
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>

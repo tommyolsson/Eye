@@ -83,5 +83,6 @@
     <string name="menu_booking">Boka</string>
 
     <string name="title_login">Logga in</string>
+    <string name="long_click">test</string>
 
 </resources>
