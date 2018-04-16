@@ -38,6 +38,7 @@ import com.microsoft.identity.client.PublicClientApplication;
 
 import kogvet.eye.BookingFragment.FragmentBooking;
 import kogvet.eye.BookingFragment.FragmentOpenMeeting;
+import kogvet.eye.CalendarFragment.CalendarAdapter;
 import kogvet.eye.CalendarFragment.FragmentCalendar;
 import kogvet.eye.CalendarFragment.FragmentOpenEvent;
 import kogvet.eye.HomeFragment.FragmentHome;
@@ -196,7 +197,8 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, "Response: " + response.toString());
                 try {
                     getAllEvents(response);
-                    updateSuccessUI();
+                    updateUIOnResponse();
+//                    updateSuccessUI();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -379,6 +381,7 @@ public class MainActivity extends AppCompatActivity {
 
         Bundle bundle = new Bundle();
         bundle.putParcelableArrayList("allevents", allEvents);
+
         Fragment openFragment = new FragmentHome();
         openFragment.setArguments(bundle);
         pushFragment(openFragment);
@@ -390,6 +393,30 @@ public class MainActivity extends AppCompatActivity {
 
         menuVisible=true;
         invalidateOptionsMenu();
+    }
+
+    private void updateUIOnResponse() {
+        FragmentManager fragmentManager = getFragmentManager();
+        Fragment fragment = fragmentManager.findFragmentByTag("main");
+
+        Bundle bundle = new Bundle();
+        bundle.putParcelableArrayList("allevents", allEvents);
+        Fragment newFragment = getNewFragment(fragment);
+
+        newFragment.setArguments(bundle);
+        pushFragment(newFragment);
+    }
+
+    /*Gets new fragment*/
+    private Fragment getNewFragment(Fragment fragment) {
+        if(fragment instanceof FragmentLogin)
+            return new FragmentLogin();
+        else if (fragment instanceof FragmentCalendar)
+            return new FragmentCalendar();
+        else if (fragment instanceof FragmentBooking)
+            return new FragmentBooking();
+        else
+            return new FragmentHome();
     }
 
     /* Set the UI for signed out user */
@@ -433,7 +460,7 @@ public class MainActivity extends AppCompatActivity {
                 callGraphAPI();
 
                 /* update the UI to post call graph state */
-//                updateSuccessUI();
+                updateSuccessUI();
             }
 
             @Override
@@ -476,7 +503,7 @@ public class MainActivity extends AppCompatActivity {
                 callGraphAPI();
 
                 /* update the UI to post call graph state */
-//                updateSuccessUI();
+                updateSuccessUI();
             }
 
             @Override
@@ -582,8 +609,11 @@ public class MainActivity extends AppCompatActivity {
     protected void selectFragment(MenuItem item) {
 
         item.setChecked(true);
-        FragmentManager fragmentManager = getFragmentManager();
         Bundle bundle;
+
+        FragmentManager fragmentManager = getFragmentManager();
+        // CLEAR back stack of fragments
+        fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
 
         switch (item.getItemId()) {
             case R.id.menu_home:
@@ -617,8 +647,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         setActionBarTitle(item.getTitle());
-        // CLEAR back stack of fragments
-        fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
 
     }
 
@@ -628,14 +656,15 @@ public class MainActivity extends AppCompatActivity {
      * @param fragment An instance of Fragment to show into the given id.
      */
     protected void pushFragment(Fragment fragment) {
+
+
         if (fragment == null)
             return;
-
         FragmentManager fragmentManager = getFragmentManager();
         if (fragmentManager != null) {
             FragmentTransaction ft = fragmentManager.beginTransaction();
             if (ft != null) {
-                ft.replace(R.id.rootLayout, fragment);
+                ft.replace(R.id.rootLayout, fragment, "main");
                 ft.commit();
             }
         }

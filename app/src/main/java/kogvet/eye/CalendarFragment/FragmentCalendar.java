@@ -1,6 +1,7 @@
 package kogvet.eye.CalendarFragment;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -28,6 +29,11 @@ public class FragmentCalendar extends Fragment {
     private ArrayList<EventClass> allEvents;
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
+    public static FragmentCalendar newInstance(Bundle bundle) {
+        FragmentCalendar fragment = new FragmentCalendar();
+        fragment.setArguments(bundle);
+        return fragment;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,12 +65,6 @@ public class FragmentCalendar extends Fragment {
         return view;
     }
 
-    private void myUpdateOperation() {
-//        Log.d("swipe", "function");
-        ((MainActivity)getActivity()).callGraphAPI();
-        mSwipeRefreshLayout.setRefreshing(false);
-    }
-
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -74,5 +74,13 @@ public class FragmentCalendar extends Fragment {
         CalendarAdapter calendarAdapter = new CalendarAdapter(context, allEvents);
         recyclerView.setAdapter(calendarAdapter);
 
+    }
+
+    private void myUpdateOperation() {
+//        FragmentManager fragmentManager = getFragmentManager();
+//        Fragment fragment = fragmentManager.findFragmentByTag("main");
+//        String fragmentTag = fragmentManager.getBackStackEntryAt(fragmentManager.getBackStackEntryCount() - 1).getName();
+        ((MainActivity)getActivity()).callGraphAPI();
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 }
