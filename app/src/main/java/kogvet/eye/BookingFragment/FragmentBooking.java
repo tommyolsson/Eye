@@ -61,7 +61,6 @@ public class FragmentBooking extends Fragment {
     }
 
     private void myUpdateOperation() {
-//        Log.d("swipe", "function");
         ((MainActivity)getActivity()).callGraphAPI();
         mSwipeRefreshLayout.setRefreshing(false);
     }

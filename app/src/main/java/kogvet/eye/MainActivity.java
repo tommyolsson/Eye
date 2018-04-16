@@ -12,9 +12,11 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.android.volley.*;
 import com.android.volley.toolbox.JsonObjectRequest;
@@ -288,7 +290,7 @@ public class MainActivity extends AppCompatActivity {
         queue.add(request);
     }
 
-    /* Sets the graph response */
+    /* Toast after graph response */
     private void toastSuccessGraph() {
         Toast.makeText(this, R.string.graphUpdate, Toast.LENGTH_SHORT).show();
     }
@@ -314,7 +316,7 @@ public class MainActivity extends AppCompatActivity {
         // whole day activity
         Boolean isAllDay = Boolean.parseBoolean(object.getString("isAllDay"));
 
-        // Check if event has a category (one or more category is a meeting)
+        // Check if event is a meeting (if event marked private it is a meeting)
         Boolean isMeeting=false;
         if(object.getString("sensitivity").equals("private"))
             isMeeting = true;
@@ -704,5 +706,16 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void showMap(EventClass event) {
+        //GET SEARCH URI
+        String location = event.location.getDisplayName()+" "+event.location.getCountry();
+        Uri geoLocation = Uri.parse("geo:0,0?q="+location);
+
+        Intent intent = new Intent(Intent.ACTION_VIEW, geoLocation);
+        intent.setPackage("com.google.android.apps.maps");
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }
+    }
 }
 

@@ -63,6 +63,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.ViewHo
     //Set text for each item
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+        holder.position = position;
         holder.tvSubject.setText(allActivities.get(position).getSubject());
         holder.tvBodyPreview.setText(allActivities.get(position).getBodyPreview());
         holder.tvLocation.setText(allActivities.get(position).getLocation().getDisplayName());
@@ -91,6 +92,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.ViewHo
 
     public class ViewHolder extends  RecyclerView.ViewHolder {
 
+        int position;
         TextView tvSubject,tvBodyPreview,tvTimes,tvLocation,tvDate;
 
         public ViewHolder(final View itemView) {
@@ -102,13 +104,12 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.ViewHo
             tvLocation = itemView.findViewById(R.id.tvLocation);
             tvDate = itemView.findViewById(R.id.tvDate);
 
-//            itemView.setOnLongClickListener(this);
-
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     //EXAMPLE ON CLICK FUNCTION
                     Bundle bundle = new Bundle();
+                    bundle.putParcelable("eventObject", allActivities.get(position));
                     bundle.putString("subject", tvSubject.getText().toString());
                     bundle.putString("bodyPreview", tvBodyPreview.getText().toString());
                     bundle.putString("date", tvDate.getText().toString());

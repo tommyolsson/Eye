@@ -1,7 +1,10 @@
 package kogvet.eye.BookingFragment;
 import android.app.Fragment;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.util.Linkify;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -11,6 +14,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import kogvet.eye.EventClass;
 import kogvet.eye.MainActivity;
 import kogvet.eye.R;
 
@@ -20,6 +24,7 @@ import kogvet.eye.R;
  */
 public class FragmentOpenMeeting extends Fragment {
 
+    private EventClass event;
     private String eventId;
     private String eventSubject;
     private String eventBodyPreview;
@@ -37,6 +42,7 @@ public class FragmentOpenMeeting extends Fragment {
         Bundle bundle = getArguments();
         if(bundle != null)
         {
+            event = bundle.getParcelable("eventObject");
             eventId = bundle.getString("id");
             eventSubject = bundle.getString("subject");
             eventBodyPreview = bundle.getString("bodyPreview");
@@ -90,6 +96,7 @@ public class FragmentOpenMeeting extends Fragment {
 
         TextView textBodyPreview = inf.findViewById(R.id.textBodyPreview);
         textBodyPreview.setText(eventBodyPreview);
+        Linkify.addLinks(textBodyPreview, Linkify.WEB_URLS);
 
         TextView textDate = inf.findViewById(R.id.textDate);
         textDate.setText(eventDate);
@@ -99,6 +106,12 @@ public class FragmentOpenMeeting extends Fragment {
 
         TextView textLocation = inf.findViewById(R.id.textLocation);
         textLocation.setText(eventLocation);
+        textLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((MainActivity)getActivity()).showMap(event);
+            }
+        });
 
         TextView textResponseStatus = inf.findViewById(R.id.textResponseStatus);
         textResponseStatus.setText(eventResponseStatus);

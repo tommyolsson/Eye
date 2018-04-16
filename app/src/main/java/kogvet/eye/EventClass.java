@@ -55,7 +55,6 @@ public class EventClass implements Parcelable {
         public String getCountry() {
             return this.country;
         }
-
         public String getPostalCode() {
             return this.postalCode;
         }

@@ -62,6 +62,7 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.ViewHold
     //Set text for each item
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+        holder.position = position;
         holder.tvId.setText(allMeetings.get(position).getId());
         holder.tvSubject.setText(allMeetings.get(position).getSubject());
         holder.tvBodyPreview.setText(allMeetings.get(position).getBodyPreview());
@@ -94,6 +95,7 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.ViewHold
     public class ViewHolder extends  RecyclerView.ViewHolder {
 
         TextView tvId,tvSubject,tvBodyPreview,tvTimes,tvLocation,tvDate,tvResponseStatus;
+        int position;
 
         public ViewHolder(final View itemView) {
             super(itemView);
@@ -111,6 +113,7 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.ViewHold
                 public void onClick(View view) {
                     //EXAMPLE ON CLICK FUNCTION
                     Bundle bundle = new Bundle();
+                    bundle.putParcelable("eventObject", allMeetings.get(position));
                     bundle.putString("id", tvId.getText().toString());
                     bundle.putString("subject", tvSubject.getText().toString());
                     bundle.putString("bodyPreview", tvBodyPreview.getText().toString());

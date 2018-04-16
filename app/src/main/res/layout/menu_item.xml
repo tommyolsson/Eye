@@ -31,6 +31,9 @@
             android:id="@+id/tvBodyPreview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:autoLink="web"
+            android:clickable="true"
+            android:linksClickable="true"
             android:visibility="gone" />
 
         <TextView
@@ -41,7 +44,9 @@
             android:layout_marginBottom="3dp"
             android:layout_marginStart="4sp"
             android:layout_marginTop="3dp"
+            android:clickable="true"
             android:elevation="1dp"
+            android:onClick="showMap"
             android:text="@string/location"
             android:textSize="14sp" />
 

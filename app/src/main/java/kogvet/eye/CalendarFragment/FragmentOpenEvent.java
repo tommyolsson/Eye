@@ -2,6 +2,7 @@ package kogvet.eye.CalendarFragment;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.util.Linkify;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import kogvet.eye.EventClass;
 import kogvet.eye.MainActivity;
 import kogvet.eye.R;
 
@@ -18,6 +20,7 @@ import kogvet.eye.R;
  */
 public class FragmentOpenEvent extends Fragment {
 
+    private EventClass event;
     private String eventSubject;
     private String eventBodyPreview;
     private String eventDate;
@@ -31,6 +34,7 @@ public class FragmentOpenEvent extends Fragment {
         Bundle bundle = getArguments();
         if(bundle != null)
         {
+            event = bundle.getParcelable("eventObject");
             eventSubject = bundle.getString("subject");
             eventBodyPreview = bundle.getString("bodyPreview");
             eventDate = bundle.getString("date");
@@ -60,6 +64,7 @@ public class FragmentOpenEvent extends Fragment {
 
         TextView textBodyPreview = inf.findViewById(R.id.textBodyPreview);
         textBodyPreview.setText(eventBodyPreview);
+        Linkify.addLinks(textBodyPreview, Linkify.WEB_URLS);
 
         TextView textDate = inf.findViewById(R.id.textDate);
         textDate.setText(eventDate);
@@ -69,6 +74,12 @@ public class FragmentOpenEvent extends Fragment {
 
         TextView textLocation = inf.findViewById(R.id.textLocation);
         textLocation.setText(eventLocation);
+        textLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((MainActivity)getActivity()).showMap(event);
+            }
+        });
     }
 
 }
