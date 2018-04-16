@@ -1,5 +1,6 @@
 package kogvet.eye.CalendarFragment;
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.util.Linkify;
@@ -8,10 +9,12 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import kogvet.eye.EventClass;
 import kogvet.eye.MainActivity;
+import kogvet.eye.Notifications.NotificationService;
 import kogvet.eye.R;
 
 
@@ -26,6 +29,7 @@ public class FragmentOpenEvent extends Fragment {
     private String eventDate;
     private String eventTime;
     private String eventLocation;
+    private Button checkButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,6 +58,20 @@ public class FragmentOpenEvent extends Fragment {
         // Changes title to the subject name
         ((MainActivity) getActivity()).setActionBarTitle(eventSubject);
         ((MainActivity) getActivity()).showBackButton();
+
+        checkButton = inf.findViewById(R.id.checkButton);
+
+        checkButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //   String id = eventId;
+//                String url = "https://graph.microsoft.com/beta/me/events/"+eventId;
+////                ((MainActivity) getActivity()).patchGraphAPI(url);
+                Intent intent = new Intent(getActivity(), NotificationService.class);
+                getActivity().startActivity(intent);
+            }
+        });
+
 
         return inf;
     }

@@ -56,6 +56,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     //Set text for each item
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+        holder.position = position;
         holder.tvSubject.setText(currentEvents.get(position).getSubject());
         holder.tvBodyPreview.setText(currentEvents.get(position).getBodyPreview());
         holder.tvLocation.setText(currentEvents.get(position).getLocation().getDisplayName());
@@ -87,6 +88,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
     public class ViewHolder extends  RecyclerView.ViewHolder {
 
+        int position;
         TextView tvSubject,tvBodyPreview,tvTimes,tvLocation,tvDate;
 
         public ViewHolder(final View itemView) {
@@ -103,6 +105,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                 public void onClick(View view) {
                     //EXAMPLE ON CLICK FUNCTION
                     Bundle bundle = new Bundle();
+                    bundle.putParcelable("eventObject", currentEvents.get(position));
                     bundle.putString("subject", tvSubject.getText().toString());
                     bundle.putString("bodyPreview", tvBodyPreview.getText().toString());
                     bundle.putString("date", tvDate.getText().toString());

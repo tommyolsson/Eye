@@ -46,12 +46,14 @@
     <!-- Booking item -->
     <string name="button_book">Boka möte</string>
     <string name="button_cancel">Avboka möte</string>
+    <string name="button_check">Checka av</string>
 
     <!-- Notification test start -->
     <string name="btn1_description">Start foreground service</string>
     <string name="btn1_title">Start</string>
     <string name="simple_service_title">Simple Service</string>
     <string name="simple_service_desc">Simple Service from the OTest app</string>
+    <string name="loading">Väntar på notifikation</string>
 
     <string name="main_create_noti2_btn">Send</string>
 
