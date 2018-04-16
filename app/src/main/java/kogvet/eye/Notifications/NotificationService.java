@@ -27,7 +27,7 @@ public class NotificationService extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification_service);
 
-        sendMorningAlarm();;
+        sendMorningAlarm();
     }
 
     public void sendMorningAlarm()
@@ -39,8 +39,8 @@ public class NotificationService extends AppCompatActivity {
         // Set the alarm to start at xx:xx PM
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.set(Calendar.HOUR_OF_DAY, 13);
-        calendar.set(Calendar.MINUTE, 43);
+        calendar.set(Calendar.HOUR_OF_DAY, 16);
+        calendar.set(Calendar.MINUTE, 23);
 
         // setRepeating() lets you specify a precise custom interval--in this case,
         // 1 day
