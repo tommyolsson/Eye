@@ -69,6 +69,8 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.ViewHold
         holder.tvLocation.setText(allMeetings.get(position).getLocation().getDisplayName());
         holder.tvResponseStatus.setText(allEvents.get(position).getResponseStatus().getResponse());
 
+        ((CardView) holder.itemView).setCardBackgroundColor(ContextCompat.getColor(context,R.color.color_booking));
+
         //Set time and date
         if(allMeetings.get(position).getIsAllDay()) {
             holder.tvTimes.setText(context.getResources().getString(R.string.timeWholeDay));
@@ -111,21 +113,15 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.ViewHold
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    //EXAMPLE ON CLICK FUNCTION
                     Bundle bundle = new Bundle();
                     bundle.putParcelable("eventObject", allMeetings.get(position));
-                    bundle.putString("id", tvId.getText().toString());
-                    bundle.putString("subject", tvSubject.getText().toString());
-                    bundle.putString("bodyPreview", tvBodyPreview.getText().toString());
                     bundle.putString("date", tvDate.getText().toString());
                     bundle.putString("time", tvTimes.getText().toString());
-                    bundle.putString("location", tvLocation.getText().toString());
-                    bundle.putString("responseStatus", tvResponseStatus.getText().toString());
 
                     AppCompatActivity activity = (AppCompatActivity) view.getContext();
                     Fragment openFragment = new FragmentOpenMeeting();
                     openFragment.setArguments(bundle);
-                    activity.getFragmentManager().beginTransaction().replace(R.id.rootLayout, openFragment).addToBackStack(null).commit();
+                    activity.getFragmentManager().beginTransaction().replace(R.id.rootLayout, openFragment, "booking").addToBackStack(null).commit();
                 }
             });
         }

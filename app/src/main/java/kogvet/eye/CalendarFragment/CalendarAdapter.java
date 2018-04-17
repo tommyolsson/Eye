@@ -110,11 +110,8 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.ViewHo
                     //EXAMPLE ON CLICK FUNCTION
                     Bundle bundle = new Bundle();
                     bundle.putParcelable("eventObject", allActivities.get(position));
-                    bundle.putString("subject", tvSubject.getText().toString());
-                    bundle.putString("bodyPreview", tvBodyPreview.getText().toString());
                     bundle.putString("date", tvDate.getText().toString());
                     bundle.putString("time", tvTimes.getText().toString());
-                    bundle.putString("location", tvLocation.getText().toString());
 
                     AppCompatActivity activity = (AppCompatActivity) view.getContext();
                     Fragment openFragment = new FragmentOpenEvent();

@@ -77,9 +77,6 @@ public class FragmentCalendar extends Fragment {
     }
 
     private void myUpdateOperation() {
-//        FragmentManager fragmentManager = getFragmentManager();
-//        Fragment fragment = fragmentManager.findFragmentByTag("main");
-//        String fragmentTag = fragmentManager.getBackStackEntryAt(fragmentManager.getBackStackEntryCount() - 1).getName();
         ((MainActivity)getActivity()).callGraphAPI();
         mSwipeRefreshLayout.setRefreshing(false);
     }

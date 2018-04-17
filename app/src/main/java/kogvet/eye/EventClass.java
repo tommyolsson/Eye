@@ -117,6 +117,10 @@ public class EventClass implements Parcelable {
             return this.time;
         }
 
+        public void setResponse(String response) {
+            this.response = response;
+        }
+
         @Override
         public  String toString() {
             return "[ response="+response+", time="+time+"]";

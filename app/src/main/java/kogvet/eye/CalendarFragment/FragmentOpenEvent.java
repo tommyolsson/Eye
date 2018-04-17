@@ -24,11 +24,8 @@ import kogvet.eye.R;
 public class FragmentOpenEvent extends Fragment {
 
     private EventClass event;
-    private String eventSubject;
-    private String eventBodyPreview;
     private String eventDate;
     private String eventTime;
-    private String eventLocation;
     private Button checkButton;
 
     @Override
@@ -39,11 +36,8 @@ public class FragmentOpenEvent extends Fragment {
         if(bundle != null)
         {
             event = bundle.getParcelable("eventObject");
-            eventSubject = bundle.getString("subject");
-            eventBodyPreview = bundle.getString("bodyPreview");
             eventDate = bundle.getString("date");
             eventTime = bundle.getString("time");
-            eventLocation = bundle.getString("location");
         }
     }
 
@@ -56,7 +50,7 @@ public class FragmentOpenEvent extends Fragment {
         setText(inf);
 
         // Changes title to the subject name
-        ((MainActivity) getActivity()).setActionBarTitle(eventSubject);
+        ((MainActivity) getActivity()).setActionBarTitle(event.getSubject());
         ((MainActivity) getActivity()).showBackButton();
 
         checkButton = inf.findViewById(R.id.checkButton);
@@ -78,10 +72,10 @@ public class FragmentOpenEvent extends Fragment {
 
     private void setText(View inf) {
         TextView textSubject = inf.findViewById(R.id.textSubject);
-        textSubject.setText(eventSubject);
+        textSubject.setText(event.getSubject());
 
         TextView textBodyPreview = inf.findViewById(R.id.textBodyPreview);
-        textBodyPreview.setText(eventBodyPreview);
+        textBodyPreview.setText(event.getBodyPreview());
         Linkify.addLinks(textBodyPreview, Linkify.WEB_URLS);
 
         TextView textDate = inf.findViewById(R.id.textDate);
@@ -91,7 +85,7 @@ public class FragmentOpenEvent extends Fragment {
         textTime.setText(eventTime);
 
         TextView textLocation = inf.findViewById(R.id.textLocation);
-        textLocation.setText(eventLocation);
+        textLocation.setText(event.getLocation().getDisplayName());
         textLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

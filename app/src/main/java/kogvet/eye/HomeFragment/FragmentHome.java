@@ -41,15 +41,15 @@ public class FragmentHome extends Fragment {
         {
             allEvents = bundle.getParcelableArrayList("allevents");
         }
-
     }
-
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+
+        ((MainActivity) getActivity()).getSupportActionBar().show();
         ((MainActivity) getActivity()).setActionBarTitle(getResources().getString(R.string.menu_home));
         ((MainActivity) getActivity()).showBackButton();
 
@@ -66,8 +66,18 @@ public class FragmentHome extends Fragment {
         return view;
     }
 
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+
+        if (allEvents!=null) {
+            recyclerView = (RecyclerView) view.findViewById(R.id.fragment_recycler_view);
+            recyclerView.setLayoutManager(new LinearLayoutManager(context));
+            HomeAdapter homeAdapter = new HomeAdapter(context, allEvents);
+            recyclerView.setAdapter(homeAdapter);
+        }
+    }
+
     private void myUpdateOperation() {
-        //        Log.d("swipe", "function");
         ((MainActivity)getActivity()).callGraphAPI();
         mSwipeRefreshLayout.setRefreshing(false);
     }
@@ -79,19 +89,6 @@ public class FragmentHome extends Fragment {
 //        DateFormat df = new SimpleDateFormat("EEEE \n yyyy MMMM dd");
         String date = df.format(Calendar.getInstance().getTime());
         return date;
-    }
-
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-
-        if (allEvents!=null) {
-            recyclerView = (RecyclerView) view.findViewById(R.id.fragment_recycler_view);
-            recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            HomeAdapter homeAdapter = new HomeAdapter(context, allEvents);
-            recyclerView.setAdapter(homeAdapter);
-        }
-
     }
 
 }

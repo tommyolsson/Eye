@@ -3,7 +3,9 @@ package kogvet.eye.HomeFragment;
 import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,25 +59,27 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.position = position;
-        holder.tvSubject.setText(currentEvents.get(position).getSubject());
-        holder.tvBodyPreview.setText(currentEvents.get(position).getBodyPreview());
-        holder.tvLocation.setText(currentEvents.get(position).getLocation().getDisplayName());
+        EventClass event = currentEvents.get(position);
+        holder.tvSubject.setText(event.getSubject());
+        holder.tvBodyPreview.setText(event.getBodyPreview());
+        holder.tvLocation.setText(event.getLocation().getDisplayName());
+
         //Set time and date
-        if(currentEvents.get(position).getIsAllDay()) {
+        if(event.getIsAllDay()) {
             holder.tvTimes.setText(context.getResources().getString(R.string.timeWholeDay));
-            holder.tvDate.setText(currentEvents.get(position).getStartDate());
+            holder.tvDate.setText(event.getStartDate());
         }
         else{
             //get time and put in format (see strings)
-            String times = context.getResources().getString(R.string.times, currentEvents.get(position).getStartTime(), currentEvents.get(position).getEndTime());
+            String times = context.getResources().getString(R.string.times, event.getStartTime(), event.getEndTime());
             holder.tvTimes.setText(times);
-            holder.tvDate.setText(currentEvents.get(position).getEndDate());
+            holder.tvDate.setText(event.getEndDate());
         }
 
-//        if (currentTime.isAfter(currentEvents.get(position).startTimeObj)) {
-//            ((CardView) holder.itemView).setCardBackgroundColor(ContextCompat.getColor(context, R.color.gray));
-//            (holder.itemView).setAlpha((float) 0.4);
-//        }
+        //Set color for meetings
+        if(event.getIsMeeting())
+            ((CardView) holder.itemView).setCardBackgroundColor(ContextCompat.getColor(context,R.color.color_booking));
+
     }
 
     @Override
@@ -106,11 +110,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                     //EXAMPLE ON CLICK FUNCTION
                     Bundle bundle = new Bundle();
                     bundle.putParcelable("eventObject", currentEvents.get(position));
-                    bundle.putString("subject", tvSubject.getText().toString());
-                    bundle.putString("bodyPreview", tvBodyPreview.getText().toString());
                     bundle.putString("date", tvDate.getText().toString());
                     bundle.putString("time", tvTimes.getText().toString());
-                    bundle.putString("location", tvLocation.getText().toString());
 
                     AppCompatActivity activity = (AppCompatActivity) view.getContext();
                     Fragment openFragment = new FragmentOpenEvent();

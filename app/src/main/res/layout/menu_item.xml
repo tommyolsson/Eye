@@ -25,16 +25,7 @@
             android:layout_marginTop="3dp"
             android:elevation="1dp"
             android:text="@string/subject"
-            android:textSize="24sp" />
-
-        <TextView
-            android:id="@+id/tvBodyPreview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:autoLink="web"
-            android:clickable="true"
-            android:linksClickable="true"
-            android:visibility="gone" />
+            android:textSize="34sp" />
 
         <TextView
             android:id="@+id/tvLocation"
@@ -48,7 +39,7 @@
             android:elevation="1dp"
             android:onClick="showMap"
             android:text="@string/location"
-            android:textSize="14sp" />
+            android:textSize="22sp" />
 
         <TextView
             android:id="@+id/tvTimes"
@@ -58,7 +49,7 @@
             android:layout_marginEnd="4sp"
             android:layout_marginTop="14dp"
             android:text="@string/times"
-            android:textSize="16sp" />
+            android:textSize="24sp" />
 
         <TextView
             android:id="@+id/tvDate"
@@ -67,7 +58,8 @@
             android:layout_alignParentEnd="true"
             android:layout_below="@+id/tvTimes"
             android:layout_marginEnd="4sp"
-            android:text="@string/date" />
+            android:text="@string/date"
+            android:textSize="22sp" />
 
         <TextView
             android:id="@+id/tvResponseStatus"
@@ -79,6 +71,15 @@
             android:id="@+id/tvId"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tvBodyPreview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:autoLink="web"
+            android:clickable="true"
+            android:linksClickable="true"
             android:visibility="gone" />
 
     </RelativeLayout>

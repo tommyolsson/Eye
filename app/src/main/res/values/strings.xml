@@ -40,7 +40,7 @@
 
     <!-- Calendar item -->
     <string name="timeWholeDay">Heldag</string>
-    <string name="times">%1$s - %2$s</string>
+    <string name="times">%1$s-%2$s</string>
     <string name="date">YYYY-MM-DD</string>
 
     <!-- Booking item -->

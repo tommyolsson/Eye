@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.text.util.Linkify;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,13 +26,8 @@ import kogvet.eye.R;
 public class FragmentOpenMeeting extends Fragment {
 
     private EventClass event;
-    private String eventId;
-    private String eventSubject;
-    private String eventBodyPreview;
     private String eventDate;
     private String eventTime;
-    private String eventLocation;
-    private String eventResponseStatus;
     private Button bookButton;
     private Button cancelButton;
 
@@ -43,13 +39,8 @@ public class FragmentOpenMeeting extends Fragment {
         if(bundle != null)
         {
             event = bundle.getParcelable("eventObject");
-            eventId = bundle.getString("id");
-            eventSubject = bundle.getString("subject");
-            eventBodyPreview = bundle.getString("bodyPreview");
             eventDate = bundle.getString("date");
             eventTime = bundle.getString("time");
-            eventLocation = bundle.getString("location");
-            eventResponseStatus = bundle.getString("responseStatus");
         }
     }
 
@@ -68,34 +59,53 @@ public class FragmentOpenMeeting extends Fragment {
         bookButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String id = eventId;
+                String id = event.getId();
                 String url="https://graph.microsoft.com/beta/me/events/"+id+"/accept";
                 ((MainActivity) getActivity()).postGraphAPI(url);
+                event.getResponseStatus().setResponse("accepted");
+                recreateFragment();
+                Toast.makeText(getContext(), "Bokat", Toast.LENGTH_SHORT).show();
+//                ((MainActivity)getActivity()).callGraphAPI();
             }
         });
 
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String id = eventId;
+                String id = event.getId();
                 String url="https://graph.microsoft.com/beta/me/events/"+id+"/tentativelyAccept";
                 ((MainActivity) getActivity()).postGraphAPI(url);
+                event.getResponseStatus().setResponse("tentativelyAccepted");
+                recreateFragment();
+                Toast.makeText(getContext(), "Avbokat", Toast.LENGTH_SHORT).show();
+//                ((MainActivity)getActivity()).callGraphAPI();
             }
         });
 
         // Changes title to the subject name
-        ((MainActivity) getActivity()).setActionBarTitle(eventSubject);
+        ((MainActivity) getActivity()).setActionBarTitle(event.getSubject());
         ((MainActivity) getActivity()).showBackButton();
 
         return inf;
     }
 
+    private void recreateFragment() {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("eventObject", event);
+        bundle.putString("date", eventDate);
+        bundle.putString("time", eventTime);
+
+        Fragment openFragment = new FragmentOpenMeeting();
+        openFragment.setArguments(bundle);
+        getFragmentManager().beginTransaction().replace(R.id.rootLayout, openFragment, "booking").addToBackStack(null).commit();
+    }
+
     private void setText(View inf) {
         TextView textSubject = inf.findViewById(R.id.textSubject);
-        textSubject.setText(eventSubject);
+        textSubject.setText(event.getSubject());
 
         TextView textBodyPreview = inf.findViewById(R.id.textBodyPreview);
-        textBodyPreview.setText(eventBodyPreview);
+        textBodyPreview.setText(event.getBodyPreview());
         Linkify.addLinks(textBodyPreview, Linkify.WEB_URLS);
 
         TextView textDate = inf.findViewById(R.id.textDate);
@@ -105,7 +115,7 @@ public class FragmentOpenMeeting extends Fragment {
         textTime.setText(eventTime);
 
         TextView textLocation = inf.findViewById(R.id.textLocation);
-        textLocation.setText(eventLocation);
+        textLocation.setText(event.getLocation().getDisplayName());
         textLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -114,20 +124,24 @@ public class FragmentOpenMeeting extends Fragment {
         });
 
         TextView textResponseStatus = inf.findViewById(R.id.textResponseStatus);
-        textResponseStatus.setText(eventResponseStatus);
+        textResponseStatus.setText(event.getResponseStatus().getResponse());
     }
 
     public void showButton()
     {
-        if (eventResponseStatus.equals("accepted"))
-        {
-            // Makes cancel button visible
-            cancelButton.setVisibility(View.VISIBLE);
-        }
-        else
-        {
-            // Makes book button visible
-            bookButton.setVisibility(View.VISIBLE);
+        String eventResponse = event.getResponseStatus().getResponse();
+        switch (eventResponse) {
+            case "accepted":
+                cancelButton.setVisibility(View.VISIBLE);
+                break;
+            case "tentativelyAccepted":
+                bookButton.setVisibility(View.VISIBLE);
+                break;
+            case "notResponded":
+                bookButton.setVisibility(View.VISIBLE);
+                break;
+            default:
+                break;
         }
     }
 

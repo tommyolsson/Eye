@@ -199,8 +199,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, "Response: " + response.toString());
                 try {
                     getAllEvents(response);
-                    updateUIOnResponse();
-//                    updateSuccessUI();
+                    updateUIOnResponse("main");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -257,6 +256,7 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(JSONObject response) {
                 /* Successfully called graph, process data and send to UI */
                 Log.d(TAG, "Response: " + response.toString());
+                updateUIOnResponse("booking");
             }
         }, new Response.ErrorListener() {
             @Override
@@ -397,9 +397,9 @@ public class MainActivity extends AppCompatActivity {
         invalidateOptionsMenu();
     }
 
-    private void updateUIOnResponse() {
+    public void updateUIOnResponse(String fragmentTag) {
         FragmentManager fragmentManager = getFragmentManager();
-        Fragment fragment = fragmentManager.findFragmentByTag("main");
+        Fragment fragment = fragmentManager.findFragmentByTag(fragmentTag);
 
         Bundle bundle = new Bundle();
         bundle.putParcelableArrayList("allevents", allEvents);
@@ -417,6 +417,10 @@ public class MainActivity extends AppCompatActivity {
             return new FragmentCalendar();
         else if (fragment instanceof FragmentBooking)
             return new FragmentBooking();
+        else if (fragment instanceof FragmentOpenMeeting)
+            return new FragmentOpenMeeting();
+        else if (fragment instanceof FragmentOpenEvent)
+            return new FragmentOpenEvent();
         else
             return new FragmentHome();
     }
@@ -693,17 +697,6 @@ public class MainActivity extends AppCompatActivity {
         {
             actionBar.setDisplayHomeAsUpEnabled(false);
         }
-    }
-
-    public void bookMeeting(View view) {
-
-       String id = "AQMkADAwATMwMAItMTA3NC1mMWY5LTAwAi0wMAoARgAAA5qOMtqUVcdGjwE9YSdMJv0HAI8BHxCuIO1Hp_cDF_CLsbMAAAIBDQAAAI8BHxCuIO1Hp_cDF_CLsbMAAAABrWg9AAAA";
-       String url="https://graph.microsoft.com/beta/me/events/"+id+"/accept";
-
-       //String url="https://graph.microsoft.com/beta/me/events/"+id+"/cancel";
-
-       postGraphAPI(url);
-
     }
 
     public void showMap(EventClass event) {

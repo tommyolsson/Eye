@@ -60,11 +60,6 @@ public class FragmentBooking extends Fragment {
         return view;
     }
 
-    private void myUpdateOperation() {
-        ((MainActivity)getActivity()).callGraphAPI();
-        mSwipeRefreshLayout.setRefreshing(false);
-    }
-
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -73,5 +68,10 @@ public class FragmentBooking extends Fragment {
 
         BookingAdapter myAdapter = new BookingAdapter(context, allEvents);
         recyclerView.setAdapter(myAdapter);
+    }
+
+    private void myUpdateOperation() {
+        ((MainActivity)getActivity()).callGraphAPI();
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 }
