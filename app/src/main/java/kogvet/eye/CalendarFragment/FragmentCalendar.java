@@ -8,9 +8,12 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -62,6 +65,7 @@ public class FragmentCalendar extends Fragment {
                 myUpdateOperation();
             }
         });
+
         return view;
     }
 
@@ -70,6 +74,21 @@ public class FragmentCalendar extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         recyclerView = (RecyclerView) view.findViewById(R.id.fragment_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
+
+        recyclerView.setOnTouchListener(new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View view, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN ) {
+                    //Insert desired code here
+                    onSwipeRight();
+                    onSwipeLeft();
+
+                    return true;
+                }
+                return false;
+            }
+        });
 
         CalendarAdapter calendarAdapter = new CalendarAdapter(context, allEvents);
         recyclerView.setAdapter(calendarAdapter);
@@ -80,4 +99,14 @@ public class FragmentCalendar extends Fragment {
         ((MainActivity)getActivity()).callGraphAPI();
         mSwipeRefreshLayout.setRefreshing(false);
     }
+
+
+    public void onSwipeRight() {
+        Log.i("Information", "Swipe right");
+    }
+    public void onSwipeLeft() {
+        Log.i("Information", "Swipe Left");
+    }
+
+
 }

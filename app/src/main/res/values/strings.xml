@@ -37,6 +37,7 @@
     <!--viewCalendar Acitivty-->
     <string name="subject">Subject</string>
     <string name="location">Location</string>
+    <string name="week">Vecka</string>
 
     <!-- Calendar item -->
     <string name="timeWholeDay">Heldag</string>

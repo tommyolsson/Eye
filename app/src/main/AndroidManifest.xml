@@ -44,6 +44,7 @@
         <activity android:name=".Notifications.NotificationService" />
         <activity android:name=".CalendarFragment.FragmentOpenEvent" />
         <activity android:name=".BookingFragment.FragmentOpenMeeting"></activity>
+        <activity android:name=".CalendarFragment.FragmentWeek" />
 
         <meta-data
             android:name="preloaded_fonts"
