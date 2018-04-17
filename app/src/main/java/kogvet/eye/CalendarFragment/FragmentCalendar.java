@@ -75,20 +75,7 @@ public class FragmentCalendar extends Fragment {
         recyclerView = (RecyclerView) view.findViewById(R.id.fragment_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
-        recyclerView.setOnTouchListener(new View.OnTouchListener() {
-
-            @Override
-            public boolean onTouch(View view, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_DOWN ) {
-                    //Insert desired code here
-                    onSwipeRight();
-                    onSwipeLeft();
-
-                    return true;
-                }
-                return false;
-            }
-        });
+        detectSwipe();
 
         CalendarAdapter calendarAdapter = new CalendarAdapter(context, allEvents);
         recyclerView.setAdapter(calendarAdapter);
@@ -100,13 +87,42 @@ public class FragmentCalendar extends Fragment {
         mSwipeRefreshLayout.setRefreshing(false);
     }
 
+    public void detectSwipe() {
+        recyclerView.setOnTouchListener(new View.OnTouchListener() {
 
-    public void onSwipeRight() {
-        Log.i("Information", "Swipe right");
-    }
-    public void onSwipeLeft() {
-        Log.i("Information", "Swipe Left");
-    }
+            private float x1,x2;
+            static final int MIN_DISTANCE = 150;
 
+            @Override
+            public boolean onTouch(View view, MotionEvent event) {
+                switch(event.getAction())
+                {
+                    case MotionEvent.ACTION_DOWN:
+                        x1 = event.getX();
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        x2 = event.getX();
+                        float deltaX = x2 - x1;
+                        if (Math.abs(deltaX) > MIN_DISTANCE)
+                        {
+                            if (x2 > x1)
+                            {
+                                Log.i("Information", "Swipe right");
+                            }
+                            else
+                            {
+                                Log.i("Information", "Swipe left");
+                            }
+                        }
+                        else
+                        {
+                            // consider as something else - a screen tap for example
+                        }
+                        return true;
+                }
+                return false;
+            }
+        });
+    }
 
 }
