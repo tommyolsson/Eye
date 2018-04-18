@@ -44,6 +44,14 @@
     <string name="times">%1$s-%2$s</string>
     <string name="date">YYYY-MM-DD</string>
 
+    <string name="weekDates">Måndag &#160; Tisdag &#160; Onsdag &#160; Torsdag &#160; Fredag</string>
+    <string name="monday">Måndag</string>
+    <string name="tuesday">Tisdag</string>
+    <string name="wednesday">Onsdag</string>
+    <string name="thursday">Torsdag</string>
+    <string name="friday">Fredag</string>
+
+
     <!-- Booking item -->
     <string name="button_book">Boka möte</string>
     <string name="button_cancel">Avboka möte</string>
