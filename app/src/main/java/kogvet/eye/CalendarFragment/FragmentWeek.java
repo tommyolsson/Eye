@@ -4,10 +4,13 @@ import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -26,7 +29,7 @@ public class FragmentWeek extends Fragment {
     private RecyclerView recyclerView;
     private Context context;
     private ArrayList<EventClass> allEvents;
-
+    
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,10 +60,60 @@ public class FragmentWeek extends Fragment {
         recyclerView = (RecyclerView) view.findViewById(R.id.fragment_recycler_view);
         recyclerView.setLayoutManager(new GridLayoutManager(context, 5));
 
+        detectSwipe();
+
         CalendarAdapter calendarAdapter = new CalendarAdapter(context, allEvents);
         recyclerView.setAdapter(calendarAdapter);
 
 
+    }
+
+
+    public void detectSwipe() {
+        recyclerView.setOnTouchListener(new View.OnTouchListener() {
+
+            private float x1,x2;
+            static final int MIN_DISTANCE = 150;
+
+            @Override
+            public boolean onTouch(View view, MotionEvent event) {
+                switch(event.getAction())
+                {
+                    case MotionEvent.ACTION_DOWN:
+                        x1 = event.getX();
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        x2 = event.getX();
+                        float deltaX = x2 - x1;
+                        if (Math.abs(deltaX) > MIN_DISTANCE)
+                        {
+                            if (x2 > x1)
+                            {
+                                Log.i("Information", "Swipe right");
+
+
+                            }
+                            else
+                            {
+                                Log.i("Information", "Swipe left");
+                                Bundle bundle = new Bundle();
+                                bundle.putParcelableArrayList("allevents", allEvents);
+
+                                AppCompatActivity activity = (AppCompatActivity) view.getContext();
+                                Fragment openFragment = new FragmentCalendar();
+                                openFragment.setArguments(bundle);
+                                activity.getFragmentManager().beginTransaction().replace(R.id.rootLayout, openFragment).commit();
+                            }
+                        }
+                        else
+                        {
+                            // consider as something else - a screen tap for example
+                        }
+                        return true;
+                }
+                return false;
+            }
+        });
     }
 
 }

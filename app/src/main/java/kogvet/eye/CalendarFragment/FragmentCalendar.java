@@ -6,6 +6,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -108,6 +109,14 @@ public class FragmentCalendar extends Fragment {
                             if (x2 > x1)
                             {
                                 Log.i("Information", "Swipe right");
+                                Bundle bundle = new Bundle();
+                                bundle.putParcelableArrayList("allevents", allEvents);
+
+                                AppCompatActivity activity = (AppCompatActivity) view.getContext();
+                                Fragment openFragment = new FragmentWeek();
+                                openFragment.setArguments(bundle);
+                                activity.getFragmentManager().beginTransaction().replace(R.id.rootLayout, openFragment).commit();
+
                             }
                             else
                             {
