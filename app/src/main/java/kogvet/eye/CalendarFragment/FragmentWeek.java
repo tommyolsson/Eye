@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -29,6 +30,7 @@ public class FragmentWeek extends Fragment {
     private RecyclerView recyclerView;
     private Context context;
     private ArrayList<EventClass> allEvents;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,6 +52,14 @@ public class FragmentWeek extends Fragment {
         ((MainActivity) getActivity()).setActionBarTitle(getResources().getString(R.string.week));
         ((MainActivity) getActivity()).showBackButton();
 
+        mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swiperefresh);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                myUpdateOperation();
+            }
+        });
+
         return view;
     }
 
@@ -68,6 +78,10 @@ public class FragmentWeek extends Fragment {
 
     }
 
+    private void myUpdateOperation() {
+        ((MainActivity)getActivity()).callGraphAPI();
+        mSwipeRefreshLayout.setRefreshing(false);
+    }
 
     public void detectSwipe() {
         recyclerView.setOnTouchListener(new View.OnTouchListener() {

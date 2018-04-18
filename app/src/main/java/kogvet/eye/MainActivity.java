@@ -43,6 +43,7 @@ import kogvet.eye.BookingFragment.FragmentOpenMeeting;
 import kogvet.eye.CalendarFragment.CalendarAdapter;
 import kogvet.eye.CalendarFragment.FragmentCalendar;
 import kogvet.eye.CalendarFragment.FragmentOpenEvent;
+import kogvet.eye.CalendarFragment.FragmentWeek;
 import kogvet.eye.HomeFragment.FragmentHome;
 import kogvet.eye.LoginFragment.FragmentLogin;
 
@@ -421,6 +422,8 @@ public class MainActivity extends AppCompatActivity {
             return new FragmentOpenMeeting();
         else if (fragment instanceof FragmentOpenEvent)
             return new FragmentOpenEvent();
+        else if (fragment instanceof FragmentWeek)
+            return new FragmentWeek();
         else
             return new FragmentHome();
     }

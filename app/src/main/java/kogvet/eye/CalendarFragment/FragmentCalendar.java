@@ -33,11 +33,11 @@ public class FragmentCalendar extends Fragment {
     private ArrayList<EventClass> allEvents;
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
-    public static FragmentCalendar newInstance(Bundle bundle) {
-        FragmentCalendar fragment = new FragmentCalendar();
-        fragment.setArguments(bundle);
-        return fragment;
-    }
+//    public static FragmentCalendar newInstance(Bundle bundle) {
+//        FragmentCalendar fragment = new FragmentCalendar();
+//        fragment.setArguments(bundle);
+//        return fragment;
+//    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -115,7 +115,7 @@ public class FragmentCalendar extends Fragment {
                                 AppCompatActivity activity = (AppCompatActivity) view.getContext();
                                 Fragment openFragment = new FragmentWeek();
                                 openFragment.setArguments(bundle);
-                                activity.getFragmentManager().beginTransaction().replace(R.id.rootLayout, openFragment).commit();
+                                activity.getFragmentManager().beginTransaction().replace(R.id.rootLayout, openFragment, "main").commit();
 
                             }
                             else
