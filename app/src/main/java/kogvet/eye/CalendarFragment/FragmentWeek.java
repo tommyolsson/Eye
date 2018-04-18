@@ -69,11 +69,12 @@ public class FragmentWeek extends Fragment {
 
         recyclerView = (RecyclerView) view.findViewById(R.id.fragment_recycler_view);
         recyclerView.setLayoutManager(new GridLayoutManager(context, 5));
+//        recyclerView.setLayoutManager(new GridLayoutManager(context, 5, GridLayoutManager.HORIZONTAL, false));
 
         detectSwipe();
 
-        CalendarAdapter calendarAdapter = new CalendarAdapter(context, allEvents);
-        recyclerView.setAdapter(calendarAdapter);
+        WeekAdapter weekAdapter = new WeekAdapter(context, allEvents);
+        recyclerView.setAdapter(weekAdapter);
 
 
     }
