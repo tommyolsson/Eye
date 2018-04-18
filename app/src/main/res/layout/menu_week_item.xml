@@ -46,7 +46,6 @@
             android:layout_marginTop="3dp"
             android:clickable="true"
             android:elevation="1dp"
-            android:onClick="showMap"
             android:text="@string/location"
             android:textSize="14sp" />
 

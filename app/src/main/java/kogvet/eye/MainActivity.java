@@ -244,7 +244,7 @@ public class MainActivity extends AppCompatActivity {
         if (authResult.getAccessToken() == null) {return;}
 
         Map<String, String> jsonParams = new HashMap<>();
-        jsonParams.put("comment", "test");
+//        jsonParams.put("comment", "test");
 
         RequestQueue queue = Volley.newRequestQueue(this);
 
