@@ -61,7 +61,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         holder.position = position;
         EventClass event = currentEvents.get(position);
         holder.tvSubject.setText(event.getSubject());
-        holder.tvBodyPreview.setText(event.getBodyPreview());
+//        holder.tvBodyPreview.setText(event.getBodyPreview());
         holder.tvLocation.setText(event.getLocation().getDisplayName());
 
         //Set time and date
@@ -99,7 +99,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             super(itemView);
 
             tvSubject = itemView.findViewById(R.id.tvSubject);
-            tvBodyPreview = itemView.findViewById(R.id.tvBodyPreview);
             tvTimes = itemView.findViewById(R.id.tvTimes);
             tvLocation = itemView.findViewById(R.id.tvLocation);
             tvDate = itemView.findViewById(R.id.tvDate);

@@ -16,69 +16,23 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/tvSubject"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_marginBottom="3dp"
-            android:layout_marginStart="4sp"
-            android:layout_marginTop="3dp"
-            android:elevation="1dp"
-            android:text="@string/subject"
-            android:textSize="24sp" />
-
-        <TextView
-            android:id="@+id/tvBodyPreview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:autoLink="web"
-            android:clickable="true"
-            android:linksClickable="true"
-            android:visibility="gone" />
-
-        <TextView
-            android:id="@+id/tvLocation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tvSubject"
-            android:layout_marginBottom="3dp"
-            android:layout_marginStart="4sp"
-            android:layout_marginTop="3dp"
-            android:clickable="true"
-            android:elevation="1dp"
-            android:text="@string/location"
-            android:textSize="14sp" />
-
-        <TextView
             android:id="@+id/tvTimes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="4sp"
-            android:layout_marginTop="14dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="false"
             android:text="@string/times"
             android:textSize="16sp" />
 
         <TextView
-            android:id="@+id/tvDate"
+            android:id="@+id/tvSubject"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
+            android:layout_alignStart="@+id/tvTimes"
             android:layout_below="@+id/tvTimes"
-            android:layout_marginEnd="4sp"
-            android:text="@string/date" />
-
-        <TextView
-            android:id="@+id/tvResponseStatus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone" />
-
-        <TextView
-            android:id="@+id/tvId"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone" />
+            android:elevation="1dp"
+            android:text="@string/subject"
+            android:textSize="14sp" />
 
     </RelativeLayout>
 

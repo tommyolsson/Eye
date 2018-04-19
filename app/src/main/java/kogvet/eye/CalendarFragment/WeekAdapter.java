@@ -28,56 +28,13 @@ import kogvet.eye.R;
 public class WeekAdapter extends RecyclerView.Adapter<WeekAdapter.ViewHolder> {
 
     private final Context context;
-    private final ArrayList<EventClass> allEvents;
     private final ArrayList<EventClass> allActivities;
-    private final ArrayList<EventClass> activitiesMonday;
-    private final ArrayList<EventClass> activitiesTuesday;
-    private final ArrayList<EventClass> activitiesWednesday;
-    private final ArrayList<EventClass> activitiesThursday;
-    private final ArrayList<EventClass> activitiesFriday;
     private final LocalDateTime currentTime;
 
-    public WeekAdapter(Context context, ArrayList<EventClass> allEvents) {
-        this.allEvents = allEvents;
-        this.allActivities = getAllActivities(allEvents);
+    public WeekAdapter(Context context, ArrayList<EventClass> allActivities) {
+        this.allActivities = allActivities;
         this.context = context;
         this.currentTime = getCurrentTime();
-    }
-
-    private ArrayList<EventClass> getAllActivities(ArrayList<EventClass> allEvents) {
-        ArrayList<EventClass> allActivites = new ArrayList<>();
-        for (int i = 0; i < allEvents.size(); i++) {
-            if (!allEvents.get(i).getIsMeeting())
-                allActivites.add(allEvents.get(i));
-        }
-        return allActivites;
-    }
-
-    private ArrayList<EventClass> getWeekDayEvents(ArrayList<EventClass> allActivities, String weekDay) {
-        ArrayList<EventClass> weekDayActivities = new ArrayList<>();
-
-
-            switch (weekDay) {
-                case "monday":
-                    for(int i = 0; i < allActivities.size(); i++) {
-                        if(allActivities.get(i).getStartTimeObj().getDayOfWeek())
-                    }
-                    break;
-                case "tuesday":
-                    break;
-                case "wednesday":
-                    break;
-                case "thursday":
-                    break;
-                case "friday":
-                    break;
-                default:
-                    break;
-
-            }
-
-
-        return weekDayActivities;
     }
 
     private LocalDateTime getCurrentTime() {
@@ -88,7 +45,7 @@ public class WeekAdapter extends RecyclerView.Adapter<WeekAdapter.ViewHolder> {
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         LayoutInflater li = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = li.inflate(R.layout.menu_item, null);
+        View view = li.inflate(R.layout.menu_week_item, null);
         return new ViewHolder(view);
     }
 
@@ -97,18 +54,18 @@ public class WeekAdapter extends RecyclerView.Adapter<WeekAdapter.ViewHolder> {
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.position = position;
         holder.tvSubject.setText(allActivities.get(position).getSubject());
-        holder.tvBodyPreview.setText(allActivities.get(position).getBodyPreview());
-        holder.tvLocation.setText(allActivities.get(position).getLocation().getDisplayName());
+//        holder.tvBodyPreview.setText(allActivities.get(position).getBodyPreview());
+//        holder.tvLocation.setText(allActivities.get(position).getLocation().getDisplayName());
         //Set time and date
         if(allActivities.get(position).getIsAllDay()) {
             holder.tvTimes.setText(context.getResources().getString(R.string.timeWholeDay));
-            holder.tvDate.setText(allActivities.get(position).getStartDate());
+//            holder.tvDate.setText(allActivities.get(position).getStartDate());
         }
         else{
             //get time and put in format (see strings)
             String times = context.getResources().getString(R.string.times, allActivities.get(position).getStartTime(), allActivities.get(position).getEndTime());
             holder.tvTimes.setText(times);
-            holder.tvDate.setText(allActivities.get(position).getEndDate());
+//            holder.tvDate.setText(allActivities.get(position).getEndDate());
         }
 
         if (currentTime.isAfter(allActivities.get(position).getStartTimeObj())) {
@@ -131,7 +88,6 @@ public class WeekAdapter extends RecyclerView.Adapter<WeekAdapter.ViewHolder> {
             super(itemView);
 
             tvSubject = itemView.findViewById(R.id.tvSubject);
-            tvBodyPreview = itemView.findViewById(R.id.tvBodyPreview);
             tvTimes = itemView.findViewById(R.id.tvTimes);
             tvLocation = itemView.findViewById(R.id.tvLocation);
             tvDate = itemView.findViewById(R.id.tvDate);

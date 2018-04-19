@@ -65,7 +65,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.ViewHo
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.position = position;
         holder.tvSubject.setText(allActivities.get(position).getSubject());
-        holder.tvBodyPreview.setText(allActivities.get(position).getBodyPreview());
+//        holder.tvBodyPreview.setText(allActivities.get(position).getBodyPreview());
         holder.tvLocation.setText(allActivities.get(position).getLocation().getDisplayName());
         //Set time and date
         if(allActivities.get(position).getIsAllDay()) {
@@ -99,7 +99,6 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.ViewHo
             super(itemView);
 
             tvSubject = itemView.findViewById(R.id.tvSubject);
-            tvBodyPreview = itemView.findViewById(R.id.tvBodyPreview);
             tvTimes = itemView.findViewById(R.id.tvTimes);
             tvLocation = itemView.findViewById(R.id.tvLocation);
             tvDate = itemView.findViewById(R.id.tvDate);

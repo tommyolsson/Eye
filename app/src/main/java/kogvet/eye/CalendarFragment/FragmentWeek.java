@@ -15,6 +15,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.time.DayOfWeek;
 import java.util.ArrayList;
 
 import kogvet.eye.EventClass;
@@ -27,11 +28,68 @@ import kogvet.eye.R;
  */
 public class FragmentWeek extends Fragment {
 
-    private RecyclerView recyclerView;
     private Context context;
-    private ArrayList<EventClass> allEvents;
     private SwipeRefreshLayout mSwipeRefreshLayout;
-    
+
+    private ArrayList<EventClass> allEvents;
+    private ArrayList<EventClass> allActivities;
+
+    private ArrayList<EventClass> activitiesMonday;
+    private RecyclerView mondayRecyclerView;
+
+    private ArrayList<EventClass> activitiesTuesday;
+    private RecyclerView tuesdayRecyclerView;
+
+    private ArrayList<EventClass> activitiesWednesday;
+    private RecyclerView wednesdayRecyclerView;
+
+    private ArrayList<EventClass> activitiesThursday;
+    private RecyclerView thursdayRecyclerView;
+
+    private ArrayList<EventClass> activitiesFriday;
+    private RecyclerView fridayRecyclerView;
+
+
+    private ArrayList<EventClass> getAllActivities(ArrayList<EventClass> allEvents) {
+        ArrayList<EventClass> allActivites = new ArrayList<>();
+        for (int i = 0; i < allEvents.size(); i++) {
+            if (!allEvents.get(i).getIsMeeting())
+                allActivites.add(allEvents.get(i));
+        }
+        return allActivites;
+    }
+
+    private void getWeekDayEvents(ArrayList<EventClass> allActivities) {
+        activitiesMonday = new ArrayList<>();
+        activitiesTuesday = new ArrayList<>();
+        activitiesWednesday = new ArrayList<>();
+        activitiesThursday = new ArrayList<>();
+        activitiesFriday = new ArrayList<>();
+        for(int i = 0; i < allActivities.size(); i++) {
+            java.time.DayOfWeek weekDay = allActivities.get(i).getStartTimeObj().getDayOfWeek();
+            switch (weekDay) {
+                case MONDAY:
+                    activitiesMonday.add(allActivities.get(i));
+                    break;
+                case TUESDAY:
+                    activitiesTuesday.add(allActivities.get(i));
+                    break;
+                case WEDNESDAY:
+                    activitiesWednesday.add(allActivities.get(i));
+                    break;
+                case THURSDAY:
+                    activitiesThursday.add(allActivities.get(i));
+                    break;
+                case FRIDAY:
+                    activitiesFriday.add(allActivities.get(i));
+                    break;
+                default:
+                    break;
+
+            }
+        }
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +100,8 @@ public class FragmentWeek extends Fragment {
         {
             allEvents = bundle.getParcelableArrayList("allevents");
         }
+        allActivities = getAllActivities(allEvents);
+        getWeekDayEvents(allActivities);
     }
 
     @Nullable
@@ -66,17 +126,28 @@ public class FragmentWeek extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        mondayRecyclerView = view.findViewById(R.id.fragment_recycler_view_Monday);
+        prepareRecyclerView(mondayRecyclerView, activitiesMonday);
 
-        recyclerView = (RecyclerView) view.findViewById(R.id.fragment_recycler_view);
-        recyclerView.setLayoutManager(new GridLayoutManager(context, 5));
-//        recyclerView.setLayoutManager(new GridLayoutManager(context, 5, GridLayoutManager.HORIZONTAL, false));
+        tuesdayRecyclerView = view.findViewById(R.id.fragment_recycler_view_Tuesday);
+        prepareRecyclerView(tuesdayRecyclerView, activitiesTuesday);
 
-        detectSwipe();
+        wednesdayRecyclerView = view.findViewById(R.id.fragment_recycler_view_Wednesday);
+        prepareRecyclerView(wednesdayRecyclerView, activitiesWednesday);
 
-        WeekAdapter weekAdapter = new WeekAdapter(context, allEvents);
-        recyclerView.setAdapter(weekAdapter);
+        thursdayRecyclerView = view.findViewById(R.id.fragment_recycler_view_Thursday);
+        prepareRecyclerView(thursdayRecyclerView, activitiesThursday);
 
+        fridayRecyclerView = view.findViewById(R.id.fragment_recycler_view_Friday);
+        prepareRecyclerView(fridayRecyclerView, activitiesFriday);
 
+    }
+
+    private void prepareRecyclerView(RecyclerView mondayRecyclerView, ArrayList<EventClass> activitiesMonday) {
+        mondayRecyclerView.setLayoutManager(new LinearLayoutManager(context));
+        detectSwipe(mondayRecyclerView);
+        WeekAdapter mondayAdapter = new WeekAdapter(context, activitiesMonday);
+        mondayRecyclerView.setAdapter(mondayAdapter);
     }
 
     private void myUpdateOperation() {
@@ -84,8 +155,8 @@ public class FragmentWeek extends Fragment {
         mSwipeRefreshLayout.setRefreshing(false);
     }
 
-    public void detectSwipe() {
-        recyclerView.setOnTouchListener(new View.OnTouchListener() {
+    public void detectSwipe(RecyclerView view) {
+        view.setOnTouchListener(new View.OnTouchListener() {
 
             private float x1,x2;
             static final int MIN_DISTANCE = 150;

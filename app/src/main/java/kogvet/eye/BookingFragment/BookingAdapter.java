@@ -63,11 +63,11 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.ViewHold
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.position = position;
-        holder.tvId.setText(allMeetings.get(position).getId());
+//        holder.tvId.setText(allMeetings.get(position).getId());
         holder.tvSubject.setText(allMeetings.get(position).getSubject());
-        holder.tvBodyPreview.setText(allMeetings.get(position).getBodyPreview());
+//        holder.tvBodyPreview.setText(allMeetings.get(position).getBodyPreview());
         holder.tvLocation.setText(allMeetings.get(position).getLocation().getDisplayName());
-        holder.tvResponseStatus.setText(allEvents.get(position).getResponseStatus().getResponse());
+//        holder.tvResponseStatus.setText(allEvents.get(position).getResponseStatus().getResponse());
 
         ((CardView) holder.itemView).setCardBackgroundColor(ContextCompat.getColor(context,R.color.color_booking));
 
@@ -102,14 +102,12 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.ViewHold
         public ViewHolder(final View itemView) {
             super(itemView);
 
-            tvId = itemView.findViewById(R.id.tvId);
+//            tvId = itemView.findViewById(R.id.tvId);
             tvSubject = itemView.findViewById(R.id.tvSubject);
-            tvBodyPreview = itemView.findViewById(R.id.tvBodyPreview);
             tvTimes = itemView.findViewById(R.id.tvTimes);
             tvLocation = itemView.findViewById(R.id.tvLocation);
             tvDate = itemView.findViewById(R.id.tvDate);
-            tvResponseStatus = itemView.findViewById(R.id.tvResponseStatus);
-            
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
