@@ -59,13 +59,13 @@ public class WeekAdapter extends RecyclerView.Adapter<WeekAdapter.ViewHolder> {
         //Set time and date
         if(allActivities.get(position).getIsAllDay()) {
             holder.tvTimes.setText(context.getResources().getString(R.string.timeWholeDay));
-//            holder.tvDate.setText(allActivities.get(position).getStartDate());
+            holder.tvDate.setText(allActivities.get(position).getStartDate());
         }
         else{
             //get time and put in format (see strings)
             String times = context.getResources().getString(R.string.times, allActivities.get(position).getStartTime(), allActivities.get(position).getEndTime());
             holder.tvTimes.setText(times);
-//            holder.tvDate.setText(allActivities.get(position).getEndDate());
+            holder.tvDate.setText(allActivities.get(position).getEndDate());
         }
 
         if (currentTime.isAfter(allActivities.get(position).getStartTimeObj())) {
@@ -82,7 +82,7 @@ public class WeekAdapter extends RecyclerView.Adapter<WeekAdapter.ViewHolder> {
     public class ViewHolder extends  RecyclerView.ViewHolder {
 
         int position;
-        TextView tvSubject,tvBodyPreview,tvTimes,tvLocation,tvDate;
+        TextView tvSubject,tvTimes,tvLocation,tvDate;
 
         public ViewHolder(final View itemView) {
             super(itemView);

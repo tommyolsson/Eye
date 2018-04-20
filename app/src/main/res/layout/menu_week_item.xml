@@ -17,7 +17,7 @@
 
         <TextView
             android:id="@+id/tvTimes"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="false"
@@ -25,8 +25,19 @@
             android:textSize="16sp" />
 
         <TextView
-            android:id="@+id/tvSubject"
+            android:id="@+id/tvDate"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/tvTimes"
+            android:layout_marginEnd="4sp"
+            android:text="@string/date"
+            android:textSize="0sp"
+            android:visibility="invisible" />
+
+        <TextView
+            android:id="@+id/tvSubject"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/tvTimes"
             android:layout_below="@+id/tvTimes"

@@ -176,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
         /*Update Url to request events from today to one month ahead*/
         startDate = LocalDate.now().minusDays(1).toString(); //MINUS EN DAG FÖR IRIS VISNING.
         endDate = LocalDate.now().plusMonths(1).toString();
-        msGraph_URL = "https://graph.microsoft.com/beta/me/calendar/calendarView?startDateTime="+startDate+"T00:00:00.0000000&endDateTime="+endDate+"T00:00:00.0000000&$orderby=start/dateTime";
+        msGraph_URL = "https://graph.microsoft.com/beta/me/calendar/calendarView?startDateTime="+startDate+"T00:00:00.0000000&endDateTime="+endDate+"T00:00:00.0000000&$top=500&$orderby=start/dateTime";
 //        msGraph_URL = buildUrl();
 
         Log.d(TAG, "Starting volley request to graph");

@@ -45,11 +45,11 @@
     <string name="date">YYYY-MM-DD</string>
 
     <string name="weekDates">Måndag &#160; Tisdag &#160; Onsdag &#160; Torsdag &#160; Fredag</string>
-    <string name="monday">Måndag</string>
-    <string name="tuesday">Tisdag</string>
-    <string name="wednesday">Onsdag</string>
-    <string name="thursday">Torsdag</string>
-    <string name="friday">Fredag</string>
+    <string name="monday">Må</string>
+    <string name="tuesday">Ti</string>
+    <string name="wednesday">On</string>
+    <string name="thursday">To</string>
+    <string name="friday">Fr</string>
 
 
     <!-- Booking item -->
