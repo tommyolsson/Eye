@@ -25,7 +25,6 @@
                 android:orientation="horizontal">
 
                 <LinearLayout
-                    android:id="@+id/linearLayoutMonday"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_alignParentRight="false"
@@ -39,16 +38,19 @@
                     <TextView
                         android:id="@+id/monday"
                         android:layout_width="match_parent"
-                        android:layout_height="26dp"
+                        android:layout_height="30dp"
+                        android:layout_marginBottom="4dp"
+                        android:layout_marginTop="6dp"
                         android:text="@string/monday"
                         android:textAlignment="center"
-                        android:textSize="20sp" />
+                        android:textSize="24sp" />
 
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/fragment_recycler_view_Monday"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_alignTop="@+id/monday"
+                        android:background="@drawable/border"
                         android:clipChildren="false"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/monday"
@@ -73,13 +75,15 @@
                     <TextView
                         android:id="@+id/tuesday"
                         android:layout_width="match_parent"
-                        android:layout_height="26dp"
+                        android:layout_height="30dp"
                         android:layout_alignEnd="@+id/monday"
                         android:layout_alignParentRight="false"
                         android:layout_alignRight="@+id/monday"
+                        android:layout_marginBottom="4dp"
+                        android:layout_marginTop="6dp"
                         android:text="@string/tuesday"
                         android:textAlignment="center"
-                        android:textSize="20sp"
+                        android:textSize="24sp"
                         app:layout_constraintStart_toEndOf="@+id/monday"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -88,6 +92,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_alignTop="@+id/monday"
+                        android:background="@drawable/border"
                         android:clipChildren="false"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/monday"
@@ -113,11 +118,13 @@
                     <TextView
                         android:id="@+id/wednesday"
                         android:layout_width="match_parent"
-                        android:layout_height="26dp"
+                        android:layout_height="30dp"
                         android:layout_alignRight="@+id/tuesday"
+                        android:layout_marginBottom="4dp"
+                        android:layout_marginTop="6dp"
                         android:text="@string/wednesday"
                         android:textAlignment="center"
-                        android:textSize="20sp"
+                        android:textSize="24sp"
                         app:layout_constraintStart_toEndOf="@+id/tuesday"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -126,6 +133,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_alignTop="@+id/monday"
+                        android:background="@drawable/border"
                         android:clipChildren="false"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/monday"
@@ -149,10 +157,12 @@
                     <TextView
                         android:id="@+id/thursday"
                         android:layout_width="match_parent"
-                        android:layout_height="26dp"
+                        android:layout_height="30dp"
+                        android:layout_marginBottom="4dp"
+                        android:layout_marginTop="6dp"
                         android:text="@string/thursday"
                         android:textAlignment="center"
-                        android:textSize="20sp"
+                        android:textSize="24sp"
                         app:layout_constraintStart_toEndOf="@+id/wednesday"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -161,6 +171,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_alignTop="@+id/monday"
+                        android:background="@drawable/border"
                         android:clipChildren="false"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/monday"
@@ -186,10 +197,12 @@
                     <TextView
                         android:id="@+id/friday"
                         android:layout_width="match_parent"
-                        android:layout_height="26dp"
+                        android:layout_height="30dp"
+                        android:layout_marginBottom="4dp"
+                        android:layout_marginTop="6dp"
                         android:text="@string/friday"
                         android:textAlignment="center"
-                        android:textSize="20sp"
+                        android:textSize="24sp"
                         app:layout_constraintStart_toEndOf="@+id/thursday"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -198,6 +211,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_alignTop="@+id/monday"
+                        android:background="@drawable/border"
                         android:clipChildren="false"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/monday"
