@@ -44,7 +44,8 @@
                         android:layout_marginTop="6dp"
                         android:text="@string/monday"
                         android:textAlignment="center"
-                        android:textSize="24sp" />
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
 
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/fragment_recycler_view_Monday"
@@ -85,6 +86,7 @@
                         android:text="@string/tuesday"
                         android:textAlignment="center"
                         android:textSize="24sp"
+                        android:textStyle="bold"
                         app:layout_constraintStart_toEndOf="@+id/monday"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -126,6 +128,7 @@
                         android:text="@string/wednesday"
                         android:textAlignment="center"
                         android:textSize="24sp"
+                        android:textStyle="bold"
                         app:layout_constraintStart_toEndOf="@+id/tuesday"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -164,6 +167,7 @@
                         android:text="@string/thursday"
                         android:textAlignment="center"
                         android:textSize="24sp"
+                        android:textStyle="bold"
                         app:layout_constraintStart_toEndOf="@+id/wednesday"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -204,6 +208,7 @@
                         android:text="@string/friday"
                         android:textAlignment="center"
                         android:textSize="24sp"
+                        android:textStyle="bold"
                         app:layout_constraintStart_toEndOf="@+id/thursday"
                         app:layout_constraintTop_toTopOf="parent" />
 

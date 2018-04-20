@@ -54,8 +54,7 @@ public class WeekAdapter extends RecyclerView.Adapter<WeekAdapter.ViewHolder> {
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.position = position;
         holder.tvSubject.setText(allActivities.get(position).getSubject());
-//        holder.tvBodyPreview.setText(allActivities.get(position).getBodyPreview());
-//        holder.tvLocation.setText(allActivities.get(position).getLocation().getDisplayName());
+
         //Set time and date
         if(allActivities.get(position).getIsAllDay()) {
             holder.tvTimes.setText(context.getResources().getString(R.string.timeWholeDay));

@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -84,11 +85,17 @@ public class FragmentHome extends Fragment {
 
     public String getCurrentDate()
     {
-        //DateFormat df = new SimpleDateFormat("EEEE, d MMMM yyyy");
         DateFormat df = new SimpleDateFormat("EEEE\nMMMM dd");
-//        DateFormat df = new SimpleDateFormat("EEEE \n yyyy MMMM dd");
         String date = df.format(Calendar.getInstance().getTime());
-        return date;
+        //Capitalize weekday and month
+        String capitlized="";
+        String[] strArray = date.split("\n");
+        for (String s : strArray) {
+            String cap = s.substring(0, 1).toUpperCase() + s.substring(1);
+            capitlized=capitlized+"\n"+cap;
+        }
+
+        return capitlized;
     }
 
 }

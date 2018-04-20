@@ -174,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
     /* Use Volley to make an HTTP request to the /me endpoint from MS Graph using an access token */
     public void callGraphAPI() {
         /*Update Url to request events from today to one month ahead*/
-        startDate = LocalDate.now().minusDays(1).toString(); //MINUS EN DAG FÖR IRIS VISNING.
+        startDate = LocalDate.now().minusDays(1).toString(); //MINUS ONE DAY FOR DEMO.
         endDate = LocalDate.now().plusMonths(1).toString();
         msGraph_URL = "https://graph.microsoft.com/beta/me/calendar/calendarView?startDateTime="+startDate+"T00:00:00.0000000&endDateTime="+endDate+"T00:00:00.0000000&$top=500&$orderby=start/dateTime";
 //        msGraph_URL = buildUrl();

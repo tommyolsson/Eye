@@ -2,6 +2,8 @@ package kogvet.eye.CalendarFragment;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -14,13 +16,19 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Switch;
+import android.widget.TextView;
 
 import java.time.DayOfWeek;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 
 import kogvet.eye.EventClass;
 import kogvet.eye.MainActivity;
 import kogvet.eye.R;
+
+import static java.time.LocalDate.now;
 
 
 /**
@@ -140,6 +148,35 @@ public class FragmentWeek extends Fragment {
 
         fridayRecyclerView = view.findViewById(R.id.fragment_recycler_view_Friday);
         prepareRecyclerView(fridayRecyclerView, activitiesFriday);
+
+        underlineDayInWeek(view);
+
+    }
+
+    private void underlineDayInWeek(View view) {
+        DayOfWeek weekDay = LocalDateTime.now().getDayOfWeek();
+        TextView textView = null;
+        switch (weekDay) {
+            case MONDAY:
+                textView = view.findViewById(R.id.monday);
+                break;
+            case TUESDAY:
+                textView = view.findViewById(R.id.tuesday);
+                break;
+            case WEDNESDAY:
+                textView = view.findViewById(R.id.wednesday);
+                break;
+            case THURSDAY:
+                textView = view.findViewById(R.id.thursday);
+                break;
+            case FRIDAY:
+                textView = view.findViewById(R.id.friday);
+                break;
+            default:
+                break;
+        }
+        if (textView != null)
+            textView.setPaintFlags(textView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
     }
 
