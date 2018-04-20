@@ -69,7 +69,7 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.ViewHold
         holder.tvLocation.setText(allMeetings.get(position).getLocation().getDisplayName());
 //        holder.tvResponseStatus.setText(allEvents.get(position).getResponseStatus().getResponse());
 
-        ((CardView) holder.itemView).setCardBackgroundColor(ContextCompat.getColor(context,R.color.color_booking));
+        ((CardView) holder.itemView).setCardBackgroundColor(ContextCompat.getColor(context,R.color.bookingColor));
 
         //Set time and date
         if(allMeetings.get(position).getIsAllDay()) {
