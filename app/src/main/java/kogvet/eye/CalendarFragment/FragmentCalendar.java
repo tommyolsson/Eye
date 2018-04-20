@@ -92,7 +92,7 @@ public class FragmentCalendar extends Fragment {
         recyclerView.setOnTouchListener(new View.OnTouchListener() {
 
             private float x1,x2;
-            static final int MIN_DISTANCE = 150;
+            static final int MIN_DISTANCE = 500;
 
             @Override
             public boolean onTouch(View view, MotionEvent event) {
