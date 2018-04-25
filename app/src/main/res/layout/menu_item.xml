@@ -6,10 +6,7 @@
     android:layout_height="wrap_content"
     card_view:cardBackgroundColor="@color/eventColor"
     card_view:cardElevation="5dp"
-    card_view:cardUseCompatPadding="true"
-    android:foreground="@drawable/ripple_effect"
-    android:clickable="true"
-    android:focusable="true">
+    card_view:cardUseCompatPadding="true">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -23,6 +20,7 @@
             android:layout_marginBottom="3dp"
             android:layout_marginStart="4sp"
             android:layout_marginTop="3dp"
+            android:autoText="false"
             android:elevation="1dp"
             android:text="@string/subject"
             android:textSize="34sp" />

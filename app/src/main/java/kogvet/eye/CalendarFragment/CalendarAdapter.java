@@ -93,7 +93,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.ViewHo
     public class ViewHolder extends  RecyclerView.ViewHolder {
 
         int position;
-        TextView tvSubject,tvBodyPreview,tvTimes,tvLocation,tvDate;
+        TextView tvSubject,tvTimes,tvLocation,tvDate;
 
         public ViewHolder(final View itemView) {
             super(itemView);
@@ -120,14 +120,14 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.ViewHo
 
             });
 
-            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            /*itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
                     itemView.setAlpha((float) 0.5);
                     Log.d("LongClick", "LONG PRESSSSSS");
                     return true;
                 }
-            });
+            });*/
         }
     }
 

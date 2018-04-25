@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ScrollView;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -149,6 +150,9 @@ public class FragmentWeek extends Fragment {
         fridayRecyclerView = view.findViewById(R.id.fragment_recycler_view_Friday);
         prepareRecyclerView(fridayRecyclerView, activitiesFriday);
 
+        ScrollView scrollView = view.findViewById(R.id.scrollview);
+        detectSwipe(scrollView);
+
         underlineDayInWeek(view);
 
     }
@@ -175,14 +179,17 @@ public class FragmentWeek extends Fragment {
             default:
                 break;
         }
-        if (textView != null)
+        if (textView != null) {
+            textView.setTypeface(null, Typeface.BOLD);
             textView.setPaintFlags(textView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+        }
+
 
     }
 
     private void prepareRecyclerView(RecyclerView mondayRecyclerView, ArrayList<EventClass> activitiesMonday) {
         mondayRecyclerView.setLayoutManager(new LinearLayoutManager(context));
-        detectSwipe(mondayRecyclerView);
+//        detectSwipe(mondayRecyclerView);
         WeekAdapter mondayAdapter = new WeekAdapter(context, activitiesMonday);
         mondayRecyclerView.setAdapter(mondayAdapter);
     }
@@ -192,11 +199,11 @@ public class FragmentWeek extends Fragment {
         mSwipeRefreshLayout.setRefreshing(false);
     }
 
-    public void detectSwipe(RecyclerView view) {
+    public void detectSwipe(ScrollView view) {
         view.setOnTouchListener(new View.OnTouchListener() {
 
             private float x1,x2;
-            static final int MIN_DISTANCE = 150;
+            static final int MIN_DISTANCE = 10;
 
             @Override
             public boolean onTouch(View view, MotionEvent event) {
