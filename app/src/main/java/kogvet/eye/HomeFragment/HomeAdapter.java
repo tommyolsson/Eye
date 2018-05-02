@@ -61,8 +61,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         holder.position = position;
         EventClass event = currentEvents.get(position);
         holder.tvSubject.setText(event.getSubject());
-//        holder.tvBodyPreview.setText(event.getBodyPreview());
         holder.tvLocation.setText(event.getLocation().getDisplayName());
+        holder.tvDayInWeek.setText(event.getShortDayInWeek());
 
         //Set time and date
         if(event.getIsAllDay()) {
@@ -78,7 +78,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
         //Set color for meetings
         if(event.getIsMeeting())
-            ((CardView) holder.itemView).setCardBackgroundColor(ContextCompat.getColor(context,R.color.color_booking));
+            ((CardView) holder.itemView).setCardBackgroundColor(ContextCompat.getColor(context,R.color.bookingColor));
 
     }
 
@@ -93,7 +93,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     public class ViewHolder extends  RecyclerView.ViewHolder {
 
         int position;
-        TextView tvSubject,tvBodyPreview,tvTimes,tvLocation,tvDate;
+        TextView tvSubject,tvTimes,tvLocation,tvDate,tvDayInWeek;
 
         public ViewHolder(final View itemView) {
             super(itemView);
@@ -102,6 +102,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             tvTimes = itemView.findViewById(R.id.tvTimes);
             tvLocation = itemView.findViewById(R.id.tvLocation);
             tvDate = itemView.findViewById(R.id.tvDate);
+            tvDayInWeek = itemView.findViewById(R.id.tvDayInWeek);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -63,10 +63,9 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.ViewHold
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.position = position;
-//        holder.tvId.setText(allMeetings.get(position).getId());
         holder.tvSubject.setText(allMeetings.get(position).getSubject());
-//        holder.tvBodyPreview.setText(allMeetings.get(position).getBodyPreview());
         holder.tvLocation.setText(allMeetings.get(position).getLocation().getDisplayName());
+        holder.tvDayInWeek.setText(allMeetings.get(position).getShortDayInWeek());
 //        holder.tvResponseStatus.setText(allEvents.get(position).getResponseStatus().getResponse());
 
         ((CardView) holder.itemView).setCardBackgroundColor(ContextCompat.getColor(context,R.color.bookingColor));
@@ -96,17 +95,17 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.ViewHold
 
     public class ViewHolder extends  RecyclerView.ViewHolder {
 
-        TextView tvId,tvSubject,tvBodyPreview,tvTimes,tvLocation,tvDate,tvResponseStatus;
+        TextView tvId,tvSubject,tvTimes,tvLocation,tvDate,tvDayInWeek,tvResponseStatus;
         int position;
 
         public ViewHolder(final View itemView) {
             super(itemView);
 
-//            tvId = itemView.findViewById(R.id.tvId);
             tvSubject = itemView.findViewById(R.id.tvSubject);
             tvTimes = itemView.findViewById(R.id.tvTimes);
             tvLocation = itemView.findViewById(R.id.tvLocation);
             tvDate = itemView.findViewById(R.id.tvDate);
+            tvDayInWeek = itemView.findViewById(R.id.tvDayInWeek);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

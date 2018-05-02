@@ -31,13 +31,13 @@
 
     <!--Main activity-->
     <string name="connect">Logga in</string>
-    <string name="graphUpdate">Data fetched!</string>
+    <string name="graphUpdate">Schema uppdaterat!</string>
 
 
     <!--viewCalendar Acitivty-->
     <string name="subject">Subject</string>
     <string name="location">Location</string>
-    <string name="day">Dag</string>
+    <string name="day">Tidslinje</string>
     <string name="week">Vecka</string>
 
     <!-- Calendar item -->
@@ -54,8 +54,10 @@
 
 
     <!-- Booking item -->
-    <string name="button_book">Boka möte</string>
-    <string name="button_cancel">Avboka möte</string>
+    <!--<string name="button_book">Boka möte</string>-->
+    <string name="button_book">Acceptera</string>
+    <!--<string name="button_cancel">Avboka möte</string>-->
+    <string name="button_cancel">Avböj</string>
     <string name="button_check">Checka av</string>
 
     <!-- Notification test start -->
@@ -91,10 +93,11 @@
 
     <!-- Bottom Navigation Bar -->
     <string name="menu_home">Hem</string>
-    <string name="menu_calendar">Kalender</string>
-    <string name="menu_booking">Boka</string>
+    <string name="menu_calendar">Aktiviteter</string>
+    <string name="menu_booking">Möten</string>
 
     <string name="title_login">Logga in</string>
     <string name="long_click">test</string>
+    <string name="dayInWeek">monday</string>
 
 </resources>

@@ -15,8 +15,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import kogvet.eye.EventClass;
 import kogvet.eye.R;
@@ -65,8 +67,9 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.ViewHo
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.position = position;
         holder.tvSubject.setText(allActivities.get(position).getSubject());
-//        holder.tvBodyPreview.setText(allActivities.get(position).getBodyPreview());
         holder.tvLocation.setText(allActivities.get(position).getLocation().getDisplayName());
+        holder.tvDayInWeek.setText(allActivities.get(position).getShortDayInWeek());
+
         //Set time and date
         if(allActivities.get(position).getIsAllDay()) {
             holder.tvTimes.setText(context.getResources().getString(R.string.timeWholeDay));
@@ -93,7 +96,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.ViewHo
     public class ViewHolder extends  RecyclerView.ViewHolder {
 
         int position;
-        TextView tvSubject,tvTimes,tvLocation,tvDate;
+        TextView tvSubject,tvTimes,tvLocation,tvDate,tvDayInWeek;
 
         public ViewHolder(final View itemView) {
             super(itemView);
@@ -102,6 +105,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.ViewHo
             tvTimes = itemView.findViewById(R.id.tvTimes);
             tvLocation = itemView.findViewById(R.id.tvLocation);
             tvDate = itemView.findViewById(R.id.tvDate);
+            tvDayInWeek = itemView.findViewById(R.id.tvDayInWeek);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

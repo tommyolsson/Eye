@@ -4,7 +4,11 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
+import com.microsoft.graph.extensions.DayOfWeek;
+
 import java.time.LocalDateTime;
+import java.time.format.TextStyle;
+import java.util.Locale;
 
 /**
  * Created by Loldator on 2018-02-28.
@@ -271,5 +275,16 @@ public class EventClass implements Parcelable {
         return "[ startdate="+this.getStartDate()+", enddate="+getEndDate()+", startTime="+this.getStartTime()+", endTime="+getEndTime()+"]";
     }
 
+    public String getDayInWeek() {
+        java.time.DayOfWeek day = this.startTimeObj.getDayOfWeek();
+        return day.getDisplayName(TextStyle.FULL, Locale.getDefault());
+    }
+
+    public String getShortDayInWeek() {
+        String longName = getDayInWeek();
+        String shortName = longName.substring(0, 1).toUpperCase() + longName.substring(1,2);
+        return shortName;
+
+    }
 
 }
