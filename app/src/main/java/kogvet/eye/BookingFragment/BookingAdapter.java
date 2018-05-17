@@ -1,6 +1,6 @@
 package kogvet.eye.BookingFragment;
 
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -118,7 +118,7 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.ViewHold
                     AppCompatActivity activity = (AppCompatActivity) view.getContext();
                     Fragment openFragment = new FragmentOpenMeeting();
                     openFragment.setArguments(bundle);
-                    activity.getFragmentManager().beginTransaction().replace(R.id.rootLayout, openFragment, "booking").addToBackStack(null).commit();
+                    activity.getSupportFragmentManager().beginTransaction().replace(R.id.rootLayout, openFragment, "booking").addToBackStack(null).commit();
                 }
             });
         }

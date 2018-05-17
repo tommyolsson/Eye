@@ -1,6 +1,6 @@
 package kogvet.eye.CalendarFragment;
 
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.graphics.Paint;
 import android.graphics.Typeface;
@@ -35,7 +35,7 @@ import static java.time.LocalDate.now;
 /**
  * Fragment class for Week Fragment
  */
-public class FragmentWeek extends Fragment {
+public class FragmentWeek extends Fragment  {
 
     private Context context;
     private SwipeRefreshLayout mSwipeRefreshLayout;
@@ -111,6 +111,7 @@ public class FragmentWeek extends Fragment {
         }
         allActivities = getAllActivities(allEvents);
         getWeekDayEvents(allActivities);
+
     }
 
     @Nullable
@@ -118,8 +119,8 @@ public class FragmentWeek extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_week, container, false);
-        ((MainActivity) getActivity()).setActionBarTitle(getResources().getString(R.string.week));
-        ((MainActivity) getActivity()).showBackButton();
+//        ((MainActivity) getActivity()).setActionBarTitle(getResources().getString(R.string.week));
+//        ((MainActivity) getActivity()).showBackButton();
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swiperefresh);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -151,7 +152,7 @@ public class FragmentWeek extends Fragment {
         prepareRecyclerView(fridayRecyclerView, activitiesFriday);
 
         ScrollView scrollView = view.findViewById(R.id.scrollview);
-        detectSwipe(scrollView);
+//        detectSwipe(scrollView);
 
         underlineDayInWeek(view);
 
@@ -189,7 +190,6 @@ public class FragmentWeek extends Fragment {
 
     private void prepareRecyclerView(RecyclerView mondayRecyclerView, ArrayList<EventClass> activitiesMonday) {
         mondayRecyclerView.setLayoutManager(new LinearLayoutManager(context));
-//        detectSwipe(mondayRecyclerView);
         WeekAdapter mondayAdapter = new WeekAdapter(context, activitiesMonday);
         mondayRecyclerView.setAdapter(mondayAdapter);
     }
@@ -197,53 +197,6 @@ public class FragmentWeek extends Fragment {
     private void myUpdateOperation() {
         ((MainActivity)getActivity()).callGraphAPI();
         mSwipeRefreshLayout.setRefreshing(false);
-    }
-
-    public void detectSwipe(ScrollView view) {
-        view.setOnTouchListener(new View.OnTouchListener() {
-
-            private float x1,x2;
-            static final int MIN_DISTANCE = 10;
-
-            @Override
-            public boolean onTouch(View view, MotionEvent event) {
-                switch(event.getAction())
-                {
-                    case MotionEvent.ACTION_DOWN:
-                        x1 = event.getX();
-                        break;
-                    case MotionEvent.ACTION_UP:
-                        x2 = event.getX();
-                        float deltaX = x2 - x1;
-                        if (Math.abs(deltaX) > MIN_DISTANCE)
-                        {
-                            if (x2 > x1)
-                            {
-                                Log.i("Information", "Swipe right");
-
-
-                            }
-                            else
-                            {
-                                Log.i("Information", "Swipe left");
-                                Bundle bundle = new Bundle();
-                                bundle.putParcelableArrayList("allevents", allEvents);
-
-                                AppCompatActivity activity = (AppCompatActivity) view.getContext();
-                                Fragment openFragment = new FragmentCalendar();
-                                openFragment.setArguments(bundle);
-                                activity.getFragmentManager().beginTransaction().replace(R.id.rootLayout, openFragment).commit();
-                            }
-                        }
-                        else
-                        {
-                            // consider as something else - a screen tap for example
-                        }
-                        return true;
-                }
-                return false;
-            }
-        });
     }
 
 }

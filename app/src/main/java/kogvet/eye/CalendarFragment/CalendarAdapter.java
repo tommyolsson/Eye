@@ -1,6 +1,6 @@
 package kogvet.eye.CalendarFragment;
 
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -83,6 +83,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.ViewHo
         }
 
         if (currentTime.isAfter(allActivities.get(position).getStartTimeObj())) {
+            LocalDateTime test = allActivities.get(position).getStartTimeObj();
             ((CardView) holder.itemView).setCardBackgroundColor(ContextCompat.getColor(context, R.color.gray));
             (holder.itemView).setAlpha((float) 0.4);
         }
@@ -119,7 +120,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.ViewHo
                     AppCompatActivity activity = (AppCompatActivity) view.getContext();
                     Fragment openFragment = new FragmentOpenEvent();
                     openFragment.setArguments(bundle);
-                    activity.getFragmentManager().beginTransaction().replace(R.id.rootLayout, openFragment).addToBackStack(null).commit();
+                    activity.getSupportFragmentManager().beginTransaction().replace(R.id.rootLayout, openFragment).addToBackStack(null).commit();
                 }
 
             });

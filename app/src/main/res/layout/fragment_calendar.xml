@@ -34,19 +34,6 @@
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true">
 
-        <ImageView
-            android:id="@+id/tab_indicator_selected"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            app:srcCompat="@drawable/tab_indicator_selected" />
-
-        <ImageView
-            android:id="@+id/tab_indicator_default"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_toRightOf="@+id/tab_indicator_selected"
-            app:srcCompat="@drawable/tab_indicator_default" />
-
 
     </LinearLayout>
 
