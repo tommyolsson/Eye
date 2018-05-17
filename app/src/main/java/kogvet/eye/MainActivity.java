@@ -290,6 +290,67 @@ public class MainActivity extends AppCompatActivity {
         queue.add(request);
     }
 
+
+    public void patchGraphAPI(String url, String currentImportance) {
+        Log.d(TAG, "Starting volley request to graph");
+        /* Make sure we have a token to send to graph */
+        if (authResult.getAccessToken() == null) {return;}
+
+        Map<String, String> jsonParams = new HashMap<>();
+
+        /* Importance helps CheckBox to show if a event is finished */
+        if(currentImportance.equals("normal")) {
+            jsonParams.put("importance", "low");
+        }
+        else{
+            jsonParams.put("importance", "normal");
+        }
+
+        RequestQueue queue = Volley.newRequestQueue(this);
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.PATCH,
+                url,
+                new JSONObject(jsonParams),
+                new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                /* Successfully called graph, process data and send to UI */
+                        Log.d(TAG, "Response: " + response.toString());
+                        updateUIOnResponse("check");
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d(TAG, "Error: " + error.toString());
+            }
+        }) {
+
+            @Override
+            protected Map<String,String> getParams() {
+                HashMap<String, String> params = new HashMap<>();
+                params.put("key", "value");
+                return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + authResult.getAccessToken());
+                headers.put("Content-Type", "application/json; charset=utf-8");
+                return headers;
+            }
+        };
+
+        Log.d(TAG, "Adding HTTP PATCH to Queue, Request: " + request.toString());
+
+        request.setRetryPolicy(new DefaultRetryPolicy(
+                3000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        queue.add(request);
+    }
+
     /* Toast after graph response */
     private void toastSuccessGraph() {
         Toast.makeText(this, R.string.graphUpdate, Toast.LENGTH_SHORT).show();
@@ -312,6 +373,7 @@ public class MainActivity extends AppCompatActivity {
         String id = object.getString("id");
         String subject = object.getString("subject");
         String bodyPreview = object.getString("bodyPreview");
+        String importance = object.getString("importance");
 
         // whole day activity
         Boolean isAllDay = Boolean.parseBoolean(object.getString("isAllDay"));
@@ -341,7 +403,7 @@ public class MainActivity extends AppCompatActivity {
             responseStatus = new EventClass.ResponseStatus();
         }
 
-        return new EventClass(id, subject, bodyPreview, isAllDay, isMeeting, startTimeObj, endTimeObj, location, responseStatus);
+        return new EventClass(id, subject, bodyPreview, isAllDay, isMeeting, startTimeObj, endTimeObj, location, responseStatus, importance);
     }
 
     private EventClass.Location getLocationFromJson(JSONObject jsonObject) throws JSONException {

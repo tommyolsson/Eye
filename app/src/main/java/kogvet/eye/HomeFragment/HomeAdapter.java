@@ -80,6 +80,11 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         if(event.getIsMeeting())
             ((CardView) holder.itemView).setCardBackgroundColor(ContextCompat.getColor(context,R.color.bookingColor));
 
+        if (currentEvents.get(position).getImportance().equals("low")) {
+            ((CardView) holder.itemView).setCardBackgroundColor(ContextCompat.getColor(context, R.color.gray));
+            (holder.itemView).setAlpha((float) 0.4);
+        }
+
     }
 
     @Override
