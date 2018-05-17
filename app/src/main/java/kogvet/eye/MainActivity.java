@@ -31,6 +31,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.microsoft.graph.extensions.DayOfWeek;
 import com.microsoft.identity.client.*;
 
 import com.microsoft.identity.client.AuthenticationResult;
@@ -56,8 +57,10 @@ public class MainActivity extends AppCompatActivity {
     final static String CLIENT_ID = "fac1a20e-54f5-49d2-ae55-724b980a2eb9";
     final static String SCOPES [] = {"User.Read", "Calendars.Read", "Calendars.Read.Shared", "Calendars.ReadWrite"};
 
-    public static String startDate = "2018-01-01";
-    public static String endDate = "2025-01-01";
+    public static String startDate = LocalDate.now().toString();
+//    public static String thisWeeksMonday = getThisWeeksMonday(localDate.now());
+    public static String endDate = LocalDate.now().plusWeeks(1).toString();
+
     static String msGraph_URL = "https://graph.microsoft.com/beta/me/calendar/calendarView?startDateTime="+startDate+"T00:00:00.0000000&endDateTime="+endDate+"T00:00:00.0000000&$orderby=start/dateTime";
     //final static String msGraph_URL = "https://graph.microsoft.com/beta/me/calendar/calendarView?startDateTime=2018-01-01T00:00:00.0000000&endDateTime=2025-01-01T00:00:00.0000000&$select=subject,isAllDay,start,end,location&$orderby=start/dateTime";
 
@@ -170,10 +173,35 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /*Returns the latest monday s a string*/
+    private String getThisWeeksMonday(LocalDate today) {
+        java.time.DayOfWeek weekDay = today.getDayOfWeek();
+
+        switch (weekDay) {
+            case MONDAY:
+                return today.toString();
+            case TUESDAY:
+                return today.minusDays(1).toString();
+            case WEDNESDAY:
+                return today.minusDays(2).toString();
+            case THURSDAY:
+                return today.minusDays(3).toString();
+            case FRIDAY:
+                return today.minusDays(4).toString();
+            case SATURDAY:
+                return today.minusDays(5).toString();
+            case SUNDAY:
+                return today.minusDays(6).toString();
+            default:
+                return today.toString();
+        }
+
+    }
+
     /* Use Volley to make an HTTP request to the /me endpoint from MS Graph using an access token */
     public void callGraphAPI() {
         /*Update Url to request events from today to one month ahead*/
-        startDate = LocalDate.now().minusDays(1).toString(); //MINUS ONE DAY FOR DEMO.
+        startDate = getThisWeeksMonday(LocalDate.now());
         endDate = LocalDate.now().plusMonths(1).toString();
         msGraph_URL = "https://graph.microsoft.com/beta/me/calendar/calendarView?startDateTime="+startDate+"T00:00:00.0000000&endDateTime="+endDate+"T00:00:00.0000000&$top=500&$orderby=start/dateTime";
 //        msGraph_URL = buildUrl();
@@ -290,7 +318,6 @@ public class MainActivity extends AppCompatActivity {
         queue.add(request);
     }
 
-
     public void patchGraphAPI(String url, String currentImportance) {
         Log.d(TAG, "Starting volley request to graph");
         /* Make sure we have a token to send to graph */
@@ -317,7 +344,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onResponse(JSONObject response) {
                 /* Successfully called graph, process data and send to UI */
                         Log.d(TAG, "Response: " + response.toString());
-                        updateUIOnResponse("check");
+                        updateUIOnResponse("current_fragment");
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -460,7 +487,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void updateUIOnResponse(String fragmentTag) {
-//        android.support.v4.app.FragmentManager fragmentManager = getFragmentManager();
         FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment fragment = fragmentManager.findFragmentByTag(fragmentTag);
 
