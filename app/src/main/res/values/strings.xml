@@ -58,7 +58,9 @@
     <string name="button_book">Acceptera</string>
     <!--<string name="button_cancel">Avboka möte</string>-->
     <string name="button_cancel">Avböj</string>
+
     <string name="button_check">Checka av</string>
+    <string name="button_finished">Avklarad</string>
 
     <!-- Notification test start -->
     <string name="btn1_description">Start foreground service</string>

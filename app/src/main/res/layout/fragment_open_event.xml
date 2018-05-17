@@ -86,17 +86,16 @@
         app:layout_constraintTop_toBottomOf="@+id/textLocation"
         app:layout_constraintVertical_bias="1.0" />
 
-    <Button
-        android:id="@+id/checkButton"
+    <CheckBox
+        android:id="@+id/checkBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="113dp"
-        android:layout_marginEnd="125dp"
-        android:layout_marginStart="125dp"
-        android:layout_marginTop="101dp"
-        android:background="@color/gray"
-        android:text="@string/button_check"
-        android:visibility="invisible"
+        android:layout_marginBottom="100dp"
+        android:layout_marginEnd="150dp"
+        android:layout_marginStart="150dp"
+        android:layout_marginTop="130dp"
+        android:checked="false"
+        android:text="@string/button_finished"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -82,7 +82,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.ViewHo
             holder.tvDate.setText(allActivities.get(position).getEndDate());
         }
 
-        if (currentTime.isAfter(allActivities.get(position).getStartTimeObj())) {
+        if (currentTime.isAfter(allActivities.get(position).getStartTimeObj()) || allActivities.get(position).getImportance().equals("low")) {
             ((CardView) holder.itemView).setCardBackgroundColor(ContextCompat.getColor(context, R.color.gray));
             (holder.itemView).setAlpha((float) 0.4);
         }

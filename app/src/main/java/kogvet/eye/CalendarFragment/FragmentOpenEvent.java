@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import kogvet.eye.EventClass;
@@ -26,7 +27,7 @@ public class FragmentOpenEvent extends Fragment {
     private EventClass event;
     private String eventDate;
     private String eventTime;
-    private Button checkButton;
+    private CheckBox checkBox;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,19 +54,24 @@ public class FragmentOpenEvent extends Fragment {
         ((MainActivity) getActivity()).setActionBarTitle(event.getSubject());
         ((MainActivity) getActivity()).showBackButton();
 
-        checkButton = inf.findViewById(R.id.checkButton);
+        //Buttons
+        checkBox = inf.findViewById(R.id.checkBox);
+        showBox();
 
-        checkButton.setOnClickListener(new View.OnClickListener() {
+        checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //   String id = eventId;
-//                String url = "https://graph.microsoft.com/beta/me/events/"+eventId;
-////                ((MainActivity) getActivity()).patchGraphAPI(url);
-                Intent intent = new Intent(getActivity(), NotificationService.class);
-                getActivity().startActivity(intent);
+                String id = event.getId();
+                String url = "https://graph.microsoft.com/beta/me/events/"+id;
+                String importance = event.getImportance();
+
+                ((MainActivity) getActivity()).patchGraphAPI(url, importance);
+                Log.i("Information", "Button pressed");
+                Log.i("ID", id);
             }
         });
 
+        Log.i("Importance", event.getImportance());
 
         return inf;
     }
@@ -92,6 +98,20 @@ public class FragmentOpenEvent extends Fragment {
                 ((MainActivity)getActivity()).showMap(event);
             }
         });
+    }
+
+    public void showBox()
+    {
+        String eventImportance = event.getImportance();
+        switch (eventImportance) {
+            case "normal":
+                break;
+            case "low":
+                checkBox.setChecked(true);
+                break;
+            default:
+                break;
+        }
     }
 
 }

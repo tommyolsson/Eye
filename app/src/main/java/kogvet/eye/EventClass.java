@@ -5,14 +5,11 @@ import android.os.Parcelable;
 import android.util.Log;
 
 import com.microsoft.graph.extensions.DayOfWeek;
+import com.microsoft.graph.extensions.Importance;
 
 import java.time.LocalDateTime;
 import java.time.format.TextStyle;
 import java.util.Locale;
-
-/**
- * Created by Loldator on 2018-02-28.
- */
 
 public class EventClass implements Parcelable {
 
@@ -25,6 +22,7 @@ public class EventClass implements Parcelable {
     LocalDateTime endTimeObj;
     Location location;
     ResponseStatus responseStatus;
+    String importance;
 
     public static class Location implements  Parcelable {
         String displayName;
@@ -157,7 +155,7 @@ public class EventClass implements Parcelable {
         };
     }
 
-    public EventClass(String id, String subject, String bodyPreview, Boolean isAllDay, Boolean isMeeting, LocalDateTime startTimeObj, LocalDateTime endTimeObj, Location location, ResponseStatus responseStatus) {
+    public EventClass(String id, String subject, String bodyPreview, Boolean isAllDay, Boolean isMeeting, LocalDateTime startTimeObj, LocalDateTime endTimeObj, Location location, ResponseStatus responseStatus, String importance) {
         this.id=id;
         this.subject=subject;
         this.bodyPreview=bodyPreview;
@@ -167,6 +165,7 @@ public class EventClass implements Parcelable {
         this.endTimeObj = endTimeObj;
         this.location=location;
         this.responseStatus=responseStatus;
+        this.importance=importance;
     }
 
     //Parcel implementation
@@ -179,6 +178,7 @@ public class EventClass implements Parcelable {
         endTimeObj = LocalDateTime.parse(in.readString());
         location = in.readParcelable(Location.class.getClassLoader());
         responseStatus = in.readParcelable(ResponseStatus.class.getClassLoader());
+        importance = in.readString();
     }
 
     @Override
@@ -196,6 +196,7 @@ public class EventClass implements Parcelable {
         dest.writeString(endTimeObj.toString());
         dest.writeParcelable(location, flags);
         dest.writeParcelable(responseStatus, flags);
+        dest.writeString(importance);
     }
 
     public static final Parcelable.Creator<EventClass> CREATOR = new Parcelable.Creator<EventClass>() {
@@ -268,6 +269,10 @@ public class EventClass implements Parcelable {
 
     public ResponseStatus getResponseStatus() {
         return this.responseStatus;
+    }
+
+    public String getImportance() {
+        return this.importance;
     }
 
     @Override
