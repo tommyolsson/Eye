@@ -41,6 +41,7 @@ import kogvet.eye.BookingFragment.FragmentBooking;
 import kogvet.eye.BookingFragment.FragmentOpenMeeting;
 import kogvet.eye.CalendarFragment.CalendarAdapter;
 import kogvet.eye.CalendarFragment.FragmentCalendar;
+import kogvet.eye.CalendarFragment.FragmentCreateEvent;
 import kogvet.eye.CalendarFragment.FragmentOpenEvent;
 import kogvet.eye.CalendarFragment.FragmentWeek;
 import kogvet.eye.CalendarFragment.TabFragment;
@@ -718,7 +719,10 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.iris.se/")));
                 break;
             case R.id.button4:
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.iris.se/")));
+              //  startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.iris.se/")));
+
+                Fragment fragmentCreateEvent = new FragmentCreateEvent();
+                pushFragment(fragmentCreateEvent);
                // createEventGraphAPI();
                 break;
             default:
