@@ -378,6 +378,75 @@ public class MainActivity extends AppCompatActivity {
         queue.add(request);
     }
 
+
+    public void createEventGraphAPI() {
+        Log.d(TAG, "Starting volley request to graph");
+        String url = "https://graph.microsoft.com/v1.0/me/events";
+
+        /* Make sure we have a token to send to graph */
+        if (authResult.getAccessToken() == null) {return;}
+
+        Map<String, Object> startTime = new HashMap<>();
+        startTime.put("dateTime", "2018-05-21T19:00:00");
+        startTime.put("timeZone", "Europe/Paris");
+
+        Map<String, Object> endTime = new HashMap<>();
+        endTime.put("dateTime", "2018-05-21T20:00:00");
+        endTime.put("timeZone", "Europe/Paris");
+
+        Map<String, Object> location = new HashMap<>();
+        location.put("displayName", "Sverige");
+
+        Map<String, Object> jsonParams = new HashMap<>();
+        jsonParams.put("subject", "Testaktivitet");
+        jsonParams.put("start", startTime);
+        jsonParams.put("end", endTime);
+        jsonParams.put("location", location);
+
+        RequestQueue queue = Volley.newRequestQueue(this);
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,
+                url,
+                new JSONObject(jsonParams),
+                new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        /* Successfully called graph, process data and send to UI */
+                        Log.d(TAG, "Response: " + response.toString());
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d(TAG, "Error: " + error.toString());
+            }
+        }) {
+
+            @Override
+            protected Map<String,String> getParams() {
+                HashMap<String, String> params = new HashMap<>();
+                params.put("key", "value");
+                return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + authResult.getAccessToken());
+                headers.put("Content-Type", "application/json; charset=utf-8");
+                return headers;
+            }
+        };
+
+        Log.d(TAG, "Adding HTTP POST to Queue, Request: " + request.toString());
+
+        request.setRetryPolicy(new DefaultRetryPolicy(
+                3000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        queue.add(request);
+    }
+
     /* Toast after graph response */
     private void toastSuccessGraph() {
         Toast.makeText(this, R.string.graphUpdate, Toast.LENGTH_SHORT).show();
@@ -477,8 +546,6 @@ public class MainActivity extends AppCompatActivity {
         openFragment.setArguments(bundle);
         pushFragment(openFragment);
 
-//        getFragmentManager().beginTransaction().replace(R.id.rootLayout, openFragment).commit();
-//        openFragment.onViewCreated(openFragment.getView(), openFragment.getArguments());
 
         findViewById(R.id.bottom_navigation).setVisibility(View.VISIBLE);
 
@@ -652,6 +719,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.button4:
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.iris.se/")));
+               // createEventGraphAPI();
                 break;
             default:
                 break;

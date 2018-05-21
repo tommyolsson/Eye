@@ -62,6 +62,8 @@
     <string name="button_check">Checka av</string>
     <string name="button_finished">Avklarad</string>
 
+    <string name="new_activity">Ny aktivitet</string>
+
     <!-- Notification test start -->
     <string name="btn1_description">Start foreground service</string>
     <string name="btn1_title">Start</string>
