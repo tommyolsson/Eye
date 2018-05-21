@@ -14,7 +14,6 @@
         android:id="@+id/dateToday"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:text="@string/date"
         android:textAlignment="center"
         android:textSize="36sp"
@@ -40,7 +39,10 @@
             tools:context=".MainActivity">
         </android.support.v7.widget.RecyclerView>
 
+
     </android.support.v4.widget.SwipeRefreshLayout>
+
+
 
 </android.support.constraint.ConstraintLayout>
 
