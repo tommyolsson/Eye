@@ -641,6 +641,18 @@ public class MainActivity extends AppCompatActivity {
             case R.id.menu_button:
                 onSignOutClicked();
                 break;
+            case R.id.button1:
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.iris.se/")));
+                break;
+            case R.id.button2:
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.iris.se/")));
+                break;
+            case R.id.button3:
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.iris.se/")));
+                break;
+            case R.id.button4:
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.iris.se/")));
+                break;
             default:
                 break;
         }

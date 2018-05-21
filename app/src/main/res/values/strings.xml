@@ -3,7 +3,7 @@
 <resources>
     <string name="app_name">Eye</string>
     <string name="title_activity_test">TestActivity</string>
-    <string name="menu_button">Log out</string>
+    <string name="menu_button">Logga ut</string>
 
     <!-- Activity connect -->
     <string name="connect_button_text">Connect to Microsoft Graph</string>
