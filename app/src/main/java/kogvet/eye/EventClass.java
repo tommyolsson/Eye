@@ -22,6 +22,7 @@ public class EventClass implements Parcelable {
     LocalDateTime endTimeObj;
     Location location;
     ResponseStatus responseStatus;
+    int numOfAcceptedAttendees;
     String importance;
 
     public static class Location implements  Parcelable {
@@ -155,7 +156,7 @@ public class EventClass implements Parcelable {
         };
     }
 
-    public EventClass(String id, String subject, String bodyPreview, Boolean isAllDay, Boolean isMeeting, LocalDateTime startTimeObj, LocalDateTime endTimeObj, Location location, ResponseStatus responseStatus, String importance) {
+    public EventClass(String id, String subject, String bodyPreview, Boolean isAllDay, Boolean isMeeting, LocalDateTime startTimeObj, LocalDateTime endTimeObj, Location location, ResponseStatus responseStatus, int numOfAcceptedAttendees, String importance) {
         this.id=id;
         this.subject=subject;
         this.bodyPreview=bodyPreview;
@@ -165,6 +166,7 @@ public class EventClass implements Parcelable {
         this.endTimeObj = endTimeObj;
         this.location=location;
         this.responseStatus=responseStatus;
+        this.numOfAcceptedAttendees = numOfAcceptedAttendees;
         this.importance=importance;
     }
 
@@ -178,6 +180,7 @@ public class EventClass implements Parcelable {
         endTimeObj = LocalDateTime.parse(in.readString());
         location = in.readParcelable(Location.class.getClassLoader());
         responseStatus = in.readParcelable(ResponseStatus.class.getClassLoader());
+        numOfAcceptedAttendees = in.readInt();
         importance = in.readString();
     }
 
@@ -196,6 +199,7 @@ public class EventClass implements Parcelable {
         dest.writeString(endTimeObj.toString());
         dest.writeParcelable(location, flags);
         dest.writeParcelable(responseStatus, flags);
+        dest.writeInt(numOfAcceptedAttendees);
         dest.writeString(importance);
     }
 
@@ -269,6 +273,10 @@ public class EventClass implements Parcelable {
 
     public ResponseStatus getResponseStatus() {
         return this.responseStatus;
+    }
+
+    public int getNumOfAcceptedAttendees() {
+        return this.numOfAcceptedAttendees;
     }
 
     public String getImportance() {

@@ -379,7 +379,6 @@ public class MainActivity extends AppCompatActivity {
         queue.add(request);
     }
 
-
     public void createEventGraphAPI() {
         Log.d(TAG, "Starting volley request to graph");
         String url = "https://graph.microsoft.com/v1.0/me/events";
@@ -477,8 +476,17 @@ public class MainActivity extends AppCompatActivity {
 
         // Check if event is a meeting (if event marked private it is a meeting)
         Boolean isMeeting=false;
-        if(object.getString("sensitivity").equals("private"))
+        int numOfAcceptedAttendees=0;
+        if (object.getString("sensitivity").equals("private")) {
             isMeeting = true;
+            JSONArray array = object.getJSONArray("attendees");
+            for(int i=0; i<array.length(); i++) {
+                if (array.getJSONObject(i).getJSONObject("status").getString("response").equals("accepted"))
+                    numOfAcceptedAttendees++;
+            }
+            Log.d("test", "test");
+
+        }
 
         //Get string and create local date time objects (start and end date+time)
         LocalDateTime startTimeObj = getDateTimeFromString(object.getString("start"));
@@ -500,7 +508,7 @@ public class MainActivity extends AppCompatActivity {
             responseStatus = new EventClass.ResponseStatus();
         }
 
-        return new EventClass(id, subject, bodyPreview, isAllDay, isMeeting, startTimeObj, endTimeObj, location, responseStatus, importance);
+        return new EventClass(id, subject, bodyPreview, isAllDay, isMeeting, startTimeObj, endTimeObj, location, responseStatus, numOfAcceptedAttendees, importance);
     }
 
     private EventClass.Location getLocationFromJson(JSONObject jsonObject) throws JSONException {
@@ -716,7 +724,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.iris.se/")));
                 break;
             case R.id.button3:
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.iris.se/")));
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.linkedin.com/")));
                 break;
             case R.id.button4:
               //  startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.iris.se/")));

@@ -38,12 +38,14 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.ViewHold
     }
 
     private ArrayList<EventClass> getMeetings(ArrayList<EventClass> allEvents) {
-        ArrayList<EventClass> allMeetings = new ArrayList<>();
+        ArrayList<EventClass> meetings = new ArrayList<>();
         for (int i = 0; i < allEvents.size(); i++) {
-            if (allEvents.get(i).getIsMeeting())
-                allMeetings.add(allEvents.get(i));
+            EventClass event = allEvents.get(i);
+            if (event.getIsMeeting())
+                if (event.getResponseStatus().getResponse().equals("accepted") || event.getResponseStatus().getResponse().equals("tentativelyAccepted"))
+                    meetings.add(event);
         }
-        return allMeetings;
+        return meetings;
     }
 
     private LocalDateTime getCurrentTime() {
