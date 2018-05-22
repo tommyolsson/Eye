@@ -63,6 +63,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         holder.tvSubject.setText(event.getSubject());
         holder.tvLocation.setText(event.getLocation().getDisplayName());
         holder.tvDayInWeek.setText(event.getShortDayInWeek());
+        holder.tvDayInWeek.setVisibility(View.VISIBLE);
 
         //Set time and date
         if(event.getIsAllDay()) {

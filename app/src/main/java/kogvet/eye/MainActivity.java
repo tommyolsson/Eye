@@ -477,15 +477,18 @@ public class MainActivity extends AppCompatActivity {
         // Check if event is a meeting (if event marked private it is a meeting)
         Boolean isMeeting=false;
         int numOfAcceptedAttendees=0;
+        Boolean isAttending = false;
         if (object.getString("sensitivity").equals("private")) {
             isMeeting = true;
-            JSONArray array = object.getJSONArray("attendees");
-            for(int i=0; i<array.length(); i++) {
-                if (array.getJSONObject(i).getJSONObject("status").getString("response").equals("accepted"))
+            JSONArray attendees = object.getJSONArray("attendees");
+
+            for(int i=0; i<attendees.length(); i++) {
+                String userId = authResult.getUser().getDisplayableId();
+                if (attendees.getJSONObject(i).getJSONObject("emailAddress").getString("address").equals(userId)){
+                    isAttending = true;
+                } else if (attendees.getJSONObject(i).getJSONObject("status").getString("response").equals("accepted"))
                     numOfAcceptedAttendees++;
             }
-            Log.d("test", "test");
-
         }
 
         //Get string and create local date time objects (start and end date+time)
@@ -508,7 +511,7 @@ public class MainActivity extends AppCompatActivity {
             responseStatus = new EventClass.ResponseStatus();
         }
 
-        return new EventClass(id, subject, bodyPreview, isAllDay, isMeeting, startTimeObj, endTimeObj, location, responseStatus, numOfAcceptedAttendees, importance);
+        return new EventClass(id, subject, bodyPreview, isAllDay, isMeeting,isAttending, startTimeObj, endTimeObj, location, responseStatus, numOfAcceptedAttendees, importance);
     }
 
     private EventClass.Location getLocationFromJson(JSONObject jsonObject) throws JSONException {

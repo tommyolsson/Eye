@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -36,16 +37,20 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.ViewHo
 
     public CalendarAdapter(Context context, ArrayList<EventClass> allEvents) {
         this.allEvents = allEvents;
-        this.allActivities = getAllActivities(allEvents);
         this.context = context;
         this.currentTime = getCurrentTime();
+        this.allActivities = getTodaysActivities(allEvents);
+
     }
 
-    private ArrayList<EventClass> getAllActivities(ArrayList<EventClass> allEvents) {
+    private ArrayList<EventClass> getTodaysActivities(ArrayList<EventClass> allEvents) {
         ArrayList<EventClass> allActivites = new ArrayList<>();
+        String day = currentTime.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault());
         for (int i = 0; i < allEvents.size(); i++) {
-            if (!allEvents.get(i).getIsMeeting())
-                allActivites.add(allEvents.get(i));
+            EventClass event = allEvents.get(i);
+            if (!event.getIsMeeting())
+                if(event.getDayInWeek().equals(day))
+                    allActivites.add(event);
         }
         return allActivites;
     }
@@ -68,7 +73,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.ViewHo
         holder.position = position;
         holder.tvSubject.setText(allActivities.get(position).getSubject());
         holder.tvLocation.setText(allActivities.get(position).getLocation().getDisplayName());
-        holder.tvDayInWeek.setText(allActivities.get(position).getShortDayInWeek());
+//        holder.tvDayInWeek.setText(allActivities.get(position).getShortDayInWeek());
 
         //Set time and date
         if(allActivities.get(position).getIsAllDay()) {
@@ -105,7 +110,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.ViewHo
             tvTimes = itemView.findViewById(R.id.tvTimes);
             tvLocation = itemView.findViewById(R.id.tvLocation);
             tvDate = itemView.findViewById(R.id.tvDate);
-            tvDayInWeek = itemView.findViewById(R.id.tvDayInWeek);
+//            tvDayInWeek = itemView.findViewById(R.id.tvDayInWeek);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

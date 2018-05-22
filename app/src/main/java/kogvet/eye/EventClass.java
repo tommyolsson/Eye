@@ -18,6 +18,7 @@ public class EventClass implements Parcelable {
     String bodyPreview;
     Boolean isAllDay;
     Boolean isMeeting;
+    Boolean isAttending;
     LocalDateTime startTimeObj;
     LocalDateTime endTimeObj;
     Location location;
@@ -156,12 +157,13 @@ public class EventClass implements Parcelable {
         };
     }
 
-    public EventClass(String id, String subject, String bodyPreview, Boolean isAllDay, Boolean isMeeting, LocalDateTime startTimeObj, LocalDateTime endTimeObj, Location location, ResponseStatus responseStatus, int numOfAcceptedAttendees, String importance) {
+    public EventClass(String id, String subject, String bodyPreview, Boolean isAllDay, Boolean isMeeting, Boolean isAttending, LocalDateTime startTimeObj, LocalDateTime endTimeObj, Location location, ResponseStatus responseStatus, int numOfAcceptedAttendees, String importance) {
         this.id=id;
         this.subject=subject;
         this.bodyPreview=bodyPreview;
         this.isAllDay = isAllDay;
         this.isMeeting = isMeeting;
+        this.isAttending = isAttending;
         this.startTimeObj = startTimeObj;
         this.endTimeObj = endTimeObj;
         this.location=location;
@@ -176,6 +178,8 @@ public class EventClass implements Parcelable {
         subject = in.readString();
         bodyPreview = in.readString();
         isAllDay = in.readInt() == 1;
+        isMeeting = in.readInt() == 1;
+        isAttending = in.readInt() == 1;
         startTimeObj = LocalDateTime.parse(in.readString());
         endTimeObj = LocalDateTime.parse(in.readString());
         location = in.readParcelable(Location.class.getClassLoader());
@@ -195,6 +199,8 @@ public class EventClass implements Parcelable {
         dest.writeString(subject);
         dest.writeString(bodyPreview);
         dest.writeInt(isAllDay ? 1 : 0);
+        dest.writeInt(isMeeting ? 1 : 0);
+        dest.writeInt(isAttending ? 1 : 0);
         dest.writeString(startTimeObj.toString());
         dest.writeString(endTimeObj.toString());
         dest.writeParcelable(location, flags);
@@ -277,6 +283,10 @@ public class EventClass implements Parcelable {
 
     public int getNumOfAcceptedAttendees() {
         return this.numOfAcceptedAttendees;
+    }
+
+    public boolean getIsAttending() {
+        return this.isAttending;
     }
 
     public String getImportance() {

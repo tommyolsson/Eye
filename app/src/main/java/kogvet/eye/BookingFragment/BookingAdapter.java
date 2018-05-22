@@ -42,7 +42,9 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.ViewHold
         for (int i = 0; i < allEvents.size(); i++) {
             EventClass event = allEvents.get(i);
             if (event.getIsMeeting())
-                if (event.getResponseStatus().getResponse().equals("accepted") || event.getResponseStatus().getResponse().equals("tentativelyAccepted"))
+                if (event.getIsAttending())
+                    meetings.add(event);
+                else if (event.getNumOfAcceptedAttendees()<1)
                     meetings.add(event);
         }
         return meetings;
@@ -68,7 +70,7 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.ViewHold
         holder.tvSubject.setText(allMeetings.get(position).getSubject());
         holder.tvLocation.setText(allMeetings.get(position).getLocation().getDisplayName());
         holder.tvDayInWeek.setText(allMeetings.get(position).getShortDayInWeek());
-//        holder.tvResponseStatus.setText(allEvents.get(position).getResponseStatus().getResponse());
+        holder.tvDayInWeek.setVisibility(View.VISIBLE);
 
         ((CardView) holder.itemView).setCardBackgroundColor(ContextCompat.getColor(context,R.color.bookingColor));
 
