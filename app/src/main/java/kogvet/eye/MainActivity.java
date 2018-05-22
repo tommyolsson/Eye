@@ -478,6 +478,7 @@ public class MainActivity extends AppCompatActivity {
         Boolean isMeeting=false;
         int numOfAcceptedAttendees=0;
         Boolean isAttending = false;
+
         if (object.getString("sensitivity").equals("private")) {
             isMeeting = true;
             JSONArray attendees = object.getJSONArray("attendees");
@@ -485,8 +486,12 @@ public class MainActivity extends AppCompatActivity {
             for(int i=0; i<attendees.length(); i++) {
                 String userId = authResult.getUser().getDisplayableId();
                 if (attendees.getJSONObject(i).getJSONObject("emailAddress").getString("address").equals(userId)){
-                    isAttending = true;
-                } else if (attendees.getJSONObject(i).getJSONObject("status").getString("response").equals("accepted"))
+                    if(attendees.getJSONObject(i).getJSONObject("status").getString("response").equals("accepted"))
+                        isAttending = true;
+                    else if(attendees.getJSONObject(i).getJSONObject("status").getString("response").equals("tentativelyAccepted"))
+                        isAttending = true;
+                }
+                if (attendees.getJSONObject(i).getJSONObject("status").getString("response").equals("tentativelyAccepted"))
                     numOfAcceptedAttendees++;
             }
         }
