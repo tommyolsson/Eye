@@ -724,17 +724,17 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.iris.se/")));
                 break;
             case R.id.button2:
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.iris.se/")));
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.arbetsformedlingen.se/For-arbetssokande/Lediga-jobb/Platsbanken/")));
                 break;
             case R.id.button3:
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.linkedin.com/")));
                 break;
             case R.id.button4:
-              //  startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.iris.se/")));
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.iris.se/")));
 
-                Fragment fragmentCreateEvent = new FragmentCreateEvent();
-                pushFragment(fragmentCreateEvent);
-               // createEventGraphAPI();
+              //  Fragment fragmentCreateEvent = new FragmentCreateEvent();
+              //  pushFragment(fragmentCreateEvent);
+
                 break;
             default:
                 break;
