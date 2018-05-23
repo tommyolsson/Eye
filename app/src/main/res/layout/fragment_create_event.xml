@@ -13,26 +13,13 @@
         android:id="@+id/subjectEditText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="292dp"
-        android:layout_marginTop="10dp"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/createButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/locationTextView"
-        app:layout_constraintVertical_bias="0.817" />
-
-    <TextView
-        android:id="@+id/subjectTextView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
-        android:layout_marginEnd="125dp"
-        android:layout_marginStart="125dp"
-        android:layout_marginTop="40dp"
-        android:text="Namn på aktivitet?"
-        app:layout_constraintBottom_toTopOf="@+id/subjectEditText"
+        android:layout_marginTop="10dp"
+        android:hint="Subject"
+        android:inputType="text"
+        android:singleLine="false"
+        android:textIsSelectable="false"
+        app:layout_constraintBottom_toTopOf="@+id/locationEditText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -43,30 +30,88 @@
         android:id="@+id/locationEditText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="100dp"
+        android:layout_marginBottom="10dp"
         android:layout_marginTop="10dp"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/createButton"
+        android:hint="Location"
+        android:inputType="text"
+        android:singleLine="false"
+        app:layout_constraintBottom_toTopOf="@+id/dateEditText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/locationTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/subjectEditText" />
 
-    <TextView
-        android:id="@+id/locationTextView"
-        android:layout_width="0dp"
+
+    <EditText
+        android:id="@+id/dateEditText"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
-        android:layout_marginEnd="125dp"
-        android:layout_marginStart="125dp"
-        android:layout_marginTop="40dp"
-        android:text="Plats för aktivitet?"
-        app:layout_constraintBottom_toTopOf="@+id/locationEditText"
+        android:layout_marginTop="10dp"
+        android:ems="10"
+        android:focusable="false"
+        android:hint="Date"
+        android:inputType="date"
+        android:singleLine="false"
+        app:layout_constraintBottom_toTopOf="@+id/checkBox"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/locationEditText" />
+
+    <CheckBox
+        android:id="@+id/checkBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginEnd="150dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:checked="false"
+        android:scaleX="1.25"
+        android:scaleY="1.25"
+        android:text="Heldag"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/subjectEditText"
-        app:layout_constraintVertical_bias="0.84" />
+        app:layout_constraintTop_toBottomOf="@+id/dateEditText" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="128dp"
+        android:layout_marginTop="10dp"
+        android:weightSum="2"
+        app:layout_constraintBottom_toTopOf="@+id/createButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/checkBox">
+
+        <EditText
+            android:id="@+id/startEditText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Start time"
+            android:inputType="time"
+            android:singleLine="false"
+            app:layout_constraintBottom_toTopOf="@+id/checkBox"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <EditText
+            android:id="@+id/endEditText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="End time"
+            android:inputType="time"
+            android:singleLine="false"
+            app:layout_constraintBottom_toTopOf="@+id/checkBox"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </LinearLayout>
 
 
     <Button

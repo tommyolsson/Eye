@@ -21,6 +21,10 @@ import kogvet.eye.R;
 public class FragmentCreateEvent extends Fragment {
 
     private Button createButton;
+    EditText subjectEditText;
+    EditText locationEditText;
+    EditText dateEditText;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -37,17 +41,27 @@ public class FragmentCreateEvent extends Fragment {
         // Changes title to the subject name
         ((MainActivity) getActivity()).showBackButton();
 
-        EditText subjectEditText = (EditText) inf.findViewById(R.id.subjectEditText);
-        EditText locationEditText = (EditText) inf.findViewById(R.id.locationEditText);
+        subjectEditText =  (EditText) inf.findViewById(R.id.subjectEditText);
+        locationEditText = (EditText) inf.findViewById(R.id.locationEditText);
+        dateEditText = (EditText) inf.findViewById(R.id.dateEditText);
+
         createButton = inf.findViewById(R.id.createButton);
 
         createButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                //((MainActivity) getActivity()).createEventGraphAPI();
+                String subject = subjectEditText.getText().toString();
+                String location = locationEditText.getText().toString();
+                String date = dateEditText.getText().toString();
+
+                Log.i("Ämne", subject);
+                Log.i("Plats", location);
+                Log.i("Datum", date);
+                ((MainActivity) getActivity()).createEventGraphAPI(subject, location);
+
                 Toast.makeText(getContext(), "Aktivitet skapad", Toast.LENGTH_SHORT).show();
-//                ((MainActivity)getActivity()).callGraphAPI();
+                getActivity().onBackPressed();
             }
         });
 

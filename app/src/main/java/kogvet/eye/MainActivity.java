@@ -379,7 +379,7 @@ public class MainActivity extends AppCompatActivity {
         queue.add(request);
     }
 
-    public void createEventGraphAPI() {
+    public void createEventGraphAPI(String eventSubject, String eventLocation) {
         Log.d(TAG, "Starting volley request to graph");
         String url = "https://graph.microsoft.com/v1.0/me/events";
 
@@ -387,18 +387,18 @@ public class MainActivity extends AppCompatActivity {
         if (authResult.getAccessToken() == null) {return;}
 
         Map<String, Object> startTime = new HashMap<>();
-        startTime.put("dateTime", "2018-05-21T19:00:00");
+        startTime.put("dateTime", "2018-05-23T20:00:00");
         startTime.put("timeZone", "Europe/Paris");
 
         Map<String, Object> endTime = new HashMap<>();
-        endTime.put("dateTime", "2018-05-21T20:00:00");
+        endTime.put("dateTime", "2018-05-23T21:00:00");
         endTime.put("timeZone", "Europe/Paris");
 
         Map<String, Object> location = new HashMap<>();
-        location.put("displayName", "Sverige");
+        location.put("displayName", eventLocation);
 
         Map<String, Object> jsonParams = new HashMap<>();
-        jsonParams.put("subject", "Testaktivitet");
+        jsonParams.put("subject", eventSubject);
         jsonParams.put("start", startTime);
         jsonParams.put("end", endTime);
         jsonParams.put("location", location);

@@ -1,5 +1,7 @@
 package kogvet.eye.CalendarFragment;
 
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.content.Context;
@@ -67,6 +69,19 @@ public class FragmentCalendar extends Fragment  {
             }
         });
 
+        /* Opens FragmentCreateEvent when clicking on fab */
+        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+
+                AppCompatActivity activity = (AppCompatActivity) view.getContext();
+                Fragment openFragment = new FragmentCreateEvent();
+                activity.getSupportFragmentManager().beginTransaction().replace(R.id.rootLayout, openFragment).addToBackStack(null).commit();
+
+            }
+        });
+
         return view;
     }
 
@@ -86,41 +101,6 @@ public class FragmentCalendar extends Fragment  {
 
     }
 
-    /*private void detectSwipe(final View view) {
-        ItemTouchHelper.SimpleCallback simpleCallback =
-                new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
-
-                    @Override
-                    public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
-                                          RecyclerView.ViewHolder target) {
-                        return false;
-                    }
-
-                    @Override
-                    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-                        //do things
-                        Bundle bundle = new Bundle();
-                        bundle.putParcelableArrayList("allevents", allEvents);
-
-                        AppCompatActivity activity = (AppCompatActivity) view.getContext();
-                        Fragment openFragment = new FragmentWeek();
-                        openFragment.setArguments(bundle);
-                        activity.getFragmentManager().beginTransaction().replace(R.id.rootLayout, openFragment, "main").commit();
-                    }
-
-                    // OVERRIDE SWIPE ANIMATION
-                    @Override
-                    public void onChildDraw(Canvas c, RecyclerView recyclerView,
-                                            RecyclerView.ViewHolder viewHolder, float dX, float dY,
-                                            int actionState, boolean isCurrentlyActive) {
-
-                    }
-                };
-
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
-        itemTouchHelper.attachToRecyclerView(recyclerView);
-    }
-*/
     private void myUpdateOperation() {
         ((MainActivity)getActivity()).callGraphAPI();
         mSwipeRefreshLayout.setRefreshing(false);
