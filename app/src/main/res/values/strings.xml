@@ -55,6 +55,13 @@
     <string name="thursday">To</string>
     <string name="friday">Fr</string>
 
+    <!-- Create event -->
+    <string name="eventSubject">Namn på aktivitet</string>
+    <string name="eventLocation">Plats</string>
+    <string name="eventDate">Datum</string>
+    <string name="eventFlex">Flex</string>
+    <string name="eventStart">Starttid</string>
+    <string name="eventEnd">Sluttid</string>
 
     <!-- Booking item -->
     <!--<string name="button_book">Boka möte</string>-->
