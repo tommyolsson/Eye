@@ -10,13 +10,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -34,6 +38,8 @@ public class FragmentCreateEvent extends Fragment {
     EditText dateEditText;
     EditText startEditText;
     EditText endEditText;
+    CheckBox checkBox;
+    boolean isAllDay;
 
 
     @Override
@@ -51,6 +57,7 @@ public class FragmentCreateEvent extends Fragment {
         // Changes title to the subject name
         ((MainActivity) getActivity()).setActionBarTitle(getResources().getString(R.string.newActivity));
         ((MainActivity) getActivity()).showBackButton();
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
         subjectEditText =  (EditText) inf.findViewById(R.id.subjectEditText);
         locationEditText = (EditText) inf.findViewById(R.id.locationEditText);
@@ -130,7 +137,26 @@ public class FragmentCreateEvent extends Fragment {
             }
         });
 
-        
+        checkBox = inf.findViewById(R.id.checkBox);
+        checkBox.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                if (((CheckBox) v).isChecked()) {
+                    //Disables editText for time if event is all day
+                    startEditText.setEnabled(false);
+                    endEditText.setEnabled(false);
+                    isAllDay = true;
+                }
+                else
+                {
+                    startEditText.setEnabled(true);
+                    endEditText.setEnabled(true);
+                    isAllDay = false;
+                }
+
+            }
+        });
 
         createButton = inf.findViewById(R.id.createButton);
 
@@ -149,12 +175,22 @@ public class FragmentCreateEvent extends Fragment {
                 Log.i("Datum", date);
                 Log.i("Start", start);
                 Log.i("Slut", end);
+                Log.i("Heldag", Boolean.toString(isAllDay));
 
                 if (subject.matches("")) {
                     Toast.makeText(getContext(), "Namn på aktivitet saknas", Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    ((MainActivity) getActivity()).createEventGraphAPI(subject, location, date, start, end);
+                    if (isAllDay) {
+                        LocalDate ld = LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                        String endDate = ld.plusDays(1).toString();
+
+                        ((MainActivity) getActivity()).createEventGraphAPI(subject, location, date, endDate,"00", "00", isAllDay);
+                    }
+                    else {
+                        ((MainActivity) getActivity()).createEventGraphAPI(subject, location, date, date, start, end, isAllDay);
+                    }
+
                     Toast.makeText(getContext(), "Aktivitet skapad", Toast.LENGTH_SHORT).show();
                     getActivity().onBackPressed();
                 }

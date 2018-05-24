@@ -14,11 +14,14 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
-        android:hint="Subject"
-        android:inputType="text"
+        android:hint="@string/eventSubject"
+        android:inputType="textAutoCorrect"
         android:singleLine="false"
         android:textIsSelectable="false"
+        android:imeOptions="actionDone"
         app:layout_constraintBottom_toTopOf="@+id/locationEditText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -31,9 +34,10 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp"
-        android:hint="Location"
-        android:inputType="text"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp"
+        android:hint="@string/eventLocation"
+        android:inputType="textAutoCorrect"
         android:singleLine="false"
         app:layout_constraintBottom_toTopOf="@+id/dateEditText"
         app:layout_constraintEnd_toEndOf="parent"
@@ -44,13 +48,14 @@
 
     <EditText
         android:id="@+id/dateEditText"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp"
         android:ems="10"
         android:focusable="false"
-        android:hint="Date"
+        android:hint="@string/eventDate"
         android:inputType="date"
         android:singleLine="false"
         app:layout_constraintBottom_toTopOf="@+id/checkBox"
@@ -66,54 +71,49 @@
         android:layout_marginBottom="10dp"
         android:layout_marginEnd="150dp"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
         android:checked="false"
         android:scaleX="1.25"
         android:scaleY="1.25"
-        android:text="Flex"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        android:text="@string/timeWholeDay"
+        app:layout_constraintBottom_toTopOf="@+id/startEditText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dateEditText" />
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
+
+    <EditText
+        android:id="@+id/startEditText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="128dp"
-        android:layout_marginTop="10dp"
-        android:weightSum="2"
-        app:layout_constraintBottom_toTopOf="@+id/createButton"
+        android:layout_marginBottom="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp"
+        android:focusable="false"
+        android:hint="@string/eventStart"
+        android:inputType="time"
+        android:singleLine="false"
+        app:layout_constraintBottom_toTopOf="@+id/endEditText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkBox">
+        app:layout_constraintTop_toBottomOf="@+id/checkBox" />
 
-        <EditText
-            android:id="@+id/startEditText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="Start time"
-            android:inputType="time"
-            android:singleLine="false"
-            android:focusable="false"
-            app:layout_constraintBottom_toTopOf="@+id/checkBox"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+    <EditText
+        android:id="@+id/endEditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="180dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp"
+        android:focusable="false"
+        android:hint="@string/eventEnd"
+        android:inputType="time"
+        android:singleLine="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/startEditText" />
 
-        <EditText
-            android:id="@+id/endEditText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="End time"
-            android:inputType="time"
-            android:singleLine="false"
-            android:focusable="false"
-            app:layout_constraintBottom_toTopOf="@+id/checkBox"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-    </LinearLayout>
 
 
     <Button

@@ -41,7 +41,7 @@
     <string name="week">Vecka</string>
 
     <!-- Calendar item -->
-    <string name="timeWholeDay">Heldag</string>
+    <string name="timeWholeDay">Flex</string>
     <string name="times">%1$s-%2$s</string>
     <string name="startTime">%1$s-</string>
     <string name="endTime">%1$s</string>
@@ -55,6 +55,12 @@
     <string name="thursday">To</string>
     <string name="friday">Fr</string>
 
+    <!-- Create event -->
+    <string name="eventSubject">Namn på aktivitet</string>
+    <string name="eventLocation">Plats</string>
+    <string name="eventDate">Datum</string>
+    <string name="eventStart">Starttid</string>
+    <string name="eventEnd">Sluttid</string>
 
     <!-- Booking item -->
     <!--<string name="button_book">Boka möte</string>-->
