@@ -71,6 +71,7 @@
                 android:layout_margin="2dp"
                 android:layout_weight="1"
                 android:background="@color/colorPrimary"
+                style="@style/AppTheme.RoundedCornerMaterialButton"
                 android:clickable="true"
                 android:onClick="buttonClicked"
                 android:orientation="vertical">

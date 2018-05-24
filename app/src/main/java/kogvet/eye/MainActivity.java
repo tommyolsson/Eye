@@ -379,19 +379,21 @@ public class MainActivity extends AppCompatActivity {
         queue.add(request);
     }
 
-    public void createEventGraphAPI(String eventSubject, String eventLocation) {
+    public void createEventGraphAPI(String eventSubject, String eventLocation, String eventDate, String eventStart, String eventEnd) {
         Log.d(TAG, "Starting volley request to graph");
         String url = "https://graph.microsoft.com/v1.0/me/events";
 
         /* Make sure we have a token to send to graph */
         if (authResult.getAccessToken() == null) {return;}
 
+        String eventStartDateTime = eventDate + "T" + eventStart + ":00";
         Map<String, Object> startTime = new HashMap<>();
-        startTime.put("dateTime", "2018-05-24T20:00:00");
+        startTime.put("dateTime", eventStartDateTime);
         startTime.put("timeZone", "Europe/Paris");
 
+        String eventEndDateTime = eventDate + "T" + eventEnd + ":00";
         Map<String, Object> endTime = new HashMap<>();
-        endTime.put("dateTime", "2018-05-24T21:00:00");
+        endTime.put("dateTime", eventEndDateTime);
         endTime.put("timeZone", "Europe/Paris");
 
         Map<String, Object> location = new HashMap<>();
@@ -738,10 +740,6 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.button4:
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.iris.se/")));
-
-              //  Fragment fragmentCreateEvent = new FragmentCreateEvent();
-              //  pushFragment(fragmentCreateEvent);
-
                 break;
             default:
                 break;
