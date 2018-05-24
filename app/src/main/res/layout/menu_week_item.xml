@@ -16,31 +16,39 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/tvTimes"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/tvSubject"
-            android:autoSizeTextType="uniform"
-            android:paddingBottom="4dp"
-            android:paddingTop="4dp"
-            android:text="@string/times"
-            android:textAlignment="center" />
-
-        <TextView
             android:id="@+id/tvSubject"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="false"
-            android:layout_centerInParent="false"
-            android:layout_centerVertical="false"
+            android:layout_marginBottom="1dp"
+            android:layout_marginTop="4dp"
             android:autoSizeTextType="uniform"
             android:maxLines="1"
-            android:paddingBottom="4dp"
-            android:paddingTop="4dp"
             android:text="@string/subject"
+            android:textAlignment="center" />
+
+        <TextView
+            android:id="@+id/tvStartTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvSubject"
+            android:layout_centerHorizontal="true"
+            android:autoSizeTextType="uniform"
+            android:maxLines="1"
+            android:text="@string/startTime"
+            android:textAlignment="center" />
+
+        <TextView
+            android:id="@+id/tvEndTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvStartTime"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="4dp"
+            android:paddingEnd="5sp"
+            android:autoSizeTextType="uniform"
+            android:maxLines="1"
+            android:text="@string/endTime"
             android:textAlignment="center" />
 
         <TextView
@@ -48,7 +56,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_below="@+id/tvTimes"
+            android:layout_below="@+id/tvEndTime"
             android:layout_marginEnd="4sp"
             android:text="@string/date"
             android:textSize="0sp"

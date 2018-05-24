@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -53,21 +52,26 @@ public class WeekAdapter extends RecyclerView.Adapter<WeekAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.position = position;
-        holder.tvSubject.setText(allActivities.get(position).getSubject());
+        EventClass event = allActivities.get(position);
+        holder.tvSubject.setText(event.getSubject());
 
         //Set time and date
         if(allActivities.get(position).getIsAllDay()) {
-            holder.tvTimes.setText(context.getResources().getString(R.string.timeWholeDay));
-            holder.tvDate.setText(allActivities.get(position).getStartDate());
+            holder.tvStartTime.setText(R.string.timeWholeDay);
+            holder.tvEndTime.setText("");
+            holder.tvDate.setText(event.getStartDate());
         }
         else{
             //get time and put in format (see strings)
-            String times = context.getResources().getString(R.string.times, allActivities.get(position).getStartTime(), allActivities.get(position).getEndTime());
-            holder.tvTimes.setText(times);
-            holder.tvDate.setText(allActivities.get(position).getEndDate());
+//            String times = context.getResources().getString(R.string.times, event.getStartTime(), event.getEndTime());
+//            holder.tvStartTime.setText(event.getStartTime());
+            holder.tvStartTime.setText(context.getString(R.string.startTime, event.getStartTime()));
+            holder.tvEndTime.setText(context.getString(R.string.endTime, event.getEndTime()));
+//            holder.tvEndTime.setText(event.getEndTime());
+            holder.tvDate.setText(event.getEndDate());
         }
 
-        if (currentTime.isAfter(allActivities.get(position).getStartTimeObj())) {
+        if (currentTime.isAfter(event.getStartTimeObj())) {
             ((CardView) holder.itemView).setCardBackgroundColor(ContextCompat.getColor(context, R.color.gray));
             (holder.itemView).setAlpha((float) 0.4);
         }
@@ -81,13 +85,14 @@ public class WeekAdapter extends RecyclerView.Adapter<WeekAdapter.ViewHolder> {
     public class ViewHolder extends  RecyclerView.ViewHolder {
 
         int position;
-        TextView tvSubject,tvTimes,tvLocation,tvDate;
+        TextView tvSubject, tvStartTime, tvEndTime,tvLocation,tvDate;
 
         public ViewHolder(final View itemView) {
             super(itemView);
 
             tvSubject = itemView.findViewById(R.id.tvSubject);
-            tvTimes = itemView.findViewById(R.id.tvTimes);
+            tvStartTime = itemView.findViewById(R.id.tvStartTime);
+            tvEndTime = itemView.findViewById(R.id.tvEndTime);
             tvLocation = itemView.findViewById(R.id.tvLocation);
             tvDate = itemView.findViewById(R.id.tvDate);
 
@@ -97,8 +102,8 @@ public class WeekAdapter extends RecyclerView.Adapter<WeekAdapter.ViewHolder> {
                     //EXAMPLE ON CLICK FUNCTION
                     Bundle bundle = new Bundle();
                     bundle.putParcelable("eventObject", allActivities.get(position));
-                    bundle.putString("date", tvDate.getText().toString());
-                    bundle.putString("time", tvTimes.getText().toString());
+//                    bundle.putString("date", tvDate.getText().toString());
+//                    bundle.putString("time", tvStartTime.getText().toString());
 
                     AppCompatActivity activity = (AppCompatActivity) view.getContext();
                     Fragment openFragment = new FragmentOpenEvent();

@@ -7,15 +7,13 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -63,7 +61,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.ViewHo
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         LayoutInflater li = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = li.inflate(R.layout.menu_item, null);
+        View view = li.inflate(R.layout.menu_day_item, null);
         return new ViewHolder(view);
     }
 
@@ -71,25 +69,28 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.position = position;
-        holder.tvSubject.setText(allActivities.get(position).getSubject());
-        holder.tvLocation.setText(allActivities.get(position).getLocation().getDisplayName());
-//        holder.tvDayInWeek.setText(allActivities.get(position).getShortDayInWeek());
+        EventClass event = allActivities.get(position);
+        holder.tvSubject.setText(event.getSubject());
+        holder.tvLocation.setText(event.getLocation().getDisplayName());
+
+        if (event.getLocation().getDisplayName().isEmpty()) {
+            holder.tvLocation.setVisibility(View.GONE);
+            holder.tvSubject.setPadding(0,40,0,40);
+            holder.tvSubject.setGravity(Gravity.CENTER_VERTICAL);
+        }
+//            holder.tvSubject.setGravity(Gravity.CENTER_VERTICAL);
 
         //Set time and date
-        if(allActivities.get(position).getIsAllDay()) {
-            holder.tvTimes.setText(context.getResources().getString(R.string.timeWholeDay));
-//            holder.tvDate.setText(allActivities.get(position).getStartDate());
-            holder.tvDate.setVisibility(View.INVISIBLE);
+        if(event.getIsAllDay()) {
+            holder.tvTimes.setText(R.string.timeWholeDay);
         }
         else{
             //get time and put in format (see strings)
-            String times = context.getResources().getString(R.string.times, allActivities.get(position).getStartTime(), allActivities.get(position).getEndTime());
+            String times = context.getResources().getString(R.string.times, event.getStartTime(), event.getEndTime());
             holder.tvTimes.setText(times);
-//            holder.tvDate.setText(allActivities.get(position).getStartDate());
-            holder.tvDate.setVisibility(View.INVISIBLE);
         }
 
-        if (currentTime.isAfter(allActivities.get(position).getStartTimeObj()) || allActivities.get(position).getImportance().equals("low")) {
+        if (currentTime.isAfter(event.getStartTimeObj()) || event.getImportance().equals("low")) {
             ((CardView) holder.itemView).setCardBackgroundColor(ContextCompat.getColor(context, R.color.gray));
             (holder.itemView).setAlpha((float) 0.4);
         }
@@ -121,7 +122,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.ViewHo
                     Bundle bundle = new Bundle();
                     bundle.putParcelable("eventObject", allActivities.get(position));
 //                    bundle.putString("date", tvDate.getText().toString());
-//                    bundle.putString("time", tvTimes.getText().toString());
+//                    bundle.putString("time", tvStartTime.getText().toString());
 
                     AppCompatActivity activity = (AppCompatActivity) view.getContext();
                     Fragment openFragment = new FragmentOpenEvent();

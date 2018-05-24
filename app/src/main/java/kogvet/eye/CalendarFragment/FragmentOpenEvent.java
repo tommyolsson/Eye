@@ -1,21 +1,16 @@
 package kogvet.eye.CalendarFragment;
 import android.support.v4.app.Fragment;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.util.Linkify;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
 import kogvet.eye.EventClass;
 import kogvet.eye.MainActivity;
-import kogvet.eye.Notifications.NotificationService;
 import kogvet.eye.R;
 
 
@@ -66,12 +61,12 @@ public class FragmentOpenEvent extends Fragment {
                 String importance = event.getImportance();
 
                 ((MainActivity) getActivity()).patchGraphAPI(url, importance);
-                Log.i("Information", "Button pressed");
-                Log.i("ID", id);
+//                Log.i("Information", "Button pressed");
+//                Log.i("ID", id);
             }
         });
 
-        Log.i("Importance", event.getImportance());
+//        Log.i("Importance", event.getImportance());
 
         return inf;
     }
@@ -88,16 +83,20 @@ public class FragmentOpenEvent extends Fragment {
         textDate.setText(eventDate);
 
         TextView textTime = inf.findViewById(R.id.textTime);
+        textTime.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_access_time_gray_24dp, 0,0,0);
         textTime.setText(eventTime);
 
         TextView textLocation = inf.findViewById(R.id.textLocation);
         textLocation.setText(event.getLocation().getDisplayName());
-        textLocation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ((MainActivity)getActivity()).showMap(event);
-            }
-        });
+        if (!event.getLocation().getDisplayName().isEmpty()) {
+            textLocation.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_place_red_24dp, 0,0,0);
+            textLocation.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ((MainActivity)getActivity()).showMap(event);
+                }
+            });
+        }
     }
 
     public void showBox()
