@@ -44,6 +44,7 @@
     <string name="timeWholeDay">Heldag</string>
     <string name="times">%1$s-%2$s</string>
     <string name="date">Oneday \nYYYY-MM-DD</string>
+    <string name="newActivity">Ny aktivitet</string>
 
     <string name="weekDates">Måndag &#160; Tisdag &#160; Onsdag &#160; Torsdag &#160; Fredag</string>
     <string name="monday">Må</string>
