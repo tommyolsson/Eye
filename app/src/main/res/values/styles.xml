@@ -22,7 +22,8 @@
     </style>
 
     <style name="AppTheme.RoundedCornerMaterialButton" parent="Widget.AppCompat.Button.Colored">
-        <item name="android:background">@drawable/rounded_shape</item>
+        <item name="android:textColor">@color/gray</item>
+        <item name="android:background">@drawable/rounded_bot</item>
     </style>
 
 </resources>
