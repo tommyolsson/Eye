@@ -84,7 +84,14 @@ public class FragmentOpenEvent extends Fragment {
 
         TextView textTime = inf.findViewById(R.id.textTime);
         textTime.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_access_time_gray_24dp, 0,0,0);
-        textTime.setText(eventTime);
+        if (event.getIsAllDay())
+        {
+            textTime.setText(R.string.timeWholeDay);
+        }
+        else
+        {
+            textTime.setText(eventTime);
+        }
 
         TextView textLocation = inf.findViewById(R.id.textLocation);
         textLocation.setText(event.getLocation().getDisplayName());

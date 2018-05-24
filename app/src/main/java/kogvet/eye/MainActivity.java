@@ -379,7 +379,7 @@ public class MainActivity extends AppCompatActivity {
         queue.add(request);
     }
 
-    public void createEventGraphAPI(String eventSubject, String eventLocation, String eventDate, String eventStart, String eventEnd) {
+    public void createEventGraphAPI(String eventSubject, String eventLocation, String eventDate, String eventEndDate, String eventStart, String eventEnd, boolean eventIsAllDay) {
         Log.d(TAG, "Starting volley request to graph");
         String url = "https://graph.microsoft.com/v1.0/me/events";
 
@@ -392,6 +392,13 @@ public class MainActivity extends AppCompatActivity {
         startTime.put("timeZone", "Europe/Paris");
 
         String eventEndDateTime = eventDate + "T" + eventEnd + ":00";
+
+        if (eventIsAllDay)
+        {
+            /* Changes end date to date + 1 */
+            eventEndDateTime = eventEndDate + "T" + eventEnd + ":00";
+        }
+
         Map<String, Object> endTime = new HashMap<>();
         endTime.put("dateTime", eventEndDateTime);
         endTime.put("timeZone", "Europe/Paris");
@@ -404,6 +411,11 @@ public class MainActivity extends AppCompatActivity {
         jsonParams.put("start", startTime);
         jsonParams.put("end", endTime);
         jsonParams.put("location", location);
+        if (eventIsAllDay)
+        {
+            jsonParams.put("isAllDay", "true");
+        }
+
 
         RequestQueue queue = Volley.newRequestQueue(this);
 

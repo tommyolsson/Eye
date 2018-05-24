@@ -19,6 +19,8 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -179,7 +181,16 @@ public class FragmentCreateEvent extends Fragment {
                     Toast.makeText(getContext(), "Namn på aktivitet saknas", Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    ((MainActivity) getActivity()).createEventGraphAPI(subject, location, date, start, end);
+                    if (isAllDay) {
+                        LocalDate ld = LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                        String endDate = ld.plusDays(1).toString();
+
+                        ((MainActivity) getActivity()).createEventGraphAPI(subject, location, date, endDate,"00", "00", isAllDay);
+                    }
+                    else {
+                        ((MainActivity) getActivity()).createEventGraphAPI(subject, location, date, date, start, end, isAllDay);
+                    }
+
                     Toast.makeText(getContext(), "Aktivitet skapad", Toast.LENGTH_SHORT).show();
                     getActivity().onBackPressed();
                 }
