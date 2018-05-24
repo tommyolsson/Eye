@@ -387,11 +387,11 @@ public class MainActivity extends AppCompatActivity {
         if (authResult.getAccessToken() == null) {return;}
 
         Map<String, Object> startTime = new HashMap<>();
-        startTime.put("dateTime", "2018-05-23T20:00:00");
+        startTime.put("dateTime", "2018-05-24T20:00:00");
         startTime.put("timeZone", "Europe/Paris");
 
         Map<String, Object> endTime = new HashMap<>();
-        endTime.put("dateTime", "2018-05-23T21:00:00");
+        endTime.put("dateTime", "2018-05-24T21:00:00");
         endTime.put("timeZone", "Europe/Paris");
 
         Map<String, Object> location = new HashMap<>();
@@ -599,6 +599,8 @@ public class MainActivity extends AppCompatActivity {
             return new FragmentOpenEvent();
         else if (fragment instanceof FragmentWeek)
             return new FragmentWeek();
+        else if (fragment instanceof FragmentCreateEvent)
+            return new FragmentCreateEvent();
         else
             return new FragmentHome();
     }

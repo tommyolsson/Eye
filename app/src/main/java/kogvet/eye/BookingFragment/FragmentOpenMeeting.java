@@ -39,8 +39,8 @@ public class FragmentOpenMeeting extends Fragment {
         if(bundle != null)
         {
             event = bundle.getParcelable("eventObject");
-            eventDate = bundle.getString("date");
-            eventTime = bundle.getString("time");
+            eventDate = event.getStartDate();
+            eventTime = event.getStartTime();
         }
     }
 

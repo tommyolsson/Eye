@@ -116,8 +116,8 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.ViewHold
                 public void onClick(View view) {
                     Bundle bundle = new Bundle();
                     bundle.putParcelable("eventObject", allMeetings.get(position));
-                    bundle.putString("date", tvDate.getText().toString());
-                    bundle.putString("time", tvTimes.getText().toString());
+//                    bundle.putString("date", tvDate.getText().toString());
+//                    bundle.putString("time", tvTimes.getText().toString());
 
                     AppCompatActivity activity = (AppCompatActivity) view.getContext();
                     Fragment openFragment = new FragmentOpenMeeting();
