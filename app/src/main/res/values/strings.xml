@@ -1,7 +1,7 @@
 <!-- Läser in clientID från Microsoft Konto --><!DOCTYPE resources [<!ENTITY clientId "79d8295a-aad9-441e-8c00-091fe82bb0b2">]>
 
 <resources>
-    <string name="app_name">Eye</string>
+    <string name="app_name">STOM</string>
     <string name="title_activity_test">TestActivity</string>
     <string name="menu_button">Logga ut</string>
 
