@@ -59,11 +59,9 @@ public class MainActivity extends AppCompatActivity {
     final static String SCOPES [] = {"User.Read", "Calendars.Read", "Calendars.Read.Shared", "Calendars.ReadWrite"};
 
     public static String startDate = LocalDate.now().toString();
-//    public static String thisWeeksMonday = getThisWeeksMonday(localDate.now());
     public static String endDate = LocalDate.now().plusWeeks(1).toString();
 
     static String msGraph_URL = "https://graph.microsoft.com/beta/me/calendar/calendarView?startDateTime="+startDate+"T00:00:00.0000000&endDateTime="+endDate+"T00:00:00.0000000&$orderby=start/dateTime";
-    //final static String msGraph_URL = "https://graph.microsoft.com/beta/me/calendar/calendarView?startDateTime=2018-01-01T00:00:00.0000000&endDateTime=2025-01-01T00:00:00.0000000&$select=subject,isAllDay,start,end,location&$orderby=start/dateTime";
 
     /* UI & Debugging Variables */
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -87,7 +85,6 @@ public class MainActivity extends AppCompatActivity {
             sampleApp = new PublicClientApplication(this.getApplicationContext(), CLIENT_ID);
         }
 
-
         /* Attempt to get a user and acquireTokenSilent
          * If this fails we do an interactive request
          */
@@ -101,16 +98,12 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 /* We have no user */
                 updateSignedOutUI();
-//                sampleApp.acquireToken(getActivity(), SCOPES, getAuthInteractiveCallback());
-
             }
         } catch (MsalClientException e) {
             Log.d(TAG, "MSAL Exception Generated while getting users: " + e.toString());
-
         } catch (IndexOutOfBoundsException e) {
             Log.d(TAG, "User at this position does not exist: " + e.toString());
         }
-
     }
 
     //
@@ -174,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    /*Returns the latest monday s a string*/
+    /*Returns the latest mondays date as a string*/
     private String getThisWeeksMonday(LocalDate today) {
         java.time.DayOfWeek weekDay = today.getDayOfWeek();
 
@@ -199,13 +192,13 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    /* Use Volley to make an HTTP request to the /me endpoint from MS Graph using an access token */
+    /* Use Volley to make an HTTP request to the /me endpoint from MS Graph using an access token
+     * Used for fetching data from api */
     public void callGraphAPI() {
         /*Update Url to request events from today to one month ahead*/
         startDate = getThisWeeksMonday(LocalDate.now());
         endDate = LocalDate.now().plusMonths(1).toString();
         msGraph_URL = "https://graph.microsoft.com/beta/me/calendar/calendarView?startDateTime="+startDate+"T00:00:00.0000000&endDateTime="+endDate+"T00:00:00.0000000&$top=500&$orderby=start/dateTime";
-//        msGraph_URL = buildUrl();
 
         Log.d(TAG, "Starting volley request to graph");
 
@@ -258,13 +251,7 @@ public class MainActivity extends AppCompatActivity {
         queue.add(request);
     }
 
-    private String buildUrl() {
-//        https://graph.microsoft.com/beta/me/calendar/calendarView?startDateTime=  2018-04-10  T00:00:00.0000000&endDateTime=  2018-05-10  T00:00:00.0000000&$orderby=start/dateTime
-        return "";
-//        Uri.Builder builtUri = Uri.parse("https://graph.microsoft.com/beta/me/calendar/calendarView?startDateTime=")
-//                .buildUpon()
-    }
-
+    /* Send object to api */
     public void postGraphAPI(String url) {
         Log.d(TAG, "Starting volley request to graph");
 
@@ -281,13 +268,13 @@ public class MainActivity extends AppCompatActivity {
                 new JSONObject(jsonParams),
                 new Response.Listener<JSONObject>() {
 
-            @Override
-            public void onResponse(JSONObject response) {
-                /* Successfully called graph, process data and send to UI */
-                Log.d(TAG, "Response: " + response.toString());
-                updateUIOnResponse("booking");
-            }
-        }, new Response.ErrorListener() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        /* Successfully called graph, process data and send to UI */
+                        Log.d(TAG, "Response: " + response.toString());
+                        updateUIOnResponse("booking");
+                    }
+                }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.d(TAG, "Error: " + error.toString());
@@ -319,6 +306,7 @@ public class MainActivity extends AppCompatActivity {
         queue.add(request);
     }
 
+    /* Update object through api */
     public void patchGraphAPI(String url, String currentImportance) {
         Log.d(TAG, "Starting volley request to graph");
         /* Make sure we have a token to send to graph */
@@ -343,7 +331,7 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void onResponse(JSONObject response) {
-                /* Successfully called graph, process data and send to UI */
+                        /* Successfully called graph, process data and send to UI */
                         Log.d(TAG, "Response: " + response.toString());
                         updateUIOnResponse("current_fragment");
                     }
@@ -379,6 +367,7 @@ public class MainActivity extends AppCompatActivity {
         queue.add(request);
     }
 
+    /* Creates a new event as a hashmap and posts to API */
     public void createEventGraphAPI(String eventSubject, String eventLocation, String eventDate, String eventEndDate, String eventStart, String eventEnd, boolean eventIsAllDay) {
         Log.d(TAG, "Starting volley request to graph");
         String url = "https://graph.microsoft.com/v1.0/me/events";
@@ -415,8 +404,6 @@ public class MainActivity extends AppCompatActivity {
         {
             jsonParams.put("isAllDay", "true");
         }
-
-
         RequestQueue queue = Volley.newRequestQueue(this);
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,
@@ -466,8 +453,8 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(this, R.string.graphUpdate, Toast.LENGTH_SHORT).show();
     }
 
+    /* Fetches all events from api response */
     private void getAllEvents(JSONObject graphResponse) throws JSONException {
-
         allEvents.clear();
         JSONArray array = graphResponse.getJSONArray("value");
         JSONObject object;
@@ -478,6 +465,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /* Takes a JSONObject and constructs a EventClass object  */
     private EventClass buildEvent(JSONObject object) throws JSONException {
         // get event information
         String id = object.getString("id");
@@ -533,34 +521,33 @@ public class MainActivity extends AppCompatActivity {
         return new EventClass(id, subject, bodyPreview, isAllDay, isMeeting,isAttending, startTimeObj, endTimeObj, location, responseStatus, numOfAcceptedAttendees, importance);
     }
 
+    /* Takes a JSONObject and constucts a Location object */
     private EventClass.Location getLocationFromJson(JSONObject jsonObject) throws JSONException {
         EventClass.Location location = new EventClass.Location();
-
-        location.displayName = jsonObject.getString("displayName");
         JSONObject adress = jsonObject.getJSONObject("address");
+        location.displayName = jsonObject.getString("displayName");
         location.street = adress.getString("street");
         location.city = adress.getString("city");
         location.state = adress.getString("state");
         location.country = adress.getString("countryOrRegion");
         location.postalCode = adress.getString("postalCode");
-
         return  location;
     }
 
+    /* Takes a JSONObject and constucts a ResponseStatus object */
     private EventClass.ResponseStatus getResponseStatusFromJson(JSONObject jsonObject) throws JSONException {
         EventClass.ResponseStatus responseStatus = new EventClass.ResponseStatus();
-
         responseStatus.response = jsonObject.getString("response");
         responseStatus.time = jsonObject.getString("time");
-
         return  responseStatus;
     }
 
+    /* Converts a String to a LocalDateTime Object */
     private LocalDateTime getDateTimeFromString(String string) {
         //Get startDate and startTime from JsonString
         String [] segments = string.split("\"");
         LocalDateTime ldt = LocalDateTime.parse(segments[3].substring(0, 16));
-        // Add one extra hour to correct for daylight savings
+        // Add one extra hour to correct for daylight savings (!!)
         ldt.plusHours(1);
         return ldt;
     }
@@ -577,13 +564,13 @@ public class MainActivity extends AppCompatActivity {
         openFragment.setArguments(bundle);
         pushFragment(openFragment);
 
-
         findViewById(R.id.bottom_navigation).setVisibility(View.VISIBLE);
 
         menuVisible=true;
         invalidateOptionsMenu();
     }
 
+    /* Update UI after Api response */
     public void updateUIOnResponse(String fragmentTag) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment fragment = fragmentManager.findFragmentByTag(fragmentTag);
@@ -596,7 +583,7 @@ public class MainActivity extends AppCompatActivity {
         pushFragment(newFragment);
     }
 
-    /*Gets new fragment*/
+    /*Fetch new fragment of the same type, used for updating UI*/
     private Fragment getNewFragment(Fragment fragment) {
 
         if(fragment instanceof FragmentLogin)
@@ -726,10 +713,7 @@ public class MainActivity extends AppCompatActivity {
         };
     }
 
-    /**
-     * Function handling all onClick methods in mainActivity.
-     * @param view
-     */
+    /* Function handling all onClick methods in mainActivity. */
     public void buttonClicked(View view)
     {
         //Intent intent;
@@ -758,9 +742,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /* Inflates the menu, this adds items to the action bar if it is present. */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         MenuItem item = menu.findItem(R.id.menu_button);
         if(menuVisible)
@@ -794,9 +778,8 @@ public class MainActivity extends AppCompatActivity {
 
     /* Bottom Navigation bar and fragments  */
     private void setupNavigationView() {
-        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         if (bottomNavigationView != null) {
-
             // Select first menu item by default and show Fragment accordingly.
             Menu menu = bottomNavigationView.getMenu();
             selectFragment(menu.getItem(0));
@@ -813,11 +796,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * Perform action when any item is selected.
-     *
-     * @param item Item that is selected.
-     */
+    /* Clears BackStack and Opens up a new fragment selected from the navigation menu. */
     protected void selectFragment(MenuItem item) {
 
         item.setChecked(true);
@@ -864,13 +843,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Method to push any fragment into given id.
-     *
+     * Opens up fragment, used when updating the UI without user interaction.
      * @param fragment An instance of Fragment to show into the given id.
      */
     protected void pushFragment(Fragment fragment) {
-
-
         if (fragment == null)
             return;
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -883,7 +859,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    /* Updates Title text in top bar */
+    /* Updates Title text in top part of the screen */
     public void setActionBarTitle(CharSequence text) {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -907,6 +883,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /* Tries to open up Google Maps at the adress of the supplied event. */
     public void showMap(EventClass event) {
         //GET SEARCH URI
         String location = event.location.getDisplayName()+" "+event.location.getCountry();
