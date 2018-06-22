@@ -14,30 +14,26 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 
+import kogvet.eye.BookingFragment.FragmentOpenMeeting;
 import kogvet.eye.EventClass;
+import kogvet.eye.MainActivity;
 import kogvet.eye.R;
 
 /**
- * Created by Loldator on 2018-02-27.
+ * Helper class to fetch data and update UI for FragmentWeek
  */
-
 public class WeekAdapter extends RecyclerView.Adapter<WeekAdapter.ViewHolder> {
 
     private final Context context;
-    private final ArrayList<EventClass> allActivities;
+    private final ArrayList<EventClass> allEvents;
     private final LocalDateTime currentTime;
 
-    public WeekAdapter(Context context, ArrayList<EventClass> allActivities) {
-        this.allActivities = allActivities;
+    public WeekAdapter(Context context, ArrayList<EventClass> allEvents) {
+        this.allEvents = allEvents;
         this.context = context;
-        this.currentTime = getCurrentTime();
-    }
-
-    private LocalDateTime getCurrentTime() {
-        return LocalDateTime.now().truncatedTo((ChronoUnit.MINUTES));
+        this.currentTime =  MainActivity.getCurrentTime();
     }
 
     @Override
@@ -52,23 +48,29 @@ public class WeekAdapter extends RecyclerView.Adapter<WeekAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.position = position;
-        EventClass event = allActivities.get(position);
+        EventClass event = allEvents.get(position);
         holder.tvSubject.setText(event.getSubject());
 
         //Set time and date
-        if(allActivities.get(position).getIsAllDay()) {
+        if(allEvents.get(position).getIsAllDay()) {
             holder.tvStartTime.setText(R.string.timeWholeDay);
             holder.tvEndTime.setText("");
             holder.tvDate.setText(event.getStartDate());
         }
         else{
             //get time and put in format (see strings)
-//            String times = context.getResources().getString(R.string.times, event.getStartTime(), event.getEndTime());
-//            holder.tvStartTime.setText(event.getStartTime());
             holder.tvStartTime.setText(context.getString(R.string.startTime, event.getStartTime()));
             holder.tvEndTime.setText(context.getString(R.string.endTime, event.getEndTime()));
-//            holder.tvEndTime.setText(event.getEndTime());
             holder.tvDate.setText(event.getEndDate());
+        }
+
+        //Set color for meetings
+        if(event.getIsMeeting())
+            ((CardView) holder.itemView).setCardBackgroundColor(ContextCompat.getColor(context,R.color.bookingColor));
+
+        if (event.getImportance().equals("low")) {
+            ((CardView) holder.itemView).setCardBackgroundColor(ContextCompat.getColor(context, R.color.gray));
+            (holder.itemView).setAlpha((float) 0.4);
         }
 
         if (currentTime.isAfter(event.getStartTimeObj())) {
@@ -79,7 +81,7 @@ public class WeekAdapter extends RecyclerView.Adapter<WeekAdapter.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return allActivities.size();
+        return allEvents.size();
     }
 
     public class ViewHolder extends  RecyclerView.ViewHolder {
@@ -99,29 +101,22 @@ public class WeekAdapter extends RecyclerView.Adapter<WeekAdapter.ViewHolder> {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    //EXAMPLE ON CLICK FUNCTION
                     Bundle bundle = new Bundle();
-                    bundle.putParcelable("eventObject", allActivities.get(position));
-//                    bundle.putString("date", tvDate.getText().toString());
-//                    bundle.putString("time", tvStartTime.getText().toString());
-
+                    EventClass event = allEvents.get(position);
+                    bundle.putParcelable("eventObject", event);
                     AppCompatActivity activity = (AppCompatActivity) view.getContext();
-                    Fragment openFragment = new FragmentOpenEvent();
-                    openFragment.setArguments(bundle);
-                    activity.getSupportFragmentManager().beginTransaction().replace(R.id.rootLayout, openFragment).addToBackStack(null).commit();
+                    if (event.getIsMeeting()) {
+                        Fragment openFragment = new FragmentOpenMeeting();
+                        openFragment.setArguments(bundle);
+                        activity.getSupportFragmentManager().beginTransaction().replace(R.id.rootLayout, openFragment).addToBackStack(null).commit();
+                    } else {
+                        Fragment openFragment = new FragmentOpenEvent();
+                        openFragment.setArguments(bundle);
+                        activity.getSupportFragmentManager().beginTransaction().replace(R.id.rootLayout, openFragment).addToBackStack(null).commit();
+                    }
                 }
 
-            });
-
-            itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View view) {
-                    itemView.setAlpha((float) 0.5);
-                    Log.d("LongClick", "LONG PRESSSSSS");
-                    return true;
-                }
             });
         }
     }
-
 }

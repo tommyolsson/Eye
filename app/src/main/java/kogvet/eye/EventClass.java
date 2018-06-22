@@ -2,15 +2,14 @@ package kogvet.eye;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
-
-import com.microsoft.graph.extensions.DayOfWeek;
-import com.microsoft.graph.extensions.Importance;
-
 import java.time.LocalDateTime;
 import java.time.format.TextStyle;
 import java.util.Locale;
 
+/**
+ * Class that represents calendar event locally in the device.
+ * Includes subclasses Location and ResponseStatus.
+ */
 public class EventClass implements Parcelable {
 
     String id;
@@ -26,6 +25,7 @@ public class EventClass implements Parcelable {
     int numOfAcceptedAttendees;
     String importance;
 
+    /* Represents the events real life location */
     public static class Location implements  Parcelable {
         String displayName;
         String street;
@@ -103,7 +103,7 @@ public class EventClass implements Parcelable {
         };
     }
 
-    /* Response Status */
+    /* Subclass representing the response status of the event */
     public static class ResponseStatus implements  Parcelable {
         String response;
         String time;

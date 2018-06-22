@@ -17,6 +17,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 
 import kogvet.eye.EventClass;
+import kogvet.eye.MainActivity;
 import kogvet.eye.R;
 
 /**
@@ -34,7 +35,8 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.ViewHold
         this.allEvents = allEvents;
         this.allMeetings = getMeetings(allEvents);
         this.context = context;
-        this.currentTime = getCurrentTime();
+        this.currentTime =  MainActivity.getCurrentTime();
+
     }
 
     private ArrayList<EventClass> getMeetings(ArrayList<EventClass> allEvents) {
@@ -48,10 +50,6 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.ViewHold
                     meetings.add(event);
         }
         return meetings;
-    }
-
-    private LocalDateTime getCurrentTime() {
-        return LocalDateTime.now().truncatedTo((ChronoUnit.MINUTES));
     }
 
     @Override
@@ -116,8 +114,6 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.ViewHold
                 public void onClick(View view) {
                     Bundle bundle = new Bundle();
                     bundle.putParcelable("eventObject", allMeetings.get(position));
-//                    bundle.putString("date", tvDate.getText().toString());
-//                    bundle.putString("time", tvTimes.getText().toString());
 
                     AppCompatActivity activity = (AppCompatActivity) view.getContext();
                     Fragment openFragment = new FragmentOpenMeeting();

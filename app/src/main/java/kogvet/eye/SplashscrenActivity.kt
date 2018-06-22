@@ -10,7 +10,7 @@ class SplashscreenActivity: AppCompatActivity() {
     private var mDelayHandler: Handler? = null
     private val SPLASH_DELAY: Long = 1500 //3 seconds
 
-    internal val mRunnable: Runnable = Runnable {
+    private val mRunnable: Runnable = Runnable {
         if (!isFinishing) {
 
             val intent = Intent(applicationContext, MainActivity::class.java)
@@ -39,41 +39,4 @@ class SplashscreenActivity: AppCompatActivity() {
 
         super.onDestroy()
     }
-
-    /*val TIME_OUT: Long = 2000
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.splashscreen)
-
-        Handler().postDelayed(Runnable {
-            kotlin.run {
-                val intent = Intent(this, MainActivity::class.java)
-                startActivity(intent)
-                finish()
-            }
-        }, TIME_OUT)
-    }
-*/
 }
-
-/*
-class SplashscreenActivity : AppCompatActivity() {
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.splashscreen)
-
-
-        // continue with your regular implementation
-
-
-        val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
-        finish()
-
-
-
-    }
-
-}*/

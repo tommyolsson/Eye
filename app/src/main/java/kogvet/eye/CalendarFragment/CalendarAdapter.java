@@ -15,19 +15,18 @@ import android.widget.TextView;
 
 import java.time.LocalDateTime;
 import java.time.format.TextStyle;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Locale;
 
 import kogvet.eye.EventClass;
+import kogvet.eye.MainActivity;
 import kogvet.eye.R;
 
 /**
- * Created by Loldator on 2018-02-27.
+ * Helper class for CalendarFragment.
  */
 
 public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.ViewHolder> {
-
     private final Context context;
     private final ArrayList<EventClass> allEvents;
     private final ArrayList<EventClass> allActivities;
@@ -36,9 +35,8 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.ViewHo
     public CalendarAdapter(Context context, ArrayList<EventClass> allEvents) {
         this.allEvents = allEvents;
         this.context = context;
-        this.currentTime = getCurrentTime();
+        this.currentTime =  MainActivity.getCurrentTime();
         this.allActivities = getTodaysActivities(allEvents);
-
     }
 
     private ArrayList<EventClass> getTodaysActivities(ArrayList<EventClass> allEvents) {
@@ -53,13 +51,8 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.ViewHo
         return allActivites;
     }
 
-    private LocalDateTime getCurrentTime() {
-        return LocalDateTime.now().truncatedTo((ChronoUnit.MINUTES));
-    }
-
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
         LayoutInflater li = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = li.inflate(R.layout.menu_day_item, null);
         return new ViewHolder(view);
@@ -78,7 +71,6 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.ViewHo
             holder.tvSubject.setPadding(0,40,0,40);
             holder.tvSubject.setGravity(Gravity.CENTER_VERTICAL);
         }
-//            holder.tvSubject.setGravity(Gravity.CENTER_VERTICAL);
 
         //Set time and date
         if(event.getIsAllDay()) {
@@ -104,7 +96,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.ViewHo
     public class ViewHolder extends  RecyclerView.ViewHolder {
 
         int position;
-        TextView tvSubject,tvTimes,tvLocation,tvDate,tvDayInWeek;
+        TextView tvSubject,tvTimes,tvLocation,tvDate;
 
         public ViewHolder(final View itemView) {
             super(itemView);
@@ -113,16 +105,12 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.ViewHo
             tvTimes = itemView.findViewById(R.id.tvTimes);
             tvLocation = itemView.findViewById(R.id.tvLocation);
             tvDate = itemView.findViewById(R.id.tvDate);
-//            tvDayInWeek = itemView.findViewById(R.id.tvDayInWeek);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    //EXAMPLE ON CLICK FUNCTION
                     Bundle bundle = new Bundle();
                     bundle.putParcelable("eventObject", allActivities.get(position));
-//                    bundle.putString("date", tvDate.getText().toString());
-//                    bundle.putString("time", tvStartTime.getText().toString());
 
                     AppCompatActivity activity = (AppCompatActivity) view.getContext();
                     Fragment openFragment = new FragmentOpenEvent();
@@ -131,16 +119,6 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.ViewHo
                 }
 
             });
-
-            /*itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View view) {
-                    itemView.setAlpha((float) 0.5);
-                    Log.d("LongClick", "LONG PRESSSSSS");
-                    return true;
-                }
-            });*/
         }
     }
-
 }

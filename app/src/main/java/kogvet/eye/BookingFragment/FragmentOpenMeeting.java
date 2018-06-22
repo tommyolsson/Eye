@@ -60,7 +60,6 @@ public class FragmentOpenMeeting extends Fragment {
                 event.getResponseStatus().setResponse("accepted");
                 recreateFragment();
                 Toast.makeText(getContext(), "Bokat", Toast.LENGTH_SHORT).show();
-//                ((MainActivity)getActivity()).callGraphAPI();
             }
         });
 
@@ -73,7 +72,6 @@ public class FragmentOpenMeeting extends Fragment {
                 event.getResponseStatus().setResponse("tentativelyAccepted");
                 recreateFragment();
                 Toast.makeText(getContext(), "Avbokat", Toast.LENGTH_SHORT).show();
-//                ((MainActivity)getActivity()).callGraphAPI();
             }
         });
 
@@ -123,7 +121,7 @@ public class FragmentOpenMeeting extends Fragment {
         }
     }
 
-
+    /* Buttons are hidden by default, depending on response status they will be shown.*/
     public void showButton()
     {
         String eventResponse = event.getResponseStatus().getResponse();

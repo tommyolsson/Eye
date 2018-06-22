@@ -26,6 +26,7 @@ import org.json.JSONObject;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -550,6 +551,11 @@ public class MainActivity extends AppCompatActivity {
         // Add one extra hour to correct for daylight savings (!!)
         ldt.plusHours(1);
         return ldt;
+    }
+
+    /* Get the devices local time */
+    public static LocalDateTime getCurrentTime() {
+        return LocalDateTime.now().truncatedTo((ChronoUnit.MINUTES));
     }
 
     /* Set the UI for successful token acquisition data */

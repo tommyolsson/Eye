@@ -18,9 +18,12 @@ import java.util.ArrayList;
 
 import kogvet.eye.CalendarFragment.FragmentOpenEvent;
 import kogvet.eye.EventClass;
+import kogvet.eye.MainActivity;
 import kogvet.eye.R;
 
-
+/**
+ * Helper class to fetch data and update UI for FragmentHome
+ */
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
     private final Context context;
@@ -29,12 +32,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
     public HomeAdapter(Context context,  ArrayList<EventClass> allEvents) {
         this.context = context;
-        this.currentTime = getCurrentTime();
+        this.currentTime =  MainActivity.getCurrentTime();
         this.currentEvents = getCurrentEvents(allEvents);
-    }
-
-    private LocalDateTime getCurrentTime() {
-        return LocalDateTime.now().truncatedTo((ChronoUnit.DAYS));
     }
 
     private ArrayList<EventClass> getCurrentEvents(ArrayList<EventClass> allEvents) {
@@ -81,7 +80,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         if(event.getIsMeeting())
             ((CardView) holder.itemView).setCardBackgroundColor(ContextCompat.getColor(context,R.color.bookingColor));
 
-        if (currentEvents.get(position).getImportance().equals("low")) {
+        if (event.getImportance().equals("low")) {
             ((CardView) holder.itemView).setCardBackgroundColor(ContextCompat.getColor(context, R.color.gray));
             (holder.itemView).setAlpha((float) 0.4);
         }
@@ -113,11 +112,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    //EXAMPLE ON CLICK FUNCTION
                     Bundle bundle = new Bundle();
                     bundle.putParcelable("eventObject", currentEvents.get(position));
-//                    bundle.putString("date", tvDate.getText().toString());
-//                    bundle.putString("time", tvTimes.getText().toString());
 
                     AppCompatActivity activity = (AppCompatActivity) view.getContext();
                     Fragment openFragment = new FragmentOpenEvent();
@@ -127,5 +123,4 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             });
         }
     }
-
 }

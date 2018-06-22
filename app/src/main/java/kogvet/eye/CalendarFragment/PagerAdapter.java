@@ -1,18 +1,14 @@
 package kogvet.eye.CalendarFragment;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-
 import java.util.ArrayList;
-
 import kogvet.eye.EventClass;
-import kogvet.eye.R;
 
 /**
- * Created by Loldator on 2018-02-27.
+ * Helper class for the TabFragment class.
  */
 
 public class PagerAdapter extends FragmentPagerAdapter {

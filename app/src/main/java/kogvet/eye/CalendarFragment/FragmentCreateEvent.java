@@ -41,11 +41,9 @@ public class FragmentCreateEvent extends Fragment {
     CheckBox checkBox;
     boolean isAllDay;
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Nullable

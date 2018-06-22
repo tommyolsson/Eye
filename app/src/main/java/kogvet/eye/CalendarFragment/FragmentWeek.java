@@ -39,9 +39,7 @@ public class FragmentWeek extends Fragment  {
 
     private Context context;
     private SwipeRefreshLayout mSwipeRefreshLayout;
-
     private ArrayList<EventClass> allEvents;
-    private ArrayList<EventClass> allActivities;
 
     private ArrayList<EventClass> activitiesMonday;
     private RecyclerView mondayRecyclerView;
@@ -58,39 +56,30 @@ public class FragmentWeek extends Fragment  {
     private ArrayList<EventClass> activitiesFriday;
     private RecyclerView fridayRecyclerView;
 
-
-    private ArrayList<EventClass> getAllActivities(ArrayList<EventClass> allEvents) {
-        ArrayList<EventClass> allActivites = new ArrayList<>();
-        for (int i = 0; i < allEvents.size(); i++) {
-            if (!allEvents.get(i).getIsMeeting())
-                allActivites.add(allEvents.get(i));
-        }
-        return allActivites;
-    }
-
-    private void getWeekDayEvents(ArrayList<EventClass> allActivities) {
+    /* Puts all events in the correct arraylist according to weekday */
+    private void getWeekDayEvents(ArrayList<EventClass> allEvents) {
         activitiesMonday = new ArrayList<>();
         activitiesTuesday = new ArrayList<>();
         activitiesWednesday = new ArrayList<>();
         activitiesThursday = new ArrayList<>();
         activitiesFriday = new ArrayList<>();
-        for(int i = 0; i < allActivities.size(); i++) {
-            java.time.DayOfWeek weekDay = allActivities.get(i).getStartTimeObj().getDayOfWeek();
+        for(int i = 0; i < allEvents.size(); i++) {
+            java.time.DayOfWeek weekDay = allEvents.get(i).getStartTimeObj().getDayOfWeek();
             switch (weekDay) {
                 case MONDAY:
-                    activitiesMonday.add(allActivities.get(i));
+                    activitiesMonday.add(allEvents.get(i));
                     break;
                 case TUESDAY:
-                    activitiesTuesday.add(allActivities.get(i));
+                    activitiesTuesday.add(allEvents.get(i));
                     break;
                 case WEDNESDAY:
-                    activitiesWednesday.add(allActivities.get(i));
+                    activitiesWednesday.add(allEvents.get(i));
                     break;
                 case THURSDAY:
-                    activitiesThursday.add(allActivities.get(i));
+                    activitiesThursday.add(allEvents.get(i));
                     break;
                 case FRIDAY:
-                    activitiesFriday.add(allActivities.get(i));
+                    activitiesFriday.add(allEvents.get(i));
                     break;
                 default:
                     break;
@@ -109,8 +98,7 @@ public class FragmentWeek extends Fragment  {
         {
             allEvents = bundle.getParcelableArrayList("allevents");
         }
-        allActivities = getAllActivities(allEvents);
-        getWeekDayEvents(allActivities);
+        getWeekDayEvents(allEvents);
 
     }
 
@@ -119,10 +107,7 @@ public class FragmentWeek extends Fragment  {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_week, container, false);
-//        ((MainActivity) getActivity()).setActionBarTitle(getResources().getString(R.string.week));
-//        ((MainActivity) getActivity()).showBackButton();
-
-        mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swiperefresh);
+        mSwipeRefreshLayout = view.findViewById(R.id.swiperefresh);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -152,12 +137,12 @@ public class FragmentWeek extends Fragment  {
         prepareRecyclerView(fridayRecyclerView, activitiesFriday);
 
         ScrollView scrollView = view.findViewById(R.id.scrollview);
-//        detectSwipe(scrollView);
 
         underlineDayInWeek(view);
 
     }
 
+    /* Underlines the current day in the UI*/
     private void underlineDayInWeek(View view) {
         DayOfWeek weekDay = LocalDateTime.now().getDayOfWeek();
         TextView textView = null;

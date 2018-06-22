@@ -13,7 +13,6 @@ import kogvet.eye.EventClass;
 import kogvet.eye.MainActivity;
 import kogvet.eye.R;
 
-
 /**
  * Fragment class for Open Event Fragment
  */
@@ -61,12 +60,8 @@ public class FragmentOpenEvent extends Fragment {
                 String importance = event.getImportance();
 
                 ((MainActivity) getActivity()).patchGraphAPI(url, importance);
-//                Log.i("Information", "Button pressed");
-//                Log.i("ID", id);
             }
         });
-
-//        Log.i("Importance", event.getImportance());
 
         return inf;
     }
@@ -95,6 +90,7 @@ public class FragmentOpenEvent extends Fragment {
 
         TextView textLocation = inf.findViewById(R.id.textLocation);
         textLocation.setText(event.getLocation().getDisplayName());
+        //If location is available, show Google maps marker.
         if (!event.getLocation().getDisplayName().isEmpty()) {
             textLocation.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_place_red_24dp, 0,0,0);
             textLocation.setOnClickListener(new View.OnClickListener() {
@@ -106,6 +102,7 @@ public class FragmentOpenEvent extends Fragment {
         }
     }
 
+    /* Display checked box if event importance is low*/
     public void showBox()
     {
         String eventImportance = event.getImportance();
