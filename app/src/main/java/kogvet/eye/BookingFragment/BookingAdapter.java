@@ -44,10 +44,10 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.ViewHold
         for (int i = 0; i < allEvents.size(); i++) {
             EventClass event = allEvents.get(i);
             if (event.getIsMeeting())
-                if (event.getIsAttending())
+/*                if (event.getIsAttending())
                     meetings.add(event);
-                else if (event.getNumOfAcceptedAttendees()<1)
-                    meetings.add(event);
+                else if (event.getNumOfAcceptedAttendees()<1) */
+                meetings.add(event);
         }
         return meetings;
     }

@@ -462,7 +462,14 @@ public class MainActivity extends AppCompatActivity {
         for(int i=0; i<array.length(); i++) {
             object = array.getJSONObject(i);
             EventClass event = buildEvent(object);
-            allEvents.add(event);
+            //IF event is a meeting, skip meetings already attended by other people..
+            if (event.isMeeting)
+                if (event.isAttending)
+                    allEvents.add(event);
+                if (event.getNumOfAcceptedAttendees()<1)
+                    allEvents.add(event);
+            else
+                allEvents.add(event);
         }
     }
 
