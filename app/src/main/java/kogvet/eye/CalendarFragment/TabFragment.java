@@ -8,12 +8,14 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.TextStyle;
-import java.time.temporal.TemporalField;
-import java.time.temporal.WeekFields;
+
+import org.threeten.bp.DayOfWeek;
+import org.threeten.bp.LocalDate;
+import org.threeten.bp.LocalDateTime;
+import org.threeten.bp.format.TextStyle;
+import org.threeten.bp.temporal.TemporalField;
+import org.threeten.bp.temporal.WeekFields;
+
 import java.util.ArrayList;
 import java.util.Locale;
 import kogvet.eye.EventClass;

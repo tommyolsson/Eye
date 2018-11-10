@@ -20,9 +20,9 @@ import android.widget.ScrollView;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import java.time.DayOfWeek;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
+import org.threeten.bp.DayOfWeek;
+import org.threeten.bp.LocalDateTime;
+
 import java.util.ArrayList;
 
 import kogvet.eye.EventClass;
@@ -64,7 +64,7 @@ public class FragmentWeek extends Fragment  {
         activitiesThursday = new ArrayList<>();
         activitiesFriday = new ArrayList<>();
         for(int i = 0; i < allEvents.size(); i++) {
-            java.time.DayOfWeek weekDay = allEvents.get(i).getStartTimeObj().getDayOfWeek();
+            DayOfWeek weekDay = allEvents.get(i).getStartTimeObj().getDayOfWeek();
             switch (weekDay) {
                 case MONDAY:
                     activitiesMonday.add(allEvents.get(i));

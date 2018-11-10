@@ -12,8 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
+import org.threeten.bp.LocalDateTime;
+
 import java.util.ArrayList;
 
 import kogvet.eye.EventClass;

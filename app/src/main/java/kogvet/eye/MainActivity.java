@@ -23,15 +23,17 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.threeten.bp.LocalDate;
+import org.threeten.bp.LocalDateTime;
+import org.threeten.bp.temporal.ChronoUnit;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.jakewharton.threetenabp.AndroidThreeTen;
 import com.microsoft.graph.extensions.DayOfWeek;
 import com.microsoft.identity.client.*;
 
@@ -77,6 +79,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Initiate AndroidThreeTen to run Date and Time
+        AndroidThreeTen.init(this);
         // Runs Bottom Navigation Bar
         setupNavigationView();
 
@@ -170,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
 
     /*Returns the latest mondays date as a string*/
     private String getThisWeeksMonday(LocalDate today) {
-        java.time.DayOfWeek weekDay = today.getDayOfWeek();
+        org.threeten.bp.DayOfWeek weekDay = today.getDayOfWeek();
 
         switch (weekDay) {
             case MONDAY:

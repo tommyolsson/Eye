@@ -2,9 +2,13 @@ package kogvet.eye;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import java.time.LocalDateTime;
-import java.time.format.TextStyle;
+
+import org.threeten.bp.DayOfWeek;
+import org.threeten.bp.LocalDateTime;
+import org.threeten.bp.format.TextStyle;
+
 import java.util.Locale;
+
 
 /**
  * Class that represents calendar event locally in the device.
@@ -299,7 +303,7 @@ public class EventClass implements Parcelable {
     }
 
     public String getDayInWeek() {
-        java.time.DayOfWeek day = this.startTimeObj.getDayOfWeek();
+        DayOfWeek day = this.startTimeObj.getDayOfWeek();
         return day.getDisplayName(TextStyle.FULL, Locale.getDefault());
     }
 
