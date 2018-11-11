@@ -61,10 +61,10 @@ public class MainActivity extends AppCompatActivity {
     final static String CLIENT_ID = "fac1a20e-54f5-49d2-ae55-724b980a2eb9";
     final static String SCOPES [] = {"User.Read", "Calendars.Read", "Calendars.Read.Shared", "Calendars.ReadWrite"};
 
-    public static String startDate = LocalDate.now().toString();
-    public static String endDate = LocalDate.now().plusWeeks(1).toString();
+    public static String startDate;
+    public static String endDate;
 
-    static String msGraph_URL = "https://graph.microsoft.com/beta/me/calendar/calendarView?startDateTime="+startDate+"T00:00:00.0000000&endDateTime="+endDate+"T00:00:00.0000000&$orderby=start/dateTime";
+    static String msGraph_URL;
 
     /* UI & Debugging Variables */
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -81,6 +81,14 @@ public class MainActivity extends AppCompatActivity {
 
         // Initiate AndroidThreeTen to run Date and Time
         AndroidThreeTen.init(this);
+
+        /* Azure AD v2 Configs for Graph URL*/
+        startDate = LocalDate.now().toString();
+        endDate = LocalDate.now().plusWeeks(1).toString();
+
+        msGraph_URL = "https://graph.microsoft.com/beta/me/calendar/calendarView?startDateTime="+startDate+"T00:00:00.0000000&endDateTime="+endDate+"T00:00:00.0000000&$orderby=start/dateTime";
+
+
         // Runs Bottom Navigation Bar
         setupNavigationView();
 
